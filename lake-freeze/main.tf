@@ -32,6 +32,10 @@ resource "aws_kms_key" "db_key" {
   description = "KMS key for encrypting database"
 }
 
+# data "aws_secretsmanager_secret" "db_pwd" {
+#   arn = "arn:aws:secretsmanager:us-east-1:117819748843:secret:lake_freeze/db_pwd-qipFQc"
+# }
+
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze"
     engine                  = "aurora-postgresql"
@@ -40,8 +44,9 @@ resource "aws_rds_cluster" "db" {
     port = 5432
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "lake_freeze"
-    master_username         = "postgres"
-    master_password         = var.POSTGRES_PWD
+    # master_username         = "postgres"
+    manage_master_user_password = true
+    # master_password         = data.aws_secretsmanager_secret.db_pwd.
     # kms_key_id = aws_kms_key.db_key.id
     iam_database_authentication_enabled = true
     iam_roles = []
