@@ -12,7 +12,8 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: "us-east-1"
-
+  POSTGRES_PWD: ${{ secrets.POSTGRES_PWD }}
+  
 jobs:
   terraform:
     name: 'Terraform'
@@ -45,6 +46,7 @@ jobs:
           echo "AWS_REGION=\"${AWS_REGION}\"" >> aws.auto.tfvars
           echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> aws.auto.tfvars
           echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
+          echo "POSTGRES_PWD=\"${POSTGRES_PWD}\"" >> aws.auto.tfvars
 
 
       # Generates an execution plan for Terraform
