@@ -39,7 +39,7 @@ resource "aws_rds_cluster" "db" {
     engine_mode = "provisioned"
     port = 5432
     availability_zones      = ["us-east-1d", "us-east-1f"]
-    database_name           = "default"
+    database_name           = "lake_freeze"
     master_username         = "postgres"
     master_password         = var.POSTGRES_PWD
     # kms_key_id = aws_kms_key.db_key.id
