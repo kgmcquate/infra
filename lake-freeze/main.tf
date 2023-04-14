@@ -23,7 +23,7 @@ resource aws_ecs_cluster_capacity_providers capacity_provider {
     capacity_providers = ["FARGATE"]
 }
 
-variable postgres_pwd {
+variable POSTGRES_PWD {
   type = string
 }
 
@@ -40,7 +40,7 @@ resource "aws_rds_cluster" "db" {
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "default"
     master_username         = "postgres"
-    master_password         = var.postgres_pwd
+    master_password         = var.POSTGRES_PWD
     # kms_key_id = aws_kms_key.db_key.id
     iam_database_authentication_enabled = true
     iam_roles = []
