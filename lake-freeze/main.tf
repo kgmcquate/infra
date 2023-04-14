@@ -4,9 +4,9 @@
 
 
 
-resource "aws_cloudwatch_log_group" "log_group" {
-  name = "lake-freeze"
-}
+# resource "aws_cloudwatch_log_group" "log_group" {
+#   name = "lake-freeze"
+# }
 
 resource "aws_ecs_cluster" "backend" {
   name = "lake-freeze-backend"
@@ -35,7 +35,8 @@ resource "aws_kms_key" "db_key" {
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze"
     engine                  = "aurora-postgresql"
-    engine_mode = "serverless"
+    engine_version = "14.6"
+    engine_mode = "provisioned"
     port = 5432
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "default"
@@ -57,7 +58,7 @@ resource "aws_rds_cluster" "db" {
 }
 
 
-resource "aws_rds_cluster_instance" "example" {
+resource "aws_rds_cluster_instance" "instance-1" {
   cluster_identifier = aws_rds_cluster.db.id
   instance_class     = "db.serverless"
   engine             = aws_rds_cluster.db.engine
