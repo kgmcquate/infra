@@ -1,3 +1,3 @@
 module "lake-freeze" {
-    path = "./lake-freeze"
+    source = "./lake-freeze"
 }
