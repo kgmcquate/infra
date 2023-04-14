@@ -42,9 +42,9 @@ jobs:
 
       - name: Write Terraform Vars
         run: |
-          echo "AWS_REGION=\"${AWS_REGION}\"" >> aws.auto.tfvars
-          echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> aws.auto.tfvars
-          echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
+          echo "AWS_REGION=\"${AWS_REGION}\"" >> lake-freeze/aws.auto.tfvars
+          echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> lake-freeze/aws.auto.tfvars
+          echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> lake-freeze/aws.auto.tfvars
 
 
       # Generates an execution plan for Terraform
