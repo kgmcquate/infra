@@ -37,7 +37,7 @@ resource "aws_kms_key" "db_key" {
 # }
 
 resource "aws_iam_role" "db_role" {
-  name = "lake-freeze-lambda-role"
+  name = "lake-freeze-rds-role"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
