@@ -95,6 +95,25 @@ resource "aws_secretsmanager_secret_version" "sversion" {
 EOF
 }
 
+
+# Importing the AWS secrets created previously using arn.
+ 
+# data "aws_secretsmanager_secret" "db_creds" {
+#   arn = aws_secretsmanager_secret.db_creds.arn
+# }
+ 
+# Importing the AWS secret version created previously using arn.
+ 
+# data "aws_secretsmanager_secret_version" "creds" {
+#   secret_id = aws_secretsmanager_secret.db_creds.arn
+# }
+
+# locals {
+#   db_password = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string)
+# }
+
+
+
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze-db"
     apply_immediately = true
@@ -106,7 +125,7 @@ resource "aws_rds_cluster" "db" {
     database_name           = "lake_freeze"
     master_username         = "postgres"
     # manage_master_user_password = true
-    # master_password         = data.aws_secretsmanager_secret.db_pwd.
+    master_password         = random_password.db_password
     storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
