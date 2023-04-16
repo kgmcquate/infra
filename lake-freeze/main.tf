@@ -78,6 +78,11 @@ resource "random_password" "db_password" {
   override_special = "_%@"
 }
  
+locals {
+  db_username = "postgres"
+  db_password = random_password.db_password.result
+}
+
 
  # Creating a AWS secret for database master account (Masteraccoundb)
  
@@ -89,8 +94,8 @@ resource "aws_secretsmanager_secret_version" "sversion" {
   secret_id = aws_secretsmanager_secret.db_creds.id
   secret_string = <<EOF
    {
-    "username": "${aws_rds_cluster.db.master_username}",
-    "password": "${random_password.db_password.result}"
+    "username": "${local.db_username}",
+    "password": "${local.db_password}"
    }
 EOF
 }
@@ -114,6 +119,7 @@ EOF
 
 
 
+
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze-db"
     apply_immediately = true
@@ -123,9 +129,9 @@ resource "aws_rds_cluster" "db" {
     port = 5432
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "lake_freeze"
-    master_username         = "postgres"
+    master_username         = local.db_username
     # manage_master_user_password = true
-    master_password         = random_password.db_password
+    master_password         = local.db_password
     storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
