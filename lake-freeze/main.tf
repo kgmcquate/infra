@@ -175,6 +175,7 @@ resource "aws_rds_cluster" "db" {
     iam_roles = [aws_iam_role.db_role.arn]
 
     deletion_protection = false
+    skip_final_snapshot = true
     backup_retention_period = 7
     preferred_backup_window = "07:00-09:00"
 
