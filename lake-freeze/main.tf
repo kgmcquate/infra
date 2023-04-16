@@ -44,7 +44,7 @@ resource "aws_rds_cluster" "db" {
     port = 5432
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "lake_freeze"
-    # master_username         = "postgres"
+    master_username         = "postgres"
     manage_master_user_password = true
     # master_password         = data.aws_secretsmanager_secret.db_pwd.
     kms_key_id = aws_kms_key.db_key.arn
