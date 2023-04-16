@@ -176,6 +176,7 @@ resource "aws_rds_cluster" "db" {
 
     deletion_protection = false
     skip_final_snapshot = true
+    final_snapshot_identifier = "lake-freeze-backend-db-final-snapshot"
     backup_retention_period = 7
     preferred_backup_window = "07:00-09:00"
 
