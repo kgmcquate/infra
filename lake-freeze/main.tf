@@ -36,6 +36,11 @@ resource "aws_kms_key" "db_key" {
 #   arn = "arn:aws:secretsmanager:us-east-1:117819748843:secret:lake_freeze/db_pwd-qipFQc"
 # }
 
+
+resource "aws_iam_role" "backend_role" {
+  
+}
+
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze"
     engine                  = "aurora-postgresql"
@@ -79,5 +84,39 @@ resource "aws_ecr_repository" "docker_repo" {
 
   image_scanning_configuration {
     scan_on_push = false
+  }
+}
+
+resource "aws_ecr_repository_policy" "docker_repo_policy" {
+  repository = aws_ecr_repository.docker_repo.name
+  policy     = data.aws_iam_policy_document.docker_repo.json
+}
+
+data "aws_iam_policy_document" "foopolicy" {
+  statement {
+    sid    = "ECRReadImage"
+    effect = "Allow"
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      # "ecr:PutImage",
+      # "ecr:InitiateLayerUpload",
+      # "ecr:UploadLayerPart",
+      # "ecr:CompleteLayerUpload",
+      "ecr:DescribeRepositories",
+      "ecr:GetRepositoryPolicy",
+      "ecr:ListImages",
+      # "ecr:DeleteRepository",
+      # "ecr:BatchDeleteImage",
+      # "ecr:SetRepositoryPolicy",
+      # "ecr:DeleteRepositoryPolicy",
+    ]
   }
 }
