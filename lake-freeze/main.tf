@@ -36,6 +36,43 @@ resource "aws_kms_key" "db_key" {
 #   arn = "arn:aws:secretsmanager:us-east-1:117819748843:secret:lake_freeze/db_pwd-qipFQc"
 # }
 
+resource "aws_iam_role" "db_role" {
+  name = "lake-freeze-lambda-role"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "rds.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+
+
+
+  managed_policy_arns = ["arn:aws:iam::aws:policy/aws-service-role/AmazonRDSServiceRolePolicy"]
+
+  # inline_policy {
+  #   name = "my_inline_policy"
+
+  #   policy = jsonencode({
+  #     Version = "2012-10-17"
+  #     Statement = [
+  #       {
+  #         Action   = ["ec2:Describe*"]
+  #         Effect   = "Allow"
+  #         Resource = "*"
+  #       },
+  #     ]
+  #   })
+  # }
+
+}
+
 
 resource "aws_iam_role" "backend_role" {
   name = "lake-freeze-lambda-role"
@@ -135,7 +172,7 @@ resource "aws_rds_cluster" "db" {
     storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
-    iam_roles = [aws_iam_role.backend_role.arn]
+    iam_roles = [aws_iam_role.db_role.arn]
 
     deletion_protection = false
     backup_retention_period = 7
