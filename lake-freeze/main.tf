@@ -47,6 +47,7 @@ resource "aws_rds_cluster" "db" {
     master_username         = "postgres"
     manage_master_user_password = true
     # master_password         = data.aws_secretsmanager_secret.db_pwd.
+    storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
     iam_roles = []
