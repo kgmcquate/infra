@@ -38,7 +38,38 @@ resource "aws_kms_key" "db_key" {
 
 
 resource "aws_iam_role" "backend_role" {
+  name = "lake-freeze-lambda-role"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "lambda.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+
+  # managed_policy_arns = []
   
+  # inline_policy {
+  #   name = "my_inline_policy"
+
+  #   policy = jsonencode({
+  #     Version = "2012-10-17"
+  #     Statement = [
+  #       {
+  #         Action   = ["ec2:Describe*"]
+  #         Effect   = "Allow"
+  #         Resource = "*"
+  #       },
+  #     ]
+  #   })
+  # }
+
 }
 
 resource "aws_rds_cluster" "db" {
@@ -55,7 +86,7 @@ resource "aws_rds_cluster" "db" {
     storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
-    iam_roles = []
+    iam_roles = [aws_iam_role.backend_role.arn]
 
     deletion_protection = false
     backup_retention_period = 7
@@ -89,10 +120,10 @@ resource "aws_ecr_repository" "docker_repo" {
 
 resource "aws_ecr_repository_policy" "docker_repo_policy" {
   repository = aws_ecr_repository.docker_repo.name
-  policy     = data.aws_iam_policy_document.docker_repo.json
+  policy     = data.aws_iam_policy_document.docker_repo_policy.json
 }
 
-data "aws_iam_policy_document" "foopolicy" {
+data "aws_iam_policy_document" "docker_repo_policy" {
   statement {
     sid    = "ECRReadImage"
     effect = "Allow"
