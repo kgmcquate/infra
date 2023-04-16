@@ -12,6 +12,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "117819748843"
   POSTGRES_PWD: ${{ secrets.POSTGRES_PWD }}
 
 jobs:
@@ -38,7 +39,13 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Initialize
-        run: terraform init #-var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: >
+          terraform init
+          -backend-config="bucket=terraform-state-${AWS_ACCOUNT_ID}-${AWS_REGION}"
+          -backend-config="key=infra"
+ 
+        # access_key = var.AWS_ACCESS_KEY_ID 
+        # secret_key = var.AWS_SECRET_ACCESS_KEY
 
 
       - name: Write Terraform Vars
