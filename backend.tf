@@ -1,0 +1,48 @@
+terraform {
+    # backend "remote" {
+    #     # The name of your Terraform Cloud organization.
+    #     organization = "kgmcquate"
+
+    #     # The name of the Terraform Cloud workspace to store Terraform state files in.
+    #     workspaces {
+    #         name = "infra"
+    #     }
+    # }
+
+    backend "s3" {
+        bucket = "arn:aws:s3:::terraform-state-117819748843-us-east-1"
+        key    = "infra"
+        region = "us-east-1"
+    }
+
+    required_providers {
+        aws = {
+            source  = "hashicorp/aws"
+            version = "~> 4.0"
+        }
+    }
+}
+
+
+variable "AWS_REGION" {
+    type    = string
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+    type    = string
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+    type    = string
+}
+
+
+provider "aws" {
+  region = var.AWS_REGION
+  access_key = var.AWS_ACCESS_KEY_ID 
+  secret_key = var.AWS_SECRET_ACCESS_KEY
+}
+
+# resource "aws_s3_bucket" "deployment_bucket" {
+  
+# }
