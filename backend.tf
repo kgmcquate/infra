@@ -10,9 +10,11 @@ terraform {
     # }
 
     backend "s3" {
-        bucket = "arn:aws:s3:::terraform-state-117819748843-us-east-1"
+        bucket = "terraform-state-117819748843-us-east-1"
         key    = "infra"
         region = "us-east-1"
+        access_key = var.AWS_ACCESS_KEY_ID 
+        secret_key = var.AWS_SECRET_ACCESS_KEY
     }
 
     required_providers {
