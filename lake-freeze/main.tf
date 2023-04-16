@@ -158,7 +158,7 @@ EOF
 
 
 resource "aws_rds_cluster" "db" {
-    cluster_identifier      = "lake-freeze-db"
+    cluster_identifier      = "lake-freeze-backend-db"
     apply_immediately = true
     engine                  = "aurora-postgresql"
     engine_version = "14.6"
