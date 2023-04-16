@@ -71,3 +71,13 @@ resource "aws_rds_cluster_instance" "instance-1" {
   engine             = aws_rds_cluster.db.engine
   engine_version     = aws_rds_cluster.db.engine_version
 }
+
+# Repo for storing docker images for Lambda
+resource "aws_ecr_repository" "docker_repo" {
+  name = "lake-freeze"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+}
