@@ -54,7 +54,7 @@ resource "aws_iam_role" "backend_role" {
   })
 
   # managed_policy_arns = []
-  
+
   # inline_policy {
   #   name = "my_inline_policy"
 
@@ -72,8 +72,32 @@ resource "aws_iam_role" "backend_role" {
 
 }
 
+resource "random_password" "db_password" {
+  length           = 8
+  special          = true
+  override_special = "_%@"
+}
+ 
+
+ # Creating a AWS secret for database master account (Masteraccoundb)
+ 
+resource "aws_secretsmanager_secret" "db_creds" {
+   name = "rds-lake-freeze-credentials"
+}
+
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.db_creds.id
+  secret_string = <<EOF
+   {
+    "username": "${aws_rds_cluster.db.master_username}",
+    "password": "${random_password.db_password.result}"
+   }
+EOF
+}
+
 resource "aws_rds_cluster" "db" {
-    cluster_identifier      = "lake-freeze"
+    cluster_identifier      = "lake-freeze-db"
+    apply_immediately = true
     engine                  = "aurora-postgresql"
     engine_version = "14.6"
     engine_mode = "provisioned"
@@ -81,7 +105,7 @@ resource "aws_rds_cluster" "db" {
     availability_zones      = ["us-east-1d", "us-east-1f"]
     database_name           = "lake_freeze"
     master_username         = "postgres"
-    manage_master_user_password = true
+    # manage_master_user_password = true
     # master_password         = data.aws_secretsmanager_secret.db_pwd.
     storage_encrypted = true
     kms_key_id = aws_kms_key.db_key.arn
