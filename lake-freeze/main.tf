@@ -164,7 +164,7 @@ resource "aws_rds_cluster" "db" {
     engine_version = "14.6"
     engine_mode = "provisioned"
     port = 5432
-    availability_zones      = ["us-east-1d", "us-east-1f"]
+    availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
     database_name           = "lake_freeze"
     master_username         = local.db_username
     # manage_master_user_password = true
