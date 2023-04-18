@@ -32,47 +32,6 @@ resource "aws_kms_key" "db_key" {
   description = "KMS key for encrypting database"
 }
 
-# data "aws_secretsmanager_secret" "db_pwd" {
-#   arn = "arn:aws:secretsmanager:us-east-1:117819748843:secret:lake_freeze/db_pwd-qipFQc"
-# }
-
-# resource "aws_iam_role" "db_role" {
-#   name = "lake-freeze-rds-role"
-
-#   assume_role_policy = jsonencode({
-#     "Version": "2012-10-17",
-#     "Statement": [
-#       {
-#         "Effect": "Allow",
-#         "Principal": {
-#           "Service": "rds.amazonaws.com"
-#         },
-#         "Action": "sts:AssumeRole"
-#       }
-#     ]
-#   })
-
-
-
-#   managed_policy_arns = ["arn:aws:iam::aws:policy/aws-service-role/AmazonRDSServiceRolePolicy"]
-
-#   # inline_policy {
-#   #   name = "my_inline_policy"
-
-#   #   policy = jsonencode({
-#   #     Version = "2012-10-17"
-#   #     Statement = [
-#   #       {
-#   #         Action   = ["ec2:Describe*"]
-#   #         Effect   = "Allow"
-#   #         Resource = "*"
-#   #       },
-#   #     ]
-#   #   })
-#   # }
-
-# }
-
 
 resource "aws_iam_role" "backend_role" {
   name = "lake-freeze-lambda-role"
@@ -90,10 +49,13 @@ resource "aws_iam_role" "backend_role" {
     ]
   })
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  ]
 
   inline_policy {
-    name = "my_inline_policy"
+    name = "SMReadAccess"
 
     policy = jsonencode({
       Version = "2012-10-17"
