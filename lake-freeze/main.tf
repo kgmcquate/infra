@@ -90,7 +90,7 @@ resource "aws_iam_role" "backend_role" {
     ]
   })
 
-  # managed_policy_arns = []
+  managed_policy_arns = ["AWSLambdaBasicExecutionRole"]
 
   # inline_policy {
   #   name = "my_inline_policy"
