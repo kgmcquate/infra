@@ -158,7 +158,7 @@ resource "aws_security_group" "lambda_sg" {
     to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = [aws_default_vpc.default.cidr_block]
-    ipv6_cidr_blocks = [aws_default_vpc.default.ipv6_cidr_block]
+#     ipv6_cidr_blocks = [aws_default_vpc.default.ipv6_cidr_block]
   }
 
 #   egress {
