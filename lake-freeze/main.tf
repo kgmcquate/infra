@@ -126,6 +126,8 @@ resource "aws_rds_cluster" "db" {
       min_capacity = 0.5
       max_capacity = 2.0
     }
+  
+    vpc_security_group_ids = [aws_security_group.rds_sg.id]
 }
 
 
@@ -138,18 +140,25 @@ resource "aws_rds_cluster_instance" "instance-1" {
 
 
 # Networking for rds/lambda
-resource "aws_security_group" "lambda-sg" {
+
+resource "aws_default_vpc" "default" {
+  tags = {
+    Name = "Default VPC"
+  }
+}
+
+resource "aws_security_group" "lambda_sg" {
   name        = "lambda_to_rds"
   description = "Security Group for Lambda Egress"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_default_vpc.default.id
 
   ingress {
     description      = "inbound rules"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.main.cidr_block]
-    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
+    cidr_blocks      = [aws_default_vpc.default.cidr_block]
+    ipv6_cidr_blocks = [aws_default_vpc.default.ipv6_cidr_block]
   }
 
 #   egress {
@@ -166,10 +175,10 @@ resource "aws_security_group" "lambda-sg" {
 }
 
 
-resource "aws_security_group" "rds-sg" {
+resource "aws_security_group" "rds_sg" {
   name        = "rds_to_lambda"
   description = "Security Group for RDS"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_default_vpc.default.id
 
   egress {
     from_port        = 0
