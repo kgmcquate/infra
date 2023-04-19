@@ -1,28 +1,5 @@
 
 
-
-
-
-
-# resource "aws_cloudwatch_log_group" "log_group" {
-#   name = "lake-freeze"
-# }
-
-resource "aws_ecs_cluster" "backend" {
-  name = "lake-freeze-backend"
-
-#   setting {
-#     name  = "containerInsights"
-#     value = "enabled"
-#   }
-}
-
-resource aws_ecs_cluster_capacity_providers capacity_provider {
-    cluster_name = aws_ecs_cluster.backend.name
-
-    capacity_providers = ["FARGATE"]
-}
-
 variable POSTGRES_PWD {
   type = string
 }
@@ -81,9 +58,6 @@ locals {
   db_username = "postgres"
   db_password = random_password.db_password.result
 }
-
-
- # Creating a AWS secret for database master account (Masteraccoundb)
  
 resource "aws_secretsmanager_secret" "db_creds" {
    name = "rds-lake-freeze-credentials"
@@ -119,22 +93,6 @@ resource "aws_secretsmanager_secret_policy" "policy" {
   policy     = data.aws_iam_policy_document.cloud9policy.json
 }
 
-
-# Importing the AWS secrets created previously using arn.
- 
-# data "aws_secretsmanager_secret" "db_creds" {
-#   arn = aws_secretsmanager_secret.db_creds.arn
-# }
- 
-# Importing the AWS secret version created previously using arn.
- 
-# data "aws_secretsmanager_secret_version" "creds" {
-#   secret_id = aws_secretsmanager_secret.db_creds.arn
-# }
-
-# locals {
-#   db_password = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string)
-# }
 
 
 
@@ -178,46 +136,50 @@ resource "aws_rds_cluster_instance" "instance-1" {
   engine_version     = aws_rds_cluster.db.engine_version
 }
 
-# Repo for storing docker images for Lambda
-resource "aws_ecr_repository" "docker_repo" {
-  name = "lake-freeze"
-  image_tag_mutability = "MUTABLE"
 
-  image_scanning_configuration {
-    scan_on_push = false
+# Networking for rds/lambda
+resource "aws_security_group" "lambda-sg" {
+  name        = "lambda_to_rds"
+  description = "Security Group for Lambda Egress"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "inbound rules"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
   }
+
+#   egress {
+#     from_port        = 0
+#     to_port          = 0
+#     protocol         = "-1"
+#     cidr_blocks      = ["0.0.0.0/0"]
+#     ipv6_cidr_blocks = ["::/0"]
+#   }
+
+#   tags = {
+#     Name = "allow_tls"
+#   }
 }
 
-resource "aws_ecr_repository_policy" "docker_repo_policy" {
-  repository = aws_ecr_repository.docker_repo.name
-  policy     = data.aws_iam_policy_document.docker_repo_policy.json
-}
 
-data "aws_iam_policy_document" "docker_repo_policy" {
-  statement {
-    sid    = "ECRReadImage"
-    effect = "Allow"
+resource "aws_security_group" "rds-sg" {
+  name        = "rds_to_lambda"
+  description = "Security Group for RDS"
+  vpc_id      = aws_vpc.main.id
 
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      # "ecr:PutImage",
-      # "ecr:InitiateLayerUpload",
-      # "ecr:UploadLayerPart",
-      # "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      # "ecr:DeleteRepository",
-      # "ecr:BatchDeleteImage",
-      # "ecr:SetRepositoryPolicy",
-      # "ecr:DeleteRepositoryPolicy",
-    ]
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
+
+#   tags = {
+#     Name = "allow_tls"
+#   }
 }
