@@ -129,7 +129,7 @@ resource "aws_rds_cluster" "db" {
       max_capacity = 2.0
     }
   
-    vpc_security_group_ids = [aws_security_group.rds_sg.id]
+    vpc_security_group_ids = [aws_security_group.default.id]
 }
 
 
@@ -138,6 +138,8 @@ resource "aws_rds_cluster_instance" "instance-1" {
   instance_class     = "db.serverless"
   engine             = aws_rds_cluster.db.engine
   engine_version     = aws_rds_cluster.db.engine_version
+  
+  publicly_accessible = true
 }
 
 
