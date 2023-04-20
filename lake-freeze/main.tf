@@ -94,7 +94,9 @@ resource "aws_secretsmanager_secret_policy" "policy" {
 }
 
 
-
+data "aws_security_group" "default" {
+  id = "sg-e0fa90d6"
+}
 
 
 resource "aws_rds_cluster" "db" {
@@ -147,35 +149,35 @@ resource "aws_default_vpc" "default" {
   }
 }
 
-resource "aws_security_group" "lambda_sg" {
-  name        = "lambda_to_rds"
-  description = "Security Group for Lambda Egress"
-  vpc_id      = aws_default_vpc.default.id
+# resource "aws_security_group" "lambda_sg" {
+#   name        = "lambda_to_rds"
+#   description = "Security Group for Lambda Egress"
+#   vpc_id      = aws_default_vpc.default.id
 
-  egress {
-    description      = "inbound rules"
-    from_port        = 5432
-    to_port          = 5432
-    protocol         = "tcp"
-    cidr_blocks      = [aws_default_vpc.default.cidr_block]
-#     ipv6_cidr_blocks = [aws_default_vpc.default.ipv6_cidr_block]
-  }
-}
+#   egress {
+#     description      = "inbound rules"
+#     from_port        = 5432
+#     to_port          = 5432
+#     protocol         = "tcp"
+#     cidr_blocks      = [aws_default_vpc.default.cidr_block]
+# #     ipv6_cidr_blocks = [aws_default_vpc.default.ipv6_cidr_block]
+#   }
+# }
 
 
-resource "aws_security_group" "rds_sg" {
-  name        = "rds_to_lambda"
-  description = "Security Group for RDS"
-  vpc_id      = aws_default_vpc.default.id
+# resource "aws_security_group" "rds_sg" {
+#   name        = "rds_to_lambda"
+#   description = "Security Group for RDS"
+#   vpc_id      = aws_default_vpc.default.id
 
-  ingress {
-    from_port        = 5432
-    to_port          = 5432
-    protocol         = "tcp"
-    cidr_blocks      = [aws_default_vpc.default.cidr_block]
-    security_groups = [aws_security_group.lambda_sg.id]
+#   ingress {
+#     from_port        = 5432
+#     to_port          = 5432
+#     protocol         = "tcp"
+#     cidr_blocks      = [aws_default_vpc.default.cidr_block]
+#     security_groups = [aws_security_group.lambda_sg.id]
     
-  }
+#   }
 
 #   tags = {
 #     Name = "allow_tls"
