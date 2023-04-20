@@ -129,7 +129,7 @@ resource "aws_rds_cluster" "db" {
       max_capacity = 2.0
     }
   
-    vpc_security_group_ids = [aws_security_group.default.id]
+    vpc_security_group_ids = [data.aws_security_group.default.id]
 }
 
 
