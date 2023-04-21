@@ -53,7 +53,7 @@ resource "aws_default_subnet" "c" {
 resource "aws_vpc_endpoint" "secretsmanager" {
   vpc_id = aws_default_vpc.default.id
   service_name = "com.amazonaws.us-east-1.secretsmanager"
-  policy = "Interface"
+  vpc_endpoint_type = "Interface"
   subnet_ids = [
     aws_default_subnet.a.id,
     aws_default_subnet.b.id,
