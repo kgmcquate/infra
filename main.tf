@@ -38,15 +38,15 @@ data "aws_security_group" "default" {
 }
   
 resource "aws_default_subnet" "a" {
-  availability_zone = aws_region.current.name + "a"
+  availability_zone = data.aws_region.current.name + "a"
 }
   
 resource "aws_default_subnet" "b" {
-  availability_zone = aws_region.current.name + "b"
+  availability_zone = data.aws_region.current.name + "b"
 }
 
 resource "aws_default_subnet" "c" {
-  availability_zone = aws_region.current.name + "c"
+  availability_zone = data.aws_region.current.name + "c"
 }
   
   
