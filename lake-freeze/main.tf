@@ -105,14 +105,15 @@ resource "aws_rds_cluster" "db" {
     engine                  = "postgres"
     engine_version = "15.2"
     engine_mode = "provisioned"
+
     port = 5432
     availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
     database_name           = "lake_freeze"
     master_username         = local.db_username
     # manage_master_user_password = true
     master_password         = local.db_password
-    storage_encrypted = true
-    kms_key_id = aws_kms_key.db_key.arn
+    storage_encrypted = false
+    # kms_key_id = aws_kms_key.db_key.arn
     iam_database_authentication_enabled = true
     # iam_roles = ["arn:aws:iam::117819748843:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"]
 
