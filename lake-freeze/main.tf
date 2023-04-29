@@ -100,8 +100,8 @@ data "aws_security_group" "default" {
 
 
 resource "aws_db_instance" "default" {
-  identifier = "lake_freeze_db"
-  
+  identifier = "lake-freeze-db"
+
   allocated_storage    = 10
   max_allocated_storage = 100
   db_name              = "lake_freeze"
