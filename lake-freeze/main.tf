@@ -102,7 +102,7 @@ data "aws_security_group" "default" {
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze-backend-db"
     apply_immediately = true
-    engine                  = "postgresql"
+    engine                  = "postgres"
     engine_version = "15.2-R1"
     engine_mode = "provisioned"
     port = 5432
