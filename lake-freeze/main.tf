@@ -102,8 +102,8 @@ data "aws_security_group" "default" {
 resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze-backend-db"
     apply_immediately = true
-    engine                  = "aurora-postgresql"
-    engine_version = "14.6"
+    engine                  = "postgresql"
+    engine_version = "15.2-R1"
     engine_mode = "provisioned"
     port = 5432
     availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -123,19 +123,16 @@ resource "aws_rds_cluster" "db" {
     preferred_backup_window = "07:00-09:00"
 
     enable_http_endpoint  = false
-
-    serverlessv2_scaling_configuration {
-      min_capacity = 0.5
-      max_capacity = 2.0
-    }
   
     vpc_security_group_ids = [data.aws_security_group.default.id]
 }
 
 
+
 resource "aws_rds_cluster_instance" "instance-1" {
+  count              = 1
   cluster_identifier = aws_rds_cluster.db.id
-  instance_class     = "db.serverless"
+  instance_class     = "db.t4g.micro"
   engine             = aws_rds_cluster.db.engine
   engine_version     = aws_rds_cluster.db.engine_version
   
