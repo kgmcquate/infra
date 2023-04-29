@@ -48,15 +48,15 @@ resource "aws_iam_role" "backend_role" {
 
 }
 
-resource "random_password" "db_password" {
-  length           = 8
-  special          = true
-  override_special = "_%@"
-}
+# resource "random_password" "db_password" {
+#   length           = 8
+#   special          = true
+#   override_special = "_%@"
+# }
  
 locals {
   db_username = "postgres"
-  db_password = random_password.db_password.result
+  db_password = var.POSTGRES_PWD
 }
  
 resource "aws_secretsmanager_secret" "db_creds" {
@@ -73,25 +73,25 @@ resource "aws_secretsmanager_secret_version" "sversion" {
 EOF
 }
 
-data "aws_iam_policy_document" "cloud9policy" {
-  statement {
-    sid    = "AllowReadSMforCloud9"
-    effect = "Allow"
+# data "aws_iam_policy_document" "cloud9policy" {
+#   statement {
+#     sid    = "AllowReadSMforCloud9"
+#     effect = "Allow"
 
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::117819748843:role/service-role/AWSCloud9SSMAccessRole"]
-    }
+#     principals {
+#       type        = "AWS"
+#       identifiers = ["arn:aws:iam::117819748843:role/service-role/AWSCloud9SSMAccessRole"]
+#     }
 
-    actions   = ["secretsmanager:GetSecretValue"]
-    resources = ["*"]
-  }
-}
+#     actions   = ["secretsmanager:GetSecretValue"]
+#     resources = ["*"]
+#   }
+# }
 
-resource "aws_secretsmanager_secret_policy" "policy" {
-  secret_arn = aws_secretsmanager_secret.db_creds.arn
-  policy     = data.aws_iam_policy_document.cloud9policy.json
-}
+# resource "aws_secretsmanager_secret_policy" "policy" {
+#   secret_arn = aws_secretsmanager_secret.db_creds.arn
+#   policy     = data.aws_iam_policy_document.cloud9policy.json
+# }
 
 
 data "aws_security_group" "default" {
