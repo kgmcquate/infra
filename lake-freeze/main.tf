@@ -103,7 +103,7 @@ resource "aws_rds_cluster" "db" {
     cluster_identifier      = "lake-freeze-backend-db"
     apply_immediately = true
     engine                  = "postgres"
-    engine_version = "15.2-R1"
+    engine_version = "15.2"
     engine_mode = "provisioned"
     port = 5432
     availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
