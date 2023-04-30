@@ -55,7 +55,7 @@ locals {
 }
  
 resource "aws_secretsmanager_secret" "db_creds" {
-   name = "rds-lake-freeze-credentials"
+   name = "lake-freeze-db-creds"
 }
 
 resource "aws_secretsmanager_secret_version" "sversion" {
