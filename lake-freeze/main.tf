@@ -74,7 +74,7 @@ locals {
 
 resource "aws_s3_object" "object" {
   bucket = var.secrets_bucket
-  key    = "lake_freeze_credentials"
+  key    = "lake_freeze_credentials.json"
   content  = <<EOF
    {
     "username": "${local.db_username}",
