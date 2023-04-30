@@ -4,10 +4,6 @@ variable POSTGRES_PWD {
   type = string
 }
 
-variable secrets_bucket {
-  type = string
-}
-
 
 resource "aws_kms_key" "db_key" {
   description = "KMS key for encrypting database"
@@ -58,24 +54,13 @@ locals {
   db_password = var.POSTGRES_PWD
 }
  
-# resource "aws_secretsmanager_secret" "db_creds" {
-#    name = "rds-lake-freeze-credentials"
-# }
+resource "aws_secretsmanager_secret" "db_creds" {
+   name = "rds-lake-freeze-credentials"
+}
 
-# resource "aws_secretsmanager_secret_version" "sversion" {
-#   secret_id = aws_secretsmanager_secret.db_creds.id
-#   secret_string = <<EOF
-#    {
-#     "username": "${local.db_username}",
-#     "password": "${local.db_password}"
-#    }
-# EOF
-# }
-
-resource "aws_s3_object" "object" {
-  bucket = var.secrets_bucket
-  key    = "lake_freeze_credentials.json"
-  content  = <<EOF
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.db_creds.id
+  secret_string = <<EOF
    {
     "username": "${local.db_username}",
     "password": "${local.db_password}"
