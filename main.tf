@@ -1,11 +1,11 @@
-
-variable POSTGRES_PWD {
-  type = string
-}
-
 module "lake-freeze" {
     source = "./lake-freeze"
     POSTGRES_PWD = var.POSTGRES_PWD
+}
+
+
+variable POSTGRES_PWD {
+  type = string
 }
 
 data "aws_caller_identity" "current" {}
@@ -34,7 +34,6 @@ resource "aws_default_subnet" "b" {
 resource "aws_default_subnet" "c" {
   availability_zone = "${data.aws_region.current.name}c"
 }
-
 
   
 # resource "aws_vpc_endpoint" "secretsmanager" {
