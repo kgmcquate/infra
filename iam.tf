@@ -47,7 +47,8 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Sid": "AllowS3BucketActions",
             "Effect": "Allow",
             "Action": [
-                "s3:ListBucket"
+                "s3:List*",
+                "s3:Get*"
             ],
             "Resource": [
                 aws_s3_bucket.public_zone.arn,
