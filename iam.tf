@@ -51,6 +51,7 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Effect": "Allow",
             "Action": [
                 "secretsmanager:Create*",
+                "secretsmanager:Get*",
                 "secretsmanager:Delete*",
                 "secretsmanager:Describe*",
                 "secretsmanager:List*"
