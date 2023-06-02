@@ -4,12 +4,6 @@ variable POSTGRES_PWD {
   type = string
 }
 
-
-resource "aws_kms_key" "db_key" {
-  description = "KMS key for encrypting database"
-}
-
-
 resource "aws_iam_role" "backend_role" {
   name = "lake-freeze-lambda-role"
 
@@ -124,6 +118,8 @@ resource "aws_db_instance" "default" {
 
   
 }
+
+
 
 
 
