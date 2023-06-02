@@ -94,6 +94,14 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Resource": "*"
         },
         {
+            "Sid": "AllowSCloudFormationActions",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        },
+        {
             "Effect": "Allow",
             "Action": [
                 "lambda:*"
