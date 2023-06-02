@@ -28,10 +28,18 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "AllowSCloudFrontActions",
+            "Sid": "AllowIAMActions",
             "Effect": "Allow",
             "Action": [
                 "iam:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowVPCActions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:*"
             ],
             "Resource": "*"
         },
