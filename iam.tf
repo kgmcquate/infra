@@ -2,27 +2,27 @@
 resource "aws_iam_user" "github_actions_cicd_user" {
   name = "github-actions-cicd-user"
 
-  assume_role_policy = jsonencode(
-    {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-        "Sid": "",
-        "Effect": "Allow",
-        "Principal": {
-            "Service": "cloudformation.amazonaws.com"
-        },
-        "Action": "sts:AssumeRole"
-        }
-    ]
-    }
-  )
+#   assume_role_policy = jsonencode(
+#     {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#         "Sid": "",
+#         "Effect": "Allow",
+#         "Principal": {
+#             "Service": "cloudformation.amazonaws.com"
+#         },
+#         "Action": "sts:AssumeRole"
+#         }
+#     ]
+#     }
+#   )
 }
 
 
 resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
   name   = "github_actions_cicd_user"
-  user   = aws_iam_user.github-actions-cicd-user.name
+  user   = aws_iam_user.github_actions_cicd_user.name
   policy = jsonencode(
     {
     "Version": "2012-10-17",
@@ -84,6 +84,6 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
 }
 
 resource "aws_iam_access_key" "github_actions_cicd_user_access_key" {
-  user = aws_iam_user.my_user.name
+  user = aws_iam_user.github_actions_cicd_user.name
 }
   
