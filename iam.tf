@@ -30,7 +30,9 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Sid": "AllowIAMActions",
             "Effect": "Allow",
             "Action": [
-                "iam:*"
+                "iam:Get*",
+                "iam:List*",
+                "iam:Describe*"
             ],
             "Resource": "*"
         },
@@ -38,7 +40,9 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Sid": "AllowVPCActions",
             "Effect": "Allow",
             "Action": [
-                "ec2:*"
+                "ec2:Get*",
+                "ec2:List*",
+                "ec2:Describe*"
             ],
             "Resource": "*"
         },
@@ -46,7 +50,11 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Sid": "AllowSecretsManagerActions",
             "Effect": "Allow",
             "Action": [
-                "secretsmanager:*"
+                "secretsmanager:Create*",
+                "secretsmanager:Delete*",
+                "secretsmanager:Describe*",
+                "secretsmanager:List*"
+
             ],
             "Resource": "*"
         },
@@ -55,7 +63,8 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Effect": "Allow",
             "Action": [
                 "s3:List*",
-                "s3:Get*"
+                "s3:Get*",
+                "s3:Describe*"
             ],
             "Resource": [
                 aws_s3_bucket.public_zone.arn,
