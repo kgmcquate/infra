@@ -34,10 +34,10 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
                 "s3:ListBucket"
             ],
             "Resource": [
-                "arn:aws:s3:::${aws_s3_bucket.public_zone}",
-                "arn:aws:s3:::${aws_s3_bucket.deployment_zone}"
-                ]
-            },
+                aws_s3_bucket.public_zone.arn,
+                aws_s3_bucket.deployment_zone.arn
+            ]
+        },
         {
             "Sid": "AllowS3ObjectActions",
             "Effect": "Allow",
@@ -45,8 +45,8 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::${aws_s3_bucket.public_zone}/*",
-                "arn:aws:s3:::${aws_s3_bucket.deployment_zone}/*"
+                "${aws_s3_bucket.public_zone.arn}/*",
+                "${aws_s3_bucket.deployment_zone.arn}/*"
             ]
         },
         {
