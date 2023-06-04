@@ -34,21 +34,6 @@ resource "aws_iam_user" "github_actions_cicd_user" {
 #     ]
 # }
 
-  inline_policy {
-    name = "EventBridgeAccess"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action   = ["scheduler:*", "events:*"]
-          Effect   = "Allow"
-          Resource = "*"
-        }
-      ]
-    })
-  }
-
 
 resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
   depends_on = [module.lake-freeze]
