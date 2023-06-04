@@ -49,15 +49,15 @@ resource "aws_iam_role" "backend_role" {
         Statement = [
             {
                 Action   = [
-                    "s3:PutObject",
-                    "s3:GetObject",
-                    "s3:GetEncryptionConfiguration",
-                    "s3:ListBucket",
-                    "s3:DeleteObject",
+                    # "s3:PutObject",
+                    # "s3:GetObject",
+                    # "s3:GetEncryptionConfiguration",
+                    # "s3:ListBucket",
+                    # "s3:DeleteObject",
                     "s3:*"
                 ],
                 Effect   = "Allow"
-                Resource = [aws_s3_bucket.emr_zone.arn, "${aws_s3_bucket.emr_zone.arn}/*"]
+                Resource = "*" #["aws_s3_bucket.emr_zone.arn, "${aws_s3_bucket.emr_zone.arn}/*"]
             }
         ]
     })
