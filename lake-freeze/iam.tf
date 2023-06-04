@@ -25,6 +25,13 @@ resource "aws_iam_role" "backend_role" {
                 "Service": "scheduler.amazonaws.com"
             },
             "Action": "sts:AssumeRole"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "events.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
         }
     ]
   })
