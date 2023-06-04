@@ -36,6 +36,8 @@ resource "aws_iam_user" "github_actions_cicd_user" {
 
 
 resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
+  depends_on = [module.lake-freeze]
+
   name   = "github_actions_cicd_user"
   user   = aws_iam_user.github_actions_cicd_user.name
   policy = jsonencode(
@@ -89,7 +91,8 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Action": [
                 "s3:List*",
                 "s3:Get*",
-                "s3:Describe*"
+                "s3:Describe*",
+                "s3:Create*"
             ],
             "Resource": [
                 aws_s3_bucket.public_zone.arn,
