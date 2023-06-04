@@ -9,6 +9,10 @@ data "aws_security_group" "default" {
   id = "sg-e0fa90d6"
 }
 
+resource "aws_default_subnet" "a" {
+  availability_zone = "${data.aws_region.current.name}a"
+}
+
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow all traffic"

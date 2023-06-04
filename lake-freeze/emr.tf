@@ -1,18 +1,6 @@
 
-resource "aws_default_subnet" "a" {
-  availability_zone = "${data.aws_region.current.name}a"
-}
 
-resource "aws_default_vpc" "default" {
-  tags = {
-    Name = "Default VPC"
-  }
-}
-
-data "aws_security_group" "default" {
-  id = "sg-e0fa90d6"
-}
-  
+ 
 
 resource "aws_emr_studio" "default_studio" {
   auth_mode                   = "IAM"
