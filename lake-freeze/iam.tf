@@ -61,6 +61,21 @@ resource "aws_iam_role" "backend_role" {
 #     })
 #   }
 
+    inline_policy {
+        name = "EMRServerlessAccess"
+
+        policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+            Action   = ["emr-serverless:*"]
+            Effect   = "Allow"
+            Resource = "*"
+            }
+        ]
+        })
+    }
+
   inline_policy {
     name = "EventBridgeAccess"
 
