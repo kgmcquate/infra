@@ -34,6 +34,26 @@ resource "aws_iam_role" "backend_role" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
   ]
 
+#   inline_policy {
+#     name = "EMRServerlessPassRole"
+
+#     policy = jsonencode({
+#       Version = "2012-10-17"
+#       Statement = [
+#             {
+#                 "Effect": "Allow",
+#                 "Action": "iam:PassRole",
+#                 "Resource": "arn:aws:iam::${}:role/JobRuntimeRoleForEMRServerless",
+#                     "Condition": {
+#                             "StringLike": {
+#                                 "iam:PassedToService": "emr-serverless.amazonaws.com"
+#                             }
+#                         }
+#             }
+#       ]
+#     })
+#   }
+
   inline_policy {
     name = "EventBridgeAccess"
 
@@ -41,7 +61,7 @@ resource "aws_iam_role" "backend_role" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = ["scheduler:*"]
+          Action   = ["scheduler:*", "events:*"]
           Effect   = "Allow"
           Resource = "*"
         }
