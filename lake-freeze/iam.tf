@@ -54,20 +54,7 @@ resource "aws_iam_role" "backend_role" {
 #     })
 #   }
 
-  inline_policy {
-    name = "EventBridgeAccess"
 
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action   = ["scheduler:*", "events:*"]
-          Effect   = "Allow"
-          Resource = "*"
-        }
-      ]
-    })
-  }
 
   inline_policy {
     name = "SMReadAccess"
