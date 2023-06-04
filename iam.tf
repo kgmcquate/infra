@@ -19,6 +19,22 @@ resource "aws_iam_user" "github_actions_cicd_user" {
 #   )
 }
 
+
+# Allow all policy
+# {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#             "Action": [
+#                 "*"
+#             ],
+#             "Effect": "Allow",
+#             "Resource": "*"
+#         }
+#     ]
+# }
+
+
 resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
   name   = "github_actions_cicd_user"
   user   = aws_iam_user.github_actions_cicd_user.name
