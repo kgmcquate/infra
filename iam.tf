@@ -48,9 +48,10 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Sid": "AllowIAMActions",
             "Effect": "Allow",
             "Action": [
-                "iam:Get*",
-                "iam:List*",
-                "iam:Describe*"
+                # "iam:Get*",
+                # "iam:List*",
+                # "iam:Describe*",
+                "iam:*"
             ],
             "Resource": "*"
         },
