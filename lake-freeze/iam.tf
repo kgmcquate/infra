@@ -78,7 +78,7 @@ resource "aws_iam_role" "backend_role" {
             Action   = ["iam:PassRole"]
             Effect   = "Allow"
             Resource = [
-                aws_iam_role.backend_role.arn
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/lake-freeze-lambda-role"
             ]
             }
         ]
