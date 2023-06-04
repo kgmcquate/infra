@@ -104,6 +104,7 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Resource": [
                 aws_s3_bucket.public_zone.arn,
                 aws_s3_bucket.deployment_zone.arn,
+                lake_freeze.aws_s3_bucket.emr_zone.arn,
                 "arn:aws:s3:::terraform-state-117819748843-us-east-1"
             ]
         },
