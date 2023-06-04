@@ -60,6 +60,14 @@ resource "aws_iam_user_policy" "github_actions_cicd_user_policy" {
             "Resource": "*"
         },
         {
+            "Sid": "AllowEMRServerlessActions",
+            "Effect": "Allow",
+            "Action": [
+                "emr-serverless:*"
+            ],
+            "Resource": "*"
+        },
+        {
             "Sid": "AllowS3BucketActions",
             "Effect": "Allow",
             "Action": [
