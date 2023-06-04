@@ -53,10 +53,11 @@ resource "aws_iam_role" "backend_role" {
                     "s3:GetObject",
                     "s3:GetEncryptionConfiguration",
                     "s3:ListBucket",
-                    "s3:DeleteObject"  
+                    "s3:DeleteObject",
+                    "s3:*"
                 ],
                 Effect   = "Allow"
-                Resource = aws_s3_bucket.emr_zone.arn
+                Resource = [aws_s3_bucket.emr_zone.arn, "${aws_s3_bucket.emr_zone.arn}/*"]
             }
         ]
     })
