@@ -69,6 +69,23 @@ resource "aws_iam_role" "backend_role" {
 #   }
 
     inline_policy {
+        name = "PassRoleToSelf"
+
+        policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+            Action   = ["iam:PassRole"]
+            Effect   = "Allow"
+            Resource = [
+                aws_iam_role.backend_role.arn
+            ]
+            }
+        ]
+        })
+    }
+
+    inline_policy {
         name = "EMRServerlessAccess"
 
         policy = jsonencode({
