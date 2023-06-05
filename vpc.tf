@@ -34,6 +34,13 @@ resource "aws_default_subnet" "c" {
   availability_zone = "${data.aws_region.current.name}c"
 }
 
+
+locals {
+  environment = "prod"
+  private_subnets_cidr = ["10.0.10.0/24"]
+  availability_zones = ["${data.aws_region.current}a"]
+}
+
 /*==== Subnets ======*/
 # /* Internet gateway for the public subnet */
 # resource "aws_internet_gateway" "ig" {
@@ -44,21 +51,28 @@ resource "aws_default_subnet" "c" {
 #   }
 # }
 
+data "aws_internet_gateway" "default" {
+  filter {
+    name   = "attachment.vpc-id"
+    values = [var.vpc_id]
+  }
+}
 /* Elastic IP for NAT */
-# resource "aws_eip" "nat_eip" {
-#   vpc        = true
-#   depends_on = [aws_internet_gateway.ig]
-# }
-# /* NAT */
-# resource "aws_nat_gateway" "nat" {
-#   allocation_id = "${aws_eip.nat_eip.id}"
-#   subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
-#   depends_on    = [aws_internet_gateway.ig]
-#   tags = {
-#     Name        = "nat"
-#     Environment = "${var.environment}"
-#   }
-# }
+resource "aws_eip" "nat_eip" {
+  vpc        = true
+  # depends_on = [aws_internet_gateway.ig]
+}
+
+/* NAT */
+resource "aws_nat_gateway" "nat" {
+  allocation_id = "${aws_eip.nat_eip.id}"
+  subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
+  # depends_on    = [aws_internet_gateway.ig]
+  tags = {
+    Name        = "nat"
+    Environment = "${var.environment}"
+  }
+}
 
 # /* Public subnet */
 # resource "aws_subnet" "public_subnet" {
@@ -72,14 +86,6 @@ resource "aws_default_subnet" "c" {
 #     Environment = "${var.environment}"
 #   }
 # }
-
-locals {
-  environment = "prod"
-  private_subnets_cidr = ["10.0.10.0/24"]
-  availability_zones = ["${data.aws_region.current}a"]
-
-}
-
 
 
 /* Private subnet */
