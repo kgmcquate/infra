@@ -73,44 +73,33 @@ resource "aws_default_subnet" "c" {
 #   }
 # }
 
+locals {
+  environment = "prod"
+  private_subnets_cidr = ["10.0.10.0/24"]
+  availability_zones = ["${data.aws_region.current}a"]
 
-variable "environment" {
-  description = "The Deployment environment"
-  default = "prod"
 }
 
-
-variable "private_subnets_cidr" {
-  type        = list
-  description = "The CIDR block for the private subnet"
-  default = ["10.0.10.0/24"]
-}
-
-variable "availability_zones" {
-  type        = list
-  description = "The az that the resources will be launched"
-  default = ["${data.aws_region.current}a"]
-}
 
 
 /* Private subnet */
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = "${aws_default_vpc.default.id}"
-  count                   = "${length(var.private_subnets_cidr)}"
-  cidr_block              = "${element(var.private_subnets_cidr, count.index)}"
-  availability_zone       = "${element(var.availability_zones,   count.index)}"
+  count                   = "${length(local.private_subnets_cidr)}"
+  cidr_block              = "${element(local.private_subnets_cidr, count.index)}"
+  availability_zone       = "${element(local.availability_zones,   count.index)}"
   map_public_ip_on_launch = false
   tags = {
-    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-private-subnet"
-    Environment = "${var.environment}"
+    Name        = "${local.environment}-${element(local.availability_zones, count.index)}-private-subnet"
+    Environment = "${local.environment}"
   }
 }
 /* Routing table for private subnet */
 resource "aws_route_table" "private" {
   vpc_id = "${aws_default_vpc.default.id}"
   tags = {
-    Name        = "${var.environment}-private-route-table"
-    Environment = "${var.environment}"
+    Name        = "${local.environment}-private-route-table"
+    Environment = "${local.environment}"
   }
 }
 
@@ -118,8 +107,8 @@ resource "aws_route_table" "private" {
 # resource "aws_route_table" "public" {
 #   vpc_id = "${aws_default_vpc.default.id}"
 #   tags = {
-#     Name        = "${var.environment}-public-route-table"
-#     Environment = "${var.environment}"
+#     Name        = "${local.environment}-public-route-table"
+#     Environment = "${local.environment}"
 #   }
 # }
 
@@ -137,20 +126,20 @@ resource "aws_route" "private_nat_gateway" {
 
 /* Route table associations */
 # resource "aws_route_table_association" "public" {
-#   count          = "${length(var.public_subnets_cidr)}"
+#   count          = "${length(local.public_subnets_cidr)}"
 #   subnet_id      = "${element(aws_subnet.public_subnet.*.id, count.index)}"
 #   route_table_id = "${aws_route_table.public.id}"
 # }
 
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.private_subnets_cidr)}"
+  count          = "${length(local.private_subnets_cidr)}"
   subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
 /*==== VPC's Default Security Group ======*/
 # resource "aws_security_group" "default" {
-#   name        = "${var.environment}-default-sg"
+#   name        = "${local.environment}-default-sg"
 #   description = "Default security group to allow inbound/outbound from the VPC"
 #   vpc_id      = "${aws_default_vpc.default.id}"
 #   depends_on  = [aws_default_vpc.default]
@@ -168,6 +157,6 @@ resource "aws_route_table_association" "private" {
 #     self      = "true"
 #   }
 #   tags = {
-#     Environment = "${var.environment}"
+#     Environment = "${local.environment}"
 #   }
 # }
