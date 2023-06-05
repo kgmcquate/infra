@@ -37,7 +37,7 @@ resource "aws_default_subnet" "c" {
 
 locals {
   environment = "prod"
-  private_subnets_cidr = ["10.0.0.0/24"]
+  private_subnets_cidr = ["172.31.10.0/16"]
   availability_zones = ["${data.aws_region.current.name}a"]
 }
 
