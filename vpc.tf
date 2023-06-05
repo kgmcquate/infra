@@ -54,7 +54,7 @@ locals {
 data "aws_internet_gateway" "default" {
   filter {
     name   = "attachment.vpc-id"
-    values = [var.vpc_id]
+    values = [aws_default_vpc.default.id]
   }
 }
 /* Elastic IP for NAT */
@@ -66,7 +66,7 @@ resource "aws_eip" "nat_eip" {
 /* NAT */
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
+  subnet_id     = aws_default_subnet.a.id
   # depends_on    = [aws_internet_gateway.ig]
   tags = {
     Name        = "nat"
