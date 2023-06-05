@@ -70,7 +70,7 @@ resource "aws_nat_gateway" "nat" {
   # depends_on    = [aws_internet_gateway.ig]
   tags = {
     Name        = "nat"
-    Environment = "${var.environment}"
+    Environment = "${local.environment}"
   }
 }
 
