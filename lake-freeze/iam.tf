@@ -93,6 +93,22 @@ resource "aws_iam_role" "backend_role" {
     }
 
     inline_policy {
+        name = "StepFunctionsAccess"
+
+        policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+            Action   = ["ecr:*"]
+            Action   = ["states:*"]
+            Effect   = "Allow"
+            Resource = "*"
+            }
+        ]
+        })
+    }
+
+    inline_policy {
         name = "ECRAccess"
 
         policy = jsonencode({
@@ -100,6 +116,7 @@ resource "aws_iam_role" "backend_role" {
         Statement = [
             {
             Action   = ["ecr:*"]
+            Action   = ["states:*"]
             Effect   = "Allow"
             Resource = "*"
             }

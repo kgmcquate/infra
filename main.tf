@@ -8,32 +8,12 @@ variable POSTGRES_PWD {
   type = string
 }
 
-data "aws_caller_identity" "current" {}
 
-resource "aws_default_vpc" "default" {
-  tags = {
-    Name = "Default VPC"
-  }
-}
 
   
 data "aws_region" "current" {}
   
-data "aws_security_group" "default" {
-  id = "sg-e0fa90d6"
-}
-  
-resource "aws_default_subnet" "a" {
-  availability_zone = "${data.aws_region.current.name}a"
-}
-  
-resource "aws_default_subnet" "b" {
-  availability_zone = "${data.aws_region.current.name}b"
-}
 
-resource "aws_default_subnet" "c" {
-  availability_zone = "${data.aws_region.current.name}c"
-}
 
   
 # resource "aws_vpc_endpoint" "secretsmanager" {
