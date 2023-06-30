@@ -54,7 +54,7 @@ resource "aws_instance" "ec2instance" {
   instance_type = "t2.micro"
   ami = data.aws_ami.ubuntu.id
   subnet_id = aws_default_subnet.a.id
-  security_groups = [aws_security_group.securitygroup.id]
+  security_groups = [aws_security_group.ec2securitygroup.id]
   key_name = aws_key_pair.ssh.key_name
   disable_api_termination = false
   ebs_optimized = false
