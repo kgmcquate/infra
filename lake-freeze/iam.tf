@@ -99,6 +99,7 @@ resource "aws_iam_role" "backend_role" {
         Version = "2012-10-17"
         Statement = [
             {
+            Action   = ["ecr:*"]
             Action   = ["states:*"]
             Effect   = "Allow"
             Resource = "*"
