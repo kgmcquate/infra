@@ -50,6 +50,19 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.vpc.id
+
+  route = [
+    {
+      cidr_block = "0.0.0.0/0",
+      network_interface_id = aws_instance.ec2instance.primary_network_interface_id
+    }
+  ]
+}
+
+# https://kenhalbert.com/posts/creating-an-ec2-nat-instance-in-aws
 resource "aws_instance" "ec2instance" {
   instance_type = "t2.micro"
   ami = data.aws_ami.ubuntu.id
@@ -61,4 +74,20 @@ resource "aws_instance" "ec2instance" {
   root_block_device {
     volume_size = "10"
   }
+
+  # Add NAT gateway routing
+  user_data = <<EOT
+#!/bin/bash
+sudo /usr/bin/apt update
+sudo /usr/bin/apt install ifupdown
+/bin/echo '#!/bin/bash
+if [[ $(sudo /usr/sbin/iptables -t nat -L) != *"MASQUERADE"* ]]; then
+  /bin/echo 1 > /proc/sys/net/ipv4/ip_forward
+  /usr/sbin/iptables -t nat -A POSTROUTING -s ${aws_default_vpc.default.cidr_block} -j MASQUERADE
+fi
+' | sudo /usr/bin/tee /etc/network/if-pre-up.d/nat-setup
+sudo chmod +x /etc/network/if-pre-up.d/nat-setup
+sudo /etc/network/if-pre-up.d/nat-setup 
+  EOT
+
 }
