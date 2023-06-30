@@ -66,7 +66,7 @@ resource "aws_route" "private_nat_instance" {
 resource "aws_instance" "ec2instance" {
   instance_type = "t2.micro"
   ami = data.aws_ami.ubuntu.id
-  subnet_id = aws_subnet.private_subnet.id
+  subnet_id = aws_subnet.private_subnet[0].id
   security_groups = [aws_security_group.ec2securitygroup.id]
   key_name = aws_key_pair.ssh.key_name
   disable_api_termination = false
