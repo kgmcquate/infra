@@ -124,17 +124,18 @@ resource "aws_route_table" "private" {
 #   gateway_id             = "${aws_internet_gateway.ig.id}"
 # }
 
-resource "aws_route" "private_nat_gateway" {
-  route_table_id         = "${aws_route_table.private.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = "${aws_nat_gateway.nat.id}"
-}
 
 /* Route table associations */
 # resource "aws_route_table_association" "public" {
 #   count          = "${length(local.public_subnets_cidr)}"
 #   subnet_id      = "${element(aws_subnet.public_subnet.*.id, count.index)}"
 #   route_table_id = "${aws_route_table.public.id}"
+# }
+
+# resource "aws_route" "private_nat_gateway" {
+#   route_table_id         = "${aws_route_table.private.id}"
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = "${aws_nat_gateway.nat.id}"
 # }
 
 resource "aws_route_table_association" "private" {
