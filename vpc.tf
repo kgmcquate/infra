@@ -132,6 +132,8 @@ resource "aws_route_table" "private" {
 #   route_table_id = "${aws_route_table.public.id}"
 # }
 
+
+# commented out for testing
 # resource "aws_route" "private_nat_gateway" {
 #   route_table_id         = "${aws_route_table.private.id}"
 #   destination_cidr_block = "0.0.0.0/0"
