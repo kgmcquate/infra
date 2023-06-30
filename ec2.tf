@@ -89,5 +89,18 @@ fi
 sudo chmod +x /etc/network/if-pre-up.d/nat-setup
 sudo /etc/network/if-pre-up.d/nat-setup 
   EOT
+}
+
+resource "aws_instance" "privateec2instance" {
+  instance_type = "t2.nano"
+  ami = data.aws_ami.ubuntu.id
+  subnet_id = aws_subnet.private_subnet[0].id
+  security_groups = [aws_security_group.ec2securitygroup.id]
+  key_name = aws_key_pair.ssh.key_name
+  disable_api_termination = false
+  ebs_optimized = false
+  root_block_device {
+    volume_size = "10"
+  }
 
 }
