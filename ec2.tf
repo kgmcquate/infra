@@ -52,15 +52,15 @@ data "aws_ami" "ubuntu" {
 
 
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_default_vpc.default.id
-
-  route = [
-    {
-      cidr_block = "0.0.0.0/0",
-      network_interface_id = aws_instance.ec2instance.primary_network_interface_id
-    }
-  ]
+  vpc_id = "${aws_default_vpc.default.id}"
 }
+
+resource "aws_route" "private_nat_gateway" {
+  route_table_id         = "${aws_route_table.private_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id = aws_instance.ec2instance.primary_network_interface_id
+}
+
 
 # https://kenhalbert.com/posts/creating-an-ec2-nat-instance-in-aws
 resource "aws_instance" "ec2instance" {
