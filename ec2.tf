@@ -52,7 +52,7 @@ data "aws_ami" "ubuntu" {
 
 
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_default_vpc.default.id
 
   route = [
     {
