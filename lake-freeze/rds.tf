@@ -13,10 +13,8 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot  = true
 
   iam_database_authentication_enabled = true
-  vpc_security_group_ids = [data.aws_security_group.default.id, aws_security_group.allow_all.id]
+  vpc_security_group_ids = [aws_security_group.allow_all.id]
   multi_az = false
   publicly_accessible = true
   port = 5432
-
-  
 }

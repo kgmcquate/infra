@@ -1,3 +1,18 @@
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+
+  name                 = "main"
+  cidr                 = "10.0.0.0/16"
+  azs                  = ["us-east-1a"]
+  private_subnets      = ["10.0.64.0/20"]
+  public_subnets       = ["10.0.128.0/20"]
+  enable_dns_hostnames = true
+
+  enable_nat_gateway = false # Using a NAT EC2 instance instead of AWS NAT gateway
+}
+
+
+
 # Reference: https://medium.com/appgambit/terraform-aws-vpc-with-private-public-subnets-with-nat-4094ad2ab331
 
 # resource "aws_vpc" "vpc" {
@@ -10,18 +25,6 @@
 #   }
 # }
 
-data "aws_caller_identity" "current" {}
-
-resource "aws_default_vpc" "default" {
-  tags = {
-    Name = "Default VPC"
-  }
-}
-
-data "aws_security_group" "default" {
-  id = "sg-e0fa90d6"
-}
-  
 resource "aws_default_subnet" "a" {
   availability_zone = "${data.aws_region.current.name}a"
 }
