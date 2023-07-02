@@ -61,7 +61,7 @@ resource "aws_route" "private_nat_instance" {
   network_interface_id = aws_instance.ec2instance.primary_network_interface_id
 }
 
-
+# https://github.com/int128/terraform-aws-nat-instance 
 # https://kenhalbert.com/posts/creating-an-ec2-nat-instance-in-aws
 resource "aws_instance" "ec2instance" {
   instance_type = "t2.micro"
@@ -75,20 +75,32 @@ resource "aws_instance" "ec2instance" {
     volume_size = "10"
   }
 
-  # Add NAT gateway routing
   user_data = <<EOT
-#!/bin/bash
-sudo /usr/bin/apt update
-sudo /usr/bin/apt install ifupdown
-/bin/echo '#!/bin/bash
-if [[ $(sudo /usr/sbin/iptables -t nat -L) != *"MASQUERADE"* ]]; then
-  /bin/echo 1 > /proc/sys/net/ipv4/ip_forward
-  /usr/sbin/iptables -t nat -A POSTROUTING -s ${aws_default_vpc.default.cidr_block} -j MASQUERADE
-fi
-' | sudo /usr/bin/tee /etc/network/if-pre-up.d/nat-setup
-sudo chmod +x /etc/network/if-pre-up.d/nat-setup
-sudo /etc/network/if-pre-up.d/nat-setup 
-  EOT
+#!/bin/sh
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo 0 > /proc/sys/net/ipv4/conf/eth0/send_redirects
+/sbin/iptables -t nat -A POSTROUTING -o eth0 -s 0.0.0.0/0 -j MASQUERADE
+/sbin/iptables-save > /etc/sysconfig/iptables
+mkdir -p /etc/sysctl.d/
+cat <<EOF > /etc/sysctl.d/nat.conf
+net.ipv4.ip_forward = 1
+net.ipv4.conf.eth0.send_redirects = 0
+EOT
+
+  # Add NAT gateway routing
+#   user_data = <<EOT
+# #!/bin/bash
+# sudo /usr/bin/apt update
+# sudo /usr/bin/apt install ifupdown
+# /bin/echo '#!/bin/bash
+# if [[ $(sudo /usr/sbin/iptables -t nat -L) != *"MASQUERADE"* ]]; then
+#   /bin/echo 1 > /proc/sys/net/ipv4/ip_forward
+#   /usr/sbin/iptables -t nat -A POSTROUTING -s ${aws_default_vpc.default.cidr_block} -j MASQUERADE
+# fi
+# ' | sudo /usr/bin/tee /etc/network/if-pre-up.d/nat-setup
+# sudo chmod +x /etc/network/if-pre-up.d/nat-setup
+# sudo /etc/network/if-pre-up.d/nat-setup 
+#   EOT
 }
 
 resource "aws_instance" "privateec2instance" {
