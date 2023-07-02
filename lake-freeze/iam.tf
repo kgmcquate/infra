@@ -8,13 +8,6 @@ resource "aws_iam_role" "backend_role" {
         {
             "Effect": "Allow",
             "Principal": {
-                "Service": "*"
-            },
-            "Action": "sts:AssumeRole"
-        },
-        {
-            "Effect": "Allow",
-            "Principal": {
                 "Service": "lambda.amazonaws.com"
             },
             "Action": "sts:AssumeRole"
