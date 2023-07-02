@@ -6,7 +6,7 @@ module "vpc" {
 
   name                 = "main"
   cidr                 = "10.0.0.0/16"
-  azs                  = ["us-east-1a"]
+  azs                  = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets      = ["10.0.64.0/20"]
   public_subnets       = ["10.0.128.0/20"]
   enable_dns_hostnames = true
