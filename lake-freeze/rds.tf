@@ -18,3 +18,4 @@ resource "aws_db_instance" "default" {
   publicly_accessible = true
   port = 5432
 }
+
