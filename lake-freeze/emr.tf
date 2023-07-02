@@ -12,5 +12,5 @@ resource "aws_emr_studio" "default_studio" {
 
   service_role                = aws_iam_role.backend_role.arn  
   vpc_id                      = var.vpc_id
-  subnet_ids                  = [var.subnet_id]
+  subnet_ids                  = [var.subnet_ids[0]]
 }
