@@ -51,9 +51,9 @@ resource "aws_security_group_rule" "nat_ssh" {
   protocol          = "tcp"
 }
 
-resource "aws_eip" "nat" {
-  network_interface = module.nat.eni_id
-  tags = {
-    "Name" = "nat-instance-main"
-  }
-}
+# resource "aws_eip" "nat" {
+#   network_interface = module.nat.eni_id
+#   tags = {
+#     "Name" = "nat-instance-main"
+#   }
+# }
