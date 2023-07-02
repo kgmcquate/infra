@@ -19,13 +19,13 @@ resource "aws_iam_role" "backend_role" {
             },
             "Action": "sts:AssumeRole"
         },
-        # {
-        #     "Effect": "Allow",
-        #     "Principal": {
-        #         "Service": "elasticmapreduce.amazonaws.com"
-        #     },
-        #     "Action": "sts:AssumeRole"
-        # },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "elasticmapreduce.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        },
         {
             "Effect": "Allow",
             "Principal": {
