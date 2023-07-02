@@ -1,3 +1,6 @@
+data "aws_caller_identity" "current" {}
+
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
 
@@ -25,24 +28,24 @@ module "vpc" {
 #   }
 # }
 
-resource "aws_default_subnet" "a" {
-  availability_zone = "${data.aws_region.current.name}a"
-}
+# resource "aws_default_subnet" "a" {
+#   availability_zone = "${data.aws_region.current.name}a"
+# }
   
-resource "aws_default_subnet" "b" {
-  availability_zone = "${data.aws_region.current.name}b"
-}
+# resource "aws_default_subnet" "b" {
+#   availability_zone = "${data.aws_region.current.name}b"
+# }
 
-resource "aws_default_subnet" "c" {
-  availability_zone = "${data.aws_region.current.name}c"
-}
+# resource "aws_default_subnet" "c" {
+#   availability_zone = "${data.aws_region.current.name}c"
+# }
 
 
-locals {
-  environment = "prod"
-  private_subnets_cidr = ["172.31.96.0/20"]
-  availability_zones = ["${data.aws_region.current.name}a"]
-}
+# locals {
+#   environment = "prod"
+#   private_subnets_cidr = ["172.31.96.0/20"]
+#   availability_zones = ["${data.aws_region.current.name}a"]
+# }
 
 /*==== Subnets ======*/
 # /* Internet gateway for the public subnet */
@@ -54,28 +57,28 @@ locals {
 #   }
 # }
 
-data "aws_internet_gateway" "default" {
-  filter {
-    name   = "attachment.vpc-id"
-    values = [aws_default_vpc.default.id]
-  }
-}
-/* Elastic IP for NAT */
-resource "aws_eip" "nat_eip" {
-  vpc        = true
-  # depends_on = [aws_internet_gateway.ig]
-}
+# data "aws_internet_gateway" "default" {
+#   filter {
+#     name   = "attachment.vpc-id"
+#     values = [aws_default_vpc.default.id]
+#   }
+# }
+# /* Elastic IP for NAT */
+# resource "aws_eip" "nat_eip" {
+#   vpc        = true
+#   # depends_on = [aws_internet_gateway.ig]
+# }
 
-/* NAT */
-resource "aws_nat_gateway" "nat" {
-  allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = aws_default_subnet.a.id
-  # depends_on    = [aws_internet_gateway.ig]
-  tags = {
-    Name        = "nat"
-    Environment = "${local.environment}"
-  }
-}
+# /* NAT */
+# resource "aws_nat_gateway" "nat" {
+#   allocation_id = "${aws_eip.nat_eip.id}"
+#   subnet_id     = aws_default_subnet.a.id
+#   # depends_on    = [aws_internet_gateway.ig]
+#   tags = {
+#     Name        = "nat"
+#     Environment = "${local.environment}"
+#   }
+# }
 
 # /* Public subnet */
 # resource "aws_subnet" "public_subnet" {
@@ -92,25 +95,25 @@ resource "aws_nat_gateway" "nat" {
 
 
 /* Private subnet */
-resource "aws_subnet" "private_subnet" {
-  vpc_id                  = "${aws_default_vpc.default.id}"
-  count                   = "${length(local.private_subnets_cidr)}"
-  cidr_block              = "${element(local.private_subnets_cidr, count.index)}"
-  availability_zone       = "${element(local.availability_zones,   count.index)}"
-  map_public_ip_on_launch = false
-  tags = {
-    Name        = "${local.environment}-${element(local.availability_zones, count.index)}-private-subnet"
-    Environment = "${local.environment}"
-  }
-}
-/* Routing table for private subnet */
-resource "aws_route_table" "private" {
-  vpc_id = "${aws_default_vpc.default.id}"
-  tags = {
-    Name        = "${local.environment}-private-route-table"
-    Environment = "${local.environment}"
-  }
-}
+# resource "aws_subnet" "private_subnet" {
+#   vpc_id                  = "${aws_default_vpc.default.id}"
+#   count                   = "${length(local.private_subnets_cidr)}"
+#   cidr_block              = "${element(local.private_subnets_cidr, count.index)}"
+#   availability_zone       = "${element(local.availability_zones,   count.index)}"
+#   map_public_ip_on_launch = false
+#   tags = {
+#     Name        = "${local.environment}-${element(local.availability_zones, count.index)}-private-subnet"
+#     Environment = "${local.environment}"
+#   }
+# }
+# /* Routing table for private subnet */
+# resource "aws_route_table" "private" {
+#   vpc_id = "${aws_default_vpc.default.id}"
+#   tags = {
+#     Name        = "${local.environment}-private-route-table"
+#     Environment = "${local.environment}"
+#   }
+# }
 
 /* Routing table for public subnet */
 # resource "aws_route_table" "public" {
@@ -143,11 +146,11 @@ resource "aws_route_table" "private" {
 #   nat_gateway_id         = "${aws_nat_gateway.nat.id}"
 # }
 
-resource "aws_route_table_association" "private" {
-  count          = "${length(local.private_subnets_cidr)}"
-  subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
-  route_table_id = "${aws_route_table.private.id}"
-}
+# resource "aws_route_table_association" "private" {
+#   count          = "${length(local.private_subnets_cidr)}"
+#   subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
+#   route_table_id = "${aws_route_table.private.id}"
+# }
 
 /*==== VPC's Default Security Group ======*/
 # resource "aws_security_group" "default" {
