@@ -16,11 +16,11 @@ data "aws_ami" "ubuntu" {
 }
 
 
-resource "aws_instance" "privateec2instance" {
+resource "aws_instance" "private_ec2" {
   instance_type = "t2.nano"
   ami = data.aws_ami.ubuntu.id
-  subnet_id = aws_subnet.private_subnet[0].id
-  security_groups = [aws_security_group.ec2securitygroup.id]
+  subnet_id = module.vpc.private_subnets[0]
+  security_groups = [module.vpc.default_security_group_id]
   key_name = aws_key_pair.ssh.key_name
   disable_api_termination = false
   ebs_optimized = false
