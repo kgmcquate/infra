@@ -1,4 +1,16 @@
 
+module "nat" {
+  source = "int128/nat-instance/aws"
+
+  name                        = "nat"
+  key_name                    = aws_key_pair.ssh.key_name
+  vpc_id                      = module.vpc.vpc_id
+  public_subnet               = module.vpc.public_subnets[0]
+  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  private_route_table_ids     = module.vpc.private_route_table_ids
+}
+
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -56,36 +68,29 @@ resource "aws_instance" "public_ec2" {
 #   }
 # }
 
-
-module "nat" {
-  source = "int128/nat-instance/aws"
-
-  name                        = "nat"
-  key_name                    = aws_key_pair.ssh.key_name
-  vpc_id                      = module.vpc.vpc_id
-  public_subnet               = module.vpc.public_subnets[0]
-  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  private_route_table_ids     = module.vpc.private_route_table_ids
-}
-
 resource "aws_security_group_rule" "nat_ssh" {
   security_group_id = module.nat.sg_id
   type              = "ingress"
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
 }
 
 resource "aws_security_group_rule" "ssh" {
   security_group_id = module.vpc.default_security_group_id
   type              = "ingress"
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
 }
 
-
-
-
+# resource "aws_security_group_rule" "ssh" {
+#   security_group_id = module.vpc.default_security_group_id
+#   type              = "ingress"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   from_port         = 22
+#   to_port           = 22
+#   protocol          = "tcp"
+# }
