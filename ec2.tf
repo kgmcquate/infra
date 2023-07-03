@@ -25,22 +25,45 @@ data "aws_ami" "ubuntu_arm64" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "private_ec2" {
-  instance_type = "t4g.nano"
-  ami = data.aws_ami.ubuntu_arm64.id
-  subnet_id = module.vpc.private_subnets[0]
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
-  key_name = aws_key_pair.ssh.key_name
-  disable_api_termination = false
-  ebs_optimized = false
-  root_block_device {
-    volume_size = "10"
-  }
+# resource "aws_instance" "private_ec2" {
+#   instance_type = "t4g.nano"
+#   ami = data.aws_ami.ubuntu_arm64.id
+#   subnet_id = module.vpc.private_subnets[0]
+#   vpc_security_group_ids = [module.vpc.default_security_group_id]
+#   key_name = aws_key_pair.ssh.key_name
+#   disable_api_termination = false
+#   ebs_optimized = false
+#   root_block_device {
+#     volume_size = "10"
+#   }
 
-  tags = {
-    "Name" = "private-instance"
-  }
-}
+#   tags = {
+#     "Name" = "private-instance"
+#   }
+# }
+
+
+# resource "aws_instance" "airflow_instance" {
+#   instance_type = "t4g.micro"
+#   ami = data.aws_ami.ubuntu_arm64.id
+#   subnet_id = module.vpc.public_subnets[0]
+#   vpc_security_group_ids = [module.vpc.default_security_group_id]
+#   key_name = aws_key_pair.ssh.key_name
+#   disable_api_termination = false
+#   ebs_optimized = false
+#   root_block_device {
+#     volume_size = "10"
+#   }
+
+#   tags = {
+#     "Name" = "airflow-instance"
+#   }
 
 
 
+# }
+
+
+
+
+# https://github.com/kgmcquate/airflow.git
