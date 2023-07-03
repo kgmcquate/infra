@@ -10,6 +10,25 @@ module "nat" {
   private_route_table_ids     = module.vpc.private_route_table_ids
 }
 
+resource "aws_security_group_rule" "nat_ssh" {
+  security_group_id = module.nat.sg_id
+  type              = "ingress"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
+}
+
+resource "aws_security_group_rule" "nat_egress" {
+  security_group_id = module.nat.sg_id
+  type              = "egress"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
+}
+
+
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -55,22 +74,4 @@ resource "aws_instance" "private_ec2" {
 }
 
 
-
-resource "aws_security_group_rule" "nat_ssh" {
-  security_group_id = module.nat.sg_id
-  type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
-
-resource "aws_security_group_rule" "nat_egress" {
-  security_group_id = module.nat.sg_id
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
 
