@@ -11,25 +11,25 @@ module "vpc" {
   public_subnets       = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   enable_dns_hostnames = true
 
-  # enable_nat_gateway = true
+  enable_nat_gateway = false # 
   # single_nat_gateway = true
 
-  map_public_ip_on_launch = true # assign IPS to public instances
+  map_public_ip_on_launch = true # assign IPs to public instances
 }
 
-resource "aws_security_group_rule" "default_vpc_ingress" {
+resource "aws_vpc_security_group_ingress_rule" "default_vpc_ingress_ssh" {
   security_group_id = module.vpc.default_security_group_id
-  type              = "ingress"
+
   cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
+  from_port         = 22
+  to_port           = 22
   protocol          = -1
 }
 
 
-resource "aws_security_group_rule" "default_vpc_egress" {
+resource "aws_vpc_security_group_egress_rule" "default_vpc_egress" {
   security_group_id = module.vpc.default_security_group_id
-  type              = "egress"
+
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 0
   to_port           = 65535
