@@ -16,14 +16,14 @@ module "vpc" {
   map_public_ip_on_launch = true # assign IPs to public instances
 }
 
-resource "aws_vpc_security_group_ingress_rule" "default_vpc_ingress_ssh" {
-  security_group_id = module.vpc.default_security_group_id
+# resource "aws_vpc_security_group_ingress_rule" "default_vpc_ingress_ssh" {
+#   security_group_id = module.vpc.default_security_group_id
 
-  cidr_ipv4       = "0.0.0.0/0"
-  from_port         = 22
-  to_port           = 22
-  ip_protocol          = "tcp"
-}
+#   cidr_ipv4       = "0.0.0.0/0"
+#   from_port         = 22
+#   to_port           = 22
+#   ip_protocol          = "tcp"
+# }
 
 resource "aws_vpc_security_group_egress_rule" "default_vpc_egress" {
   security_group_id = module.vpc.default_security_group_id
