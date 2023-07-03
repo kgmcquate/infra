@@ -1,6 +1,5 @@
 data "aws_caller_identity" "current" {}
 
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
 
@@ -20,18 +19,17 @@ module "vpc" {
 resource "aws_vpc_security_group_ingress_rule" "default_vpc_ingress_ssh" {
   security_group_id = module.vpc.default_security_group_id
 
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_ipv4       = "0.0.0.0/0"
   from_port         = 22
   to_port           = 22
-  protocol          = -1
+  ip_protocol          = -1
 }
-
 
 resource "aws_vpc_security_group_egress_rule" "default_vpc_egress" {
   security_group_id = module.vpc.default_security_group_id
 
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_ipv4       = "0.0.0.0/0"
   from_port         = 0
   to_port           = 65535
-  protocol          = -1
+  ip_protocol          = -1
 }

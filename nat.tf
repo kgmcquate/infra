@@ -18,18 +18,18 @@ resource "aws_eip" "nat" {
 
 resource "aws_vpc_security_group_ingress_rule" "nat_ingress" {
   security_group_id = module.nat.sg_id
-  
-  cidr_blocks       = ["0.0.0.0/0"]
+
+  cidr_ipv4       = "0.0.0.0/0"
   from_port         = 22
   to_port           = 22
-  protocol          = "ssh"
+  ip_protocol          = "ssh"
 }
 
 resource "aws_vpc_security_group_egress_rule" "nat_egress" {
   security_group_id = module.nat.sg_id
 
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_ipv4 = "0.0.0.0/0"
   from_port         = 80
   to_port           = 65535
-  protocol          = -1
+  ip_protocol          = -1
 }
