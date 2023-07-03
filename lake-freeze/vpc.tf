@@ -1,8 +1,4 @@
 
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
-
-
 
 resource "aws_security_group" "allow_all" {
   name        = "allow_all_lake_weather"

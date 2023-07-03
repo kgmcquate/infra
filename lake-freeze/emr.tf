@@ -1,7 +1,4 @@
 
-
- 
-
 resource "aws_emr_studio" "default_studio" {
   name                        = "default-studio"
   auth_mode                   = "IAM"
