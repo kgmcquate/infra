@@ -1,21 +1,21 @@
 
-# module "nat" {
-#   source = "int128/nat-instance/aws"
+module "nat" {
+  source = "int128/nat-instance/aws"
 
-#   name                        = "nat"
-#   key_name                    = aws_key_pair.ssh.key_name
-#   vpc_id                      = module.vpc.vpc_id
-#   public_subnet               = module.vpc.public_subnets[0]
-#   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-#   private_route_table_ids     = module.vpc.private_route_table_ids
-# }
+  name                        = "nat"
+  key_name                    = aws_key_pair.ssh.key_name
+  vpc_id                      = module.vpc.vpc_id
+  public_subnet               = module.vpc.public_subnets[0]
+  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  private_route_table_ids     = module.vpc.private_route_table_ids
+}
 
 
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
   filter {
     name   = "virtualization-type"
@@ -24,10 +24,22 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "aws_ami" "ubuntu_arm64" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"] # Canonical
+}
 
 resource "aws_instance" "private_ec2" {
-  instance_type = "t2.nano"
-  ami = data.aws_ami.ubuntu.id
+  instance_type = "t4g.nano"
+  ami = data.aws_ami.ubuntu_arm64.id
   subnet_id = module.vpc.private_subnets[0]
   security_groups = [module.vpc.default_security_group_id]
   key_name = aws_key_pair.ssh.key_name
@@ -40,7 +52,6 @@ resource "aws_instance" "private_ec2" {
   tags = {
     "Name" = "private-instance"
   }
-
 }
 
 # resource "aws_instance" "public_ec2" {
