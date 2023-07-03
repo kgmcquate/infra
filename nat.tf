@@ -22,7 +22,7 @@ resource "aws_vpc_security_group_ingress_rule" "nat_ingress" {
   cidr_ipv4       = "0.0.0.0/0"
   from_port         = 22
   to_port           = 22
-  ip_protocol          = "ssh"
+  ip_protocol          = -1
 }
 
 resource "aws_vpc_security_group_egress_rule" "nat_egress" {
