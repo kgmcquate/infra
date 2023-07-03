@@ -16,3 +16,22 @@ module "vpc" {
 
   map_public_ip_on_launch = true # assign IPS to public instances
 }
+
+resource "aws_security_group_rule" "default_vpc_ingress" {
+  security_group_id = module.vpc.default_security_group_id
+  type              = "ingress"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
+}
+
+
+resource "aws_security_group_rule" "default_vpc_egress" {
+  security_group_id = module.vpc.default_security_group_id
+  type              = "egress"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 65535
+  protocol          = -1
+}

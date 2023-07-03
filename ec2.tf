@@ -11,37 +11,37 @@
 # }
 
 
-# data "aws_ami" "ubuntu" {
-#   most_recent = true
-#   filter {
-#     name   = "name"
-#     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-#   }
-#   filter {
-#     name   = "virtualization-type"
-#     values = ["hvm"]
-#   }
-#   owners = ["099720109477"] # Canonical
-# }
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"] # Canonical
+}
 
 
-# resource "aws_instance" "private_ec2" {
-#   instance_type = "t2.nano"
-#   ami = data.aws_ami.ubuntu.id
-#   subnet_id = module.vpc.private_subnets[0]
-#   security_groups = [module.vpc.default_security_group_id]
-#   key_name = aws_key_pair.ssh.key_name
-#   disable_api_termination = false
-#   ebs_optimized = false
-#   root_block_device {
-#     volume_size = "10"
-#   }
+resource "aws_instance" "private_ec2" {
+  instance_type = "t2.nano"
+  ami = data.aws_ami.ubuntu.id
+  subnet_id = module.vpc.private_subnets[0]
+  security_groups = [module.vpc.default_security_group_id]
+  key_name = aws_key_pair.ssh.key_name
+  disable_api_termination = false
+  ebs_optimized = false
+  root_block_device {
+    volume_size = "10"
+  }
 
-#   tags = {
-#     "Name" = "private-instance"
-#   }
+  tags = {
+    "Name" = "private-instance"
+  }
 
-# }
+}
 
 # resource "aws_instance" "public_ec2" {
 #   instance_type = "t3a.nano"
@@ -77,14 +77,6 @@
 #   protocol          = -1
 # }
 
-# resource "aws_security_group_rule" "ssh" {
-#   security_group_id = module.vpc.default_security_group_id
-#   type              = "ingress"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   from_port         = 0
-#   to_port           = 65535
-#   protocol          = -1
-# }
 
 
 
@@ -97,21 +89,3 @@
 #   protocol          = -1
 # }
 
-# resource "aws_security_group_rule" "egress" {
-#   security_group_id = module.vpc.default_security_group_id
-#   type              = "egress"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   from_port         = 0
-#   to_port           = 65535
-#   protocol          = -1
-# }
-
-
-# resource "aws_security_group_rule" "ssh" {
-#   security_group_id = module.vpc.default_security_group_id
-#   type              = "ingress"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-# }
