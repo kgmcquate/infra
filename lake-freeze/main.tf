@@ -8,6 +8,10 @@ variable vpc_id {
   type = string
 }
 
-variable subnet_ids {
+variable private_subnet_ids {
+  type = list #of strings
+}
+
+variable public_subnet_ids {
   type = list #of strings
 }
