@@ -19,9 +19,6 @@ data "aws_ami" "al2_arm64" {
     name = "name"
     values = ["amzn2-ami-kernel-*-hvm-*-arm64-gp2"]
   }
-
-  
-
   owners = ["amazon"]
 }
 
