@@ -7,6 +7,20 @@ module "nat" {
   public_subnet               = module.vpc.public_subnets[0]
   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
   private_route_table_ids     = module.vpc.private_route_table_ids
+
+  instance_types = ["t4g.nano"]
+  image_id = data.aws_ami.al2_arm64.id
+}
+
+data "aws_ami" "al2_arm64" {
+  most_recent = true
+
+  filter {
+    name = "name"
+    values = ["amzn2-ami-hvm-*-arm64-ebs"]
+  }
+
+  owners = ["amazon"]
 }
 
 resource "aws_eip" "nat" {
