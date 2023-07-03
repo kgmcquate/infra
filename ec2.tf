@@ -88,7 +88,7 @@ resource "aws_security_group_rule" "ssh" {
 
 
 
-resource "aws_security_group_rule" "nat_ssh" {
+resource "aws_security_group_rule" "nat_egress" {
   security_group_id = module.nat.sg_id
   type              = "egress"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -97,7 +97,7 @@ resource "aws_security_group_rule" "nat_ssh" {
   protocol          = -1
 }
 
-resource "aws_security_group_rule" "ssh" {
+resource "aws_security_group_rule" "egress" {
   security_group_id = module.vpc.default_security_group_id
   type              = "egress"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -105,7 +105,6 @@ resource "aws_security_group_rule" "ssh" {
   to_port           = 65535
   protocol          = -1
 }
-
 
 
 # resource "aws_security_group_rule" "ssh" {
