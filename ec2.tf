@@ -1,110 +1,110 @@
 
-module "nat" {
-  source = "int128/nat-instance/aws"
+# module "nat" {
+#   source = "int128/nat-instance/aws"
 
-  name                        = "nat"
-  key_name                    = aws_key_pair.ssh.key_name
-  vpc_id                      = module.vpc.vpc_id
-  public_subnet               = module.vpc.public_subnets[0]
-  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  private_route_table_ids     = module.vpc.private_route_table_ids
-}
-
-
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["099720109477"] # Canonical
-}
-
-
-resource "aws_instance" "private_ec2" {
-  instance_type = "t2.nano"
-  ami = data.aws_ami.ubuntu.id
-  subnet_id = module.vpc.private_subnets[0]
-  security_groups = [module.vpc.default_security_group_id]
-  key_name = aws_key_pair.ssh.key_name
-  disable_api_termination = false
-  ebs_optimized = false
-  root_block_device {
-    volume_size = "10"
-  }
-
-  tags = {
-    "Name" = "private-instance"
-  }
-
-}
-
-resource "aws_instance" "public_ec2" {
-  instance_type = "t3a.nano"
-  ami = data.aws_ami.ubuntu.id
-  subnet_id = module.vpc.public_subnets[0]
-  security_groups = [module.vpc.default_security_group_id]
-  key_name = aws_key_pair.ssh.key_name
-  disable_api_termination = false
-  ebs_optimized = false
-  root_block_device {
-    volume_size = "10"
-  }
-
-  tags = {
-    "Name" = "public-instance"
-  }
-
-}
-
-# resource "aws_eip" "public_ec2_ip" {
-#   network_interface = aws_instance.public_ec2.id
-#   tags = {
-#     "Name" = "public_ec2_ip"
-#   }
+#   name                        = "nat"
+#   key_name                    = aws_key_pair.ssh.key_name
+#   vpc_id                      = module.vpc.vpc_id
+#   public_subnet               = module.vpc.public_subnets[0]
+#   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+#   private_route_table_ids     = module.vpc.private_route_table_ids
 # }
 
-resource "aws_security_group_rule" "nat_ssh" {
-  security_group_id = module.nat.sg_id
-  type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
 
-resource "aws_security_group_rule" "ssh" {
-  security_group_id = module.vpc.default_security_group_id
-  type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
+# data "aws_ami" "ubuntu" {
+#   most_recent = true
+#   filter {
+#     name   = "name"
+#     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+#   }
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+#   owners = ["099720109477"] # Canonical
+# }
 
 
+# resource "aws_instance" "private_ec2" {
+#   instance_type = "t2.nano"
+#   ami = data.aws_ami.ubuntu.id
+#   subnet_id = module.vpc.private_subnets[0]
+#   security_groups = [module.vpc.default_security_group_id]
+#   key_name = aws_key_pair.ssh.key_name
+#   disable_api_termination = false
+#   ebs_optimized = false
+#   root_block_device {
+#     volume_size = "10"
+#   }
 
-resource "aws_security_group_rule" "nat_egress" {
-  security_group_id = module.nat.sg_id
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
+#   tags = {
+#     "Name" = "private-instance"
+#   }
 
-resource "aws_security_group_rule" "egress" {
-  security_group_id = module.vpc.default_security_group_id
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 65535
-  protocol          = -1
-}
+# }
+
+# resource "aws_instance" "public_ec2" {
+#   instance_type = "t3a.nano"
+#   ami = data.aws_ami.ubuntu.id
+#   subnet_id = module.vpc.public_subnets[0]
+#   security_groups = [module.vpc.default_security_group_id]
+#   key_name = aws_key_pair.ssh.key_name
+#   disable_api_termination = false
+#   ebs_optimized = false
+#   root_block_device {
+#     volume_size = "10"
+#   }
+
+#   tags = {
+#     "Name" = "public-instance"
+#   }
+
+# }
+
+# # resource "aws_eip" "public_ec2_ip" {
+# #   network_interface = aws_instance.public_ec2.id
+# #   tags = {
+# #     "Name" = "public_ec2_ip"
+# #   }
+# # }
+
+# resource "aws_security_group_rule" "nat_ssh" {
+#   security_group_id = module.nat.sg_id
+#   type              = "ingress"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   from_port         = 0
+#   to_port           = 65535
+#   protocol          = -1
+# }
+
+# resource "aws_security_group_rule" "ssh" {
+#   security_group_id = module.vpc.default_security_group_id
+#   type              = "ingress"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   from_port         = 0
+#   to_port           = 65535
+#   protocol          = -1
+# }
+
+
+
+# resource "aws_security_group_rule" "nat_egress" {
+#   security_group_id = module.nat.sg_id
+#   type              = "egress"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   from_port         = 0
+#   to_port           = 65535
+#   protocol          = -1
+# }
+
+# resource "aws_security_group_rule" "egress" {
+#   security_group_id = module.vpc.default_security_group_id
+#   type              = "egress"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   from_port         = 0
+#   to_port           = 65535
+#   protocol          = -1
+# }
 
 
 # resource "aws_security_group_rule" "ssh" {
