@@ -22,14 +22,14 @@ resource "aws_vpc_security_group_ingress_rule" "default_vpc_ingress_ssh" {
   cidr_ipv4       = "0.0.0.0/0"
   from_port         = 22
   to_port           = 22
-  ip_protocol          = -1
+  ip_protocol          = "tcp"
 }
 
 resource "aws_vpc_security_group_egress_rule" "default_vpc_egress" {
   security_group_id = module.vpc.default_security_group_id
 
   cidr_ipv4       = "0.0.0.0/0"
-  from_port         = 0
-  to_port           = 65535
+  # from_port         = 0
+  # to_port           = 65535
   ip_protocol          = -1
 }
