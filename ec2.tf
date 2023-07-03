@@ -10,6 +10,13 @@ module "nat" {
   private_route_table_ids     = module.vpc.private_route_table_ids
 }
 
+resource "aws_eip" "nat" {
+  network_interface = module.nat.eni_id
+  tags = {
+    "Name" = "nat-instance-main"
+  }
+}
+
 resource "aws_security_group_rule" "nat_ssh" {
   security_group_id = module.nat.sg_id
   type              = "ingress"
