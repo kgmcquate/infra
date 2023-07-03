@@ -25,6 +25,10 @@ resource "aws_instance" "private_ec2" {
     volume_size = "10"
   }
 
+  tags = {
+    "Name" = "private-instance"
+  }
+
 }
 
 resource "aws_instance" "public_ec2" {
@@ -39,7 +43,18 @@ resource "aws_instance" "public_ec2" {
     volume_size = "10"
   }
 
+  tags = {
+    "Name" = "public-instance"
+  }
+
 }
+
+# resource "aws_eip" "public_ec2_ip" {
+#   network_interface = aws_instance.public_ec2.id
+#   tags = {
+#     "Name" = "public_ec2_ip"
+#   }
+# }
 
 
 module "nat" {
@@ -71,11 +86,6 @@ resource "aws_security_group_rule" "ssh" {
   protocol          = "tcp"
 }
 
-# resource "aws_eip" "nat" {
-#   network_interface = module.nat.eni_id
-#   tags = {
-#     "Name" = "nat-instance-main"
-#   }
-# }
+
 
 
