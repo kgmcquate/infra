@@ -1,7 +1,4 @@
 
-
-
-
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -30,6 +27,20 @@ resource "aws_instance" "private_ec2" {
 
 }
 
+resource "aws_instance" "public_ec2" {
+  instance_type = "t3a.nano"
+  ami = data.aws_ami.ubuntu.id
+  subnet_id = module.vpc.public_subnets[0]
+  security_groups = [module.vpc.default_security_group_id]
+  key_name = aws_key_pair.ssh.key_name
+  disable_api_termination = false
+  ebs_optimized = false
+  root_block_device {
+    volume_size = "10"
+  }
+
+}
+
 
 module "nat" {
   source = "int128/nat-instance/aws"
@@ -44,6 +55,15 @@ module "nat" {
 
 resource "aws_security_group_rule" "nat_ssh" {
   security_group_id = module.nat.sg_id
+  type              = "ingress"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+}
+
+resource "aws_security_group_rule" "ssh" {
+  security_group_id = module.vpc.default_security_group_id
   type              = "ingress"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 22
