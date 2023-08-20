@@ -52,7 +52,7 @@ resource "aws_ecr_repository_policy" "mlflow-policy" {
                     "Effect": "Allow",
                     "Principal": {
                         "AWS": [
-                            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
+                            "${aws_iam_role.service_role.arn}"
                         ]
                     },
                     "Action": [
