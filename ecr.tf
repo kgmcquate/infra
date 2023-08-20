@@ -52,16 +52,19 @@ resource "aws_ecr_repository_policy" "mlflow-policy" {
                     "Effect": "Allow",
                     "Principal": {
                         "AWS": [
-                            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*",
-                            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/*"
+                            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
                         ]
                     },
                     "Action": [
                         "ecr:DescribeImages",
-                        "ecr:DescribeRepositories"
+                        "ecr:DescribeRepositories",
+                        "ecr:GetDownloadUrlForLayer"
                     ]
                 }
             ]
         }
     )
 }
+
+
+                            # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/*"
