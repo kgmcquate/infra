@@ -41,7 +41,7 @@ resource "aws_ecr_repository" "mlflow" {
     }
 }
 
-resource "aws_ecr_repository_policy" "emrs-policy" {
+resource "aws_ecr_repository_policy" "mlflow-policy" {
     repository = aws_ecr_repository.mlflow.name
     policy     = jsonencode(
         {

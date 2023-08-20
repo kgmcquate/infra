@@ -1,3 +1,7 @@
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 module "lake-freeze" {
     source = "./lake-freeze"
     POSTGRES_PWD = var.POSTGRES_PWD
@@ -13,6 +17,4 @@ variable POSTGRES_PWD {
   type = string
 }
 
-data "aws_region" "current" {}
 
-data "aws_caller_identity" "current" {}
