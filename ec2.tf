@@ -26,16 +26,16 @@ data "aws_ami" "ubuntu_arm64" {
 }
 
 
-data "aws_ami" "al2_arm64" {
-  most_recent = true
+# data "aws_ami" "al2_arm64" {
+#   most_recent = true
 
-  owners = ["amazon"]
+#   owners = ["amazon"]
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-arm64-ebs"]
-  }  
-}
+#   filter {
+#     name   = "name"
+#     values = ["amzn2-ami-hvm-*-arm64-ebs"]
+#   }  
+# }
 
 # resource "aws_instance" "private_ec2" {
 #   instance_type = "t4g.nano"
