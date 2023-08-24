@@ -33,7 +33,8 @@ resource "aws_iam_role_policy" "service_role_policy" {
       {
         Action = [
           "ec2:*",
-          "secretsmanager:*"
+          "secretsmanager:*",
+          "cloudtrail:*"
         ]
         Effect   = "Allow"
         Resource = "*"

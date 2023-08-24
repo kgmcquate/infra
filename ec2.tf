@@ -25,6 +25,18 @@ data "aws_ami" "ubuntu_arm64" {
   owners = ["099720109477"] # Canonical
 }
 
+
+data "aws_ami" "al2_arm64" {
+  most_recent = true
+
+  owners = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-arm64-ebs"]
+  }  
+}
+
 # resource "aws_instance" "private_ec2" {
 #   instance_type = "t4g.nano"
 #   ami = data.aws_ami.ubuntu_arm64.id
@@ -43,9 +55,9 @@ data "aws_ami" "ubuntu_arm64" {
 # }
 
 
-# resource "aws_instance" "airflow_instance" {
+# resource "aws_instance" "mlflow_instance" {
 #   instance_type = "t4g.micro"
-#   ami = data.aws_ami.ubuntu_arm64.id
+#   ami = data.aws_ami.al2_arm64.id
 #   subnet_id = module.vpc.public_subnets[0]
 #   vpc_security_group_ids = [module.vpc.default_security_group_id]
 #   key_name = aws_key_pair.ssh.key_name
@@ -55,12 +67,19 @@ data "aws_ami" "ubuntu_arm64" {
 #     volume_size = "10"
 #   }
 
+#   user_data = <<EOF
+# #! /bin/sh
+# yum update -y
+# amazon-linux-extras install docker
+# service docker start
+# usermod -a -G docker ec2-user
+# chkconfig docker on
+
+# EOF
+
 #   tags = {
-#     "Name" = "airflow-instance"
+#     "Name" = "mlflow-instance"
 #   }
-
-
-
 # }
 
 
