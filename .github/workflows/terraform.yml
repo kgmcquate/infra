@@ -59,10 +59,9 @@ jobs:
           echo "snowflake_password=\"${SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
           echo "dbt_testgen_snowflake_password=\"${DBT_TESTGEN_PASSWORD}\"" >> aws.auto.tfvars
 
-
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -input=false
+        run: terraform plan -replace=module.snowflake.snowflake_user.dbt_testgen -replace=module.snowflake.snowflake_role.dbt_testgen -input=false
         
 
         # On push to "main", build or change infrastructure according to Terraform configuration files
