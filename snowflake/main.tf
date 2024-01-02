@@ -11,13 +11,18 @@ resource "snowflake_warehouse" "dbt_testgen" {
   max_cluster_count = 1
 }
 
-resource "snowflake_warehouse_grant" "dbt_testgen" {
-  warehouse_name = snowflake_warehouse.dbt_testgen
-  privilege      = "USAGE"
+resource "snowflake_grant_privileges_to_role" "dbt_testgen" {
 
-  roles = [snowflake_role.dbt_testgen.name]
+  privileges      = ["USAGE"]
+
+  role_name = snowflake_role.dbt_testgen.name
 
   with_grant_option = false
+
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.dbt_testgen
+  }
 }
 
 resource "snowflake_database" "dbt_testgen" {
