@@ -14,8 +14,8 @@ module "lake-freeze" {
 
 module "snowflake" {
     source = "./snowflake"
-    provider_account = "ekb34223"
-    provider_username = "cicd_infra"
+    provider_account = "EKB34223"
+    provider_username = "CICD_INFRA"
     provider_password = var.snowflake_password
     dbt_testgen_password = var.dbt_testgen_snowflake_password
 }
