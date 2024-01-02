@@ -12,9 +12,11 @@ module "lake-freeze" {
     depends_on = [ module.vpc ]
 }
 
-
-variable POSTGRES_PWD {
-  type = string
+module "snowflake" {
+    source = "./snowflake"
+    provider_account = "ekb34223"
+    provider_username = "cicd_infra"
+    provider_password = var.snowflake_password
+    dbt_testgen_password = var.dbt_testgen_snowflake_password
 }
-
 

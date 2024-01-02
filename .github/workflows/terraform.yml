@@ -14,6 +14,8 @@ env:
   AWS_REGION: "us-east-1"
   AWS_ACCOUNT_ID: "117819748843"
   POSTGRES_PWD: ${{ secrets.POSTGRES_PWD }}
+  SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+  DBT_TESTGEN_PASSWORD: ${{ secrets.DBT_TESTGEN_SNOWFLAKE_PASSWORD }}
 
 jobs:
   terraform:
@@ -54,6 +56,8 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> aws.auto.tfvars
           echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
           echo "POSTGRES_PWD=\"${POSTGRES_PWD}\"" >> aws.auto.tfvars
+          echo "snowflake_password=\"${SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
+          echo "dbt_testgen_password=\"${DBT_TESTGEN_PASSWORD}\"" >> aws.auto.tfvars
 
 
       # Generates an execution plan for Terraform
