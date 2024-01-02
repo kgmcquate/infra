@@ -11,7 +11,7 @@ resource "snowflake_warehouse" "dbt_testgen" {
   max_cluster_count = 1
 }
 
-resource "snowflake_grant_privileges_to_role" "dbt_testgen" {
+resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
 
   privileges      = ["USAGE"]
 
@@ -21,7 +21,7 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen" {
 
   on_account_object {
     object_type = "WAREHOUSE"
-    object_name = snowflake_warehouse.dbt_testgen
+    object_name = snowflake_warehouse.dbt_testgen.name
   }
 }
 
@@ -42,15 +42,17 @@ resource "snowflake_schema" "dbt_testgen" {
   data_retention_days = 1
 }
 
-resource "snowflake_schema_grant" "dbt_testgen" {
-  database_name = snowflake_database.dbt_testgen.name
-  schema_name   = snowflake_schema.dbt_testgen.name
+resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
 
-  privilege = "ALL PRIVILEGES"
-  roles     = [snowflake_role.dbt_testgen.name]
+  privileges      = ["ALL PRIVILEGES"]
 
-  on_future         = true
+  role_name = snowflake_role.dbt_testgen.name
+
   with_grant_option = false
+
+  on_schema {
+    future_schemas_in_database = snowflake_database.dbt_testgen.name
+  }
 }
 
 resource "snowflake_user" "dbt_testgen" {
