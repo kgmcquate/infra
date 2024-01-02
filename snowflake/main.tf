@@ -32,6 +32,20 @@ resource "snowflake_database" "dbt_testgen" {
   is_transient = true
 }
 
+resource "snowflake_grant_privileges_to_role" "dbt_testgen_database" {
+
+  privileges      = ["ALL PRIVILEGES"]
+
+  role_name = snowflake_role.dbt_testgen.name
+
+  with_grant_option = false
+
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.dbt_testgen.name
+  }
+}
+
 resource "snowflake_schema" "dbt_testgen" {
   database = snowflake_database.dbt_testgen.name
   name     = "dbt_testgen"
