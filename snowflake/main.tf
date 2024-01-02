@@ -1,3 +1,9 @@
+resource "null_resource" "always_run" {
+  triggers = {
+    timestamp = "${timestamp()}"
+  }
+}
+
 resource "snowflake_user" "dbt_testgen" {
   name         = "DBT_TESTGEN"
   password     = var.dbt_testgen_password
