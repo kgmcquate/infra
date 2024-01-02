@@ -60,8 +60,8 @@ jobs:
           echo "dbt_testgen_snowflake_password=\"${DBT_TESTGEN_PASSWORD}\"" >> aws.auto.tfvars
 
 
-      - run: terraform state rm module.snowflake
-      
+      # - run: terraform state rm module.snowflake
+
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan -replace=module.snowflake.snowflake_user.dbt_testgen -replace=module.snowflake.snowflake_role.dbt_testgen -input=false
