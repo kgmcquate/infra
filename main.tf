@@ -19,4 +19,3 @@ module "snowflake" {
     provider_password = var.snowflake_password
     dbt_testgen_password = var.dbt_testgen_snowflake_password
 }
-
