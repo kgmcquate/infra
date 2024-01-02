@@ -6,9 +6,9 @@ resource "snowflake_user" "dbt_testgen" {
 #   default_role            = snowflake_role.dbt_testgen.name
 }
 
-# resource "snowflake_role" "dbt_testgen" {
-#   name    = "dbt_testgen"
-# }
+resource "snowflake_role" "dbt_testgen" {
+  name    = "dbt_testgen"
+}
 
 # resource "snowflake_role_grants" "dbt_testgen" {
 #   role_name = snowflake_role.dbt_testgen.name
