@@ -94,7 +94,7 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
   }
 }
 
-resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
+resource "snowflake_grant_privileges_to_role" "dbt_testgen_accountadmin_schema" {
 
   privileges      = ["ALL PRIVILEGES"]
 
