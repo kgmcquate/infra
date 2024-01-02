@@ -57,7 +57,7 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
           echo "POSTGRES_PWD=\"${POSTGRES_PWD}\"" >> aws.auto.tfvars
           echo "snowflake_password=\"${SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
-          echo "dbt_testgen_password=\"${DBT_TESTGEN_PASSWORD}\"" >> aws.auto.tfvars
+          echo "dbt_testgen_snowflake_password=\"${DBT_TESTGEN_PASSWORD}\"" >> aws.auto.tfvars
 
 
       # Generates an execution plan for Terraform
