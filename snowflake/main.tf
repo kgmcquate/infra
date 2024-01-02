@@ -1,6 +1,6 @@
 
 resource "snowflake_warehouse" "dbt_testgen" {
-  name           = "dbt_testgen"
+  name           = "DBT_TESTGEN"
   comment        = "Warehouse used for running integration tests for dbt-testgen"
   warehouse_size = "x-small"
   warehouse_type = "STANDARD"
@@ -26,7 +26,7 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
 }
 
 resource "snowflake_database" "dbt_testgen" {
-  name                        = "dbt_testgen"
+  name                        = "DBT_TESTGEN"
   comment                     = "Database used for running integration tests for dbt-testgen"
   data_retention_time_in_days = 0
   is_transient = true
@@ -48,7 +48,7 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_database" {
 
 resource "snowflake_schema" "dbt_testgen" {
   database = snowflake_database.dbt_testgen.name
-  name     = "dbt_testgen"
+  name     = "DBT_TESTGEN"
   comment  = "Schema used for running integration tests for dbt-testgen"
 
   is_transient        = false
@@ -70,7 +70,7 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
 }
 
 resource "snowflake_user" "dbt_testgen" {
-  name         = "dbt_testgen"
+  name         = "DBT_TESTGEN"
   password     = var.dbt_testgen_password
 
   default_warehouse       = snowflake_warehouse.dbt_testgen.name
@@ -78,7 +78,7 @@ resource "snowflake_user" "dbt_testgen" {
 }
 
 resource "snowflake_role" "dbt_testgen" {
-  name    = "dbt_testgen"
+  name    = "DBT_TESTGEN"
 }
 
 resource "snowflake_role_grants" "dbt_testgen" {
