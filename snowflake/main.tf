@@ -94,3 +94,15 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
   }
 }
 
+resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
+
+  privileges      = ["ALL PRIVILEGES"]
+
+  role_name = "ACCOUNTADMIN"
+
+  with_grant_option = true
+
+  on_schema {
+    future_schemas_in_database = snowflake_database.dbt_testgen.name
+  }
+}
