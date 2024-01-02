@@ -73,12 +73,12 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_database" {
 
 resource "snowflake_schema" "dbt_testgen" {
   database = snowflake_database.dbt_testgen.name
-  name     = "DBT_TESTGEN"
+  name     = "DBT_TESTGEN_INTEGRATION_TEST_DATA"
   comment  = "Schema used for running integration tests for dbt-testgen"
 
-  is_transient        = false
+  is_transient        = true
   is_managed          = false
-  data_retention_days = 1
+  data_retention_days = 0
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
