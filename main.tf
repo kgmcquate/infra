@@ -12,10 +12,10 @@ module "lake-freeze" {
     depends_on = [ module.vpc ]
 }
 
-module "snowflake" {
-    source = "./snowflake"
-    provider_account = "ircmtcn-ekb34223"
-    provider_username = "CICD_INFRA"
-    provider_password = var.snowflake_password
-    dbt_testgen_password = var.dbt_testgen_snowflake_password
-}
+# module "snowflake" {
+#     source = "./snowflake"
+#     provider_account = "ircmtcn-ekb34223"
+#     provider_username = "CICD_INFRA"
+#     provider_password = var.snowflake_password
+#     dbt_testgen_password = var.dbt_testgen_snowflake_password
+# }
