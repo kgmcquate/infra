@@ -2,7 +2,7 @@ resource "snowflake_user" "dbt_testgen" {
   name         = "DBT_TESTGEN"
   password     = var.dbt_testgen_password
 
-  default_warehouse       = snowflake_warehouse.dbt_testgen.name
+#   default_warehouse       = snowflake_warehouse.dbt_testgen.name
   default_role            = snowflake_role.dbt_testgen.name
 }
 
