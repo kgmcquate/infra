@@ -1,13 +1,23 @@
 resource "snowflake_user" "dbt_testgen" {
-  name         = "dbt_testgen"
+  name         = "DBT_TESTGEN"
   password     = var.dbt_testgen_password
 
 #   default_warehouse       = snowflake_warehouse.dbt_testgen.name
 #   default_role            = snowflake_role.dbt_testgen.name
+  lifecycle {
+    replace_triggered_by = [
+      null_resource.always_run
+    ]
+  }
 }
 
 resource "snowflake_role" "dbt_testgen" {
-  name    = "dbt_testgen"
+  name    = "DBT_TESTGEN"
+    lifecycle {
+    replace_triggered_by = [
+      null_resource.always_run
+    ]
+  }
 }
 
 # resource "snowflake_role_grants" "dbt_testgen" {
