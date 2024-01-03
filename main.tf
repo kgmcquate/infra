@@ -23,6 +23,6 @@ module "snowflake" {
 module "redshift_serverless" {
   source = "./redshift_serverless"
   admin_user_password = var.dbt_testgen_redshift_password
-  security_group_ids = [module.vpc.default_security_group_id]
+  security_group_ids = [aws_security_group.allow_all.id]
   subnet_ids = module.vpc.public_subnets
 }

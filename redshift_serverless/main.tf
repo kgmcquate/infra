@@ -26,3 +26,4 @@ resource "aws_secretsmanager_secret_version" "sversion" {
    }
 EOF
 }
+
