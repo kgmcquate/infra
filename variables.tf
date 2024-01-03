@@ -10,3 +10,7 @@ variable snowflake_password {
 variable dbt_testgen_snowflake_password {
   type = string
 }
+
+variable dbt_testgen_redshift_password {
+  type = string
+}
