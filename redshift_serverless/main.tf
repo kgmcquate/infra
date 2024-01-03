@@ -6,7 +6,7 @@ resource "aws_redshiftserverless_namespace" "dbt_testgen" {
 }
 
 resource "aws_redshiftserverless_workgroup" "dbt_testgen" {
-  namespace_name = aws_redshiftserverless_namespace.dbt_testgen.name
+  namespace_name = aws_redshiftserverless_namespace.dbt_testgen.id
   workgroup_name = "dbt_testgen"
   base_capacity = 8
   publicly_accessible = true
