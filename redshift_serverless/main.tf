@@ -14,3 +14,15 @@ resource "aws_redshiftserverless_workgroup" "dbt_testgen" {
   subnet_ids = var.subnet_ids
 }
 
+resource "aws_secretsmanager_secret" "db_creds" {
+   name = "redshift-db-creds"
+}
+
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.db_creds.id
+  secret_string = <<EOF
+   {
+    "password": "${var.admin_user_password}"
+   }
+EOF
+}
