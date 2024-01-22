@@ -26,3 +26,10 @@ module "redshift_serverless" {
   security_group_ids = [aws_security_group.allow_all.id]
   subnet_ids = module.vpc.public_subnets
 }
+
+module "databricks" {
+  source = "./databricks"
+  account_id = var.databricks_account_id
+  provider_client_id = var.databricks_account_client_id
+  provider_client_secret = var.databricks_account_client_secret
+}

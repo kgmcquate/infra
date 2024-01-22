@@ -14,3 +14,15 @@ variable dbt_testgen_snowflake_password {
 variable dbt_testgen_redshift_password {
   type = string
 }
+
+variable databricks_account_id {
+  type = string
+}
+
+variable databricks_account_client_id {
+  type = string
+}
+
+variable databricks_account_client_secret {
+  type = string
+}
