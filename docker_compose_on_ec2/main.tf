@@ -75,7 +75,7 @@ resource "aws_volume_attachment" "persistent" {
 }
 
 resource "aws_instance" "this" {
-    ami = data.aws_ami.latest_amazon_linux.id
+    ami = data.aws_ami.al_arm64.id
     availability_zone = var.availability_zone
     instance_type = var.instance_type
     key_name = var.key_name
