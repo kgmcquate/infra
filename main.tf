@@ -27,9 +27,10 @@ module "redshift_serverless" {
   subnet_ids = module.vpc.public_subnets
 }
 
+
 module "databricks" {
   source = "./databricks"
-  account_id = var.databricks_account_id
-  provider_client_id = var.databricks_account_client_id
-  provider_client_secret = var.databricks_account_client_secret
+  name = "main"
+  databricks_account_id = var.databricks_account_id
+  region = "us-east-1"
 }
