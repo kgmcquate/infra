@@ -1,6 +1,6 @@
 terraform {
     required_providers {
-        aws = {
+        databricks = {
             source  = "databricks/databricks"
             version = ">= 1.33.0"
         }
