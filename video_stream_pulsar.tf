@@ -22,7 +22,7 @@ module "video_stream_pulsar" {
     key_name = aws_key_pair.ssh.key_name
     instance_type = "t4g.nano"
     docker_compose_str = var.example_docker_compose
-    subnet_id = module.vpc.public_subnets[0]
+    subnet_id = module.vpc.public_subnets[2]
     availability_zone = module.vpc.azs[2]
     vpc_security_group_ids = [module.vpc.default_security_group_id]
     associate_public_ip_address = true
