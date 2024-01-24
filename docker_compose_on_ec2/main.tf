@@ -1,26 +1,7 @@
 locals {
-    block_device_path = "/dev/sdh"
     user_data = <<EOF
 #!/bin/bash
 set -Eeuxo pipefail
-
-# Filesystem code is adapted from:
-# https://github.com/GSA/devsecops-example/blob/03067f68ee2765f8477ae84235f7faa1d2f2cb70/terraform/files/attach-data-volume.sh
-DEVICE=${local.block_device_path}
-DEST=${var.persistent_volume_mount_path}
-devpath=$(readlink -f $DEVICE)
-if [[ $(file -s $devpath) != *ext4* && -b $devpath ]]; then
-    # Filesystem has not been created. Create it!
-    mkfs -t ext4 $devpath
-fi
-# add to fstab if not present
-if ! egrep "^$devpath" /etc/fstab; then
-  echo "$devpath $DEST ext4 defaults,nofail,noatime,nodiratime,barrier=0,data=writeback 0 2" | tee -a /etc/fstab > /dev/null
-fi
-mkdir -p $DEST
-mount $DEST
-chown ec2-user:ec2-user $DEST
-chmod 0755 $DEST
 
 # Filesystem code is over
 # Now we install docker and docker-compose.
@@ -72,16 +53,16 @@ data "aws_ami" "al_arm64" {
   owners = ["amazon"]
 }
 
-resource "aws_ebs_volume" "persistent" {
-    availability_zone = aws_instance.this.availability_zone
-    size = var.persistent_volume_size_gb
-}
+# resource "aws_ebs_volume" "persistent" {
+#     availability_zone = aws_instance.this.availability_zone
+#     size = var.persistent_volume_size_gb
+# }
 
-resource "aws_volume_attachment" "persistent" {
-    device_name = local.block_device_path
-    volume_id = aws_ebs_volume.persistent.id
-    instance_id = aws_instance.this.id
-}
+# resource "aws_volume_attachment" "persistent" {
+#     device_name = local.block_device_path
+#     volume_id = aws_ebs_volume.persistent.id
+#     instance_id = aws_instance.this.id
+# }
 
 resource "aws_instance" "this" {
     ami = data.aws_ami.al_arm64.id
