@@ -3,6 +3,7 @@ locals {
     user_data = <<EOF
 #!/bin/bash
 set -Eeuxo pipefail
+
 # Filesystem code is adapted from:
 # https://github.com/GSA/devsecops-example/blob/03067f68ee2765f8477ae84235f7faa1d2f2cb70/terraform/files/attach-data-volume.sh
 DEVICE=${local.block_device_path}
@@ -20,21 +21,28 @@ mkdir -p $DEST
 mount $DEST
 chown ec2-user:ec2-user $DEST
 chmod 0755 $DEST
+
 # Filesystem code is over
 # Now we install docker and docker-compose.
 # Adapted from:
 # https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 yum update -y
-amazon-linux-extras install docker
+
+yum install -y docker
 systemctl start docker.service
 usermod -a -G docker ec2-user
 chkconfig docker on
-yum install -y python3-pip
-python3 -m pip install docker-compose
+docker --version
+
+sudo curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-aarch64 -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
 # Put the docker-compose.yml file at the root of our persistent volume
 cat > $DEST/docker-compose.yml <<-TEMPLATE
 ${var.docker_compose_str}
 TEMPLATE
+
 # Write the systemd service that manages us bringing up the service
 cat > /etc/systemd/system/my_custom_service.service <<-TEMPLATE
 [Unit]
@@ -48,6 +56,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 TEMPLATE
+
 # Start the service.
 systemctl start my_custom_service
 EOF
