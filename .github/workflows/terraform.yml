@@ -65,7 +65,7 @@ jobs:
           echo "dbt_testgen_redshift_password=\"${REDSHIFT_PASSWORD}\"" >> aws.auto.tfvars
           echo "databricks_account_id=\"${DATABRICKS_ACCOUNT_ID}\"" >> aws.auto.tfvars
           echo "databricks_account_client_id=\"${DATABRICKS_ACCOUNT_CLIENT_ID}\"" >> aws.auto.tfvars
-          echo "databricks_account_secret_id=\"${DATABRICKS_ACCOUNT_SECRET_ID}\"" >> aws.auto.tfvars
+          echo "databricks_account_client_secret=\"${DATABRICKS_ACCOUNT_CLIENT_SECRET}\"" >> aws.auto.tfvars
 
       # - run: terraform state rm module.snowflake
 

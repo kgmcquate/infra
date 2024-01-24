@@ -28,9 +28,9 @@ module "redshift_serverless" {
 }
 
 
-module "databricks" {
-  source = "./databricks"
-  name = "main"
-  databricks_account_id = var.databricks_account_id
-  region = "us-east-1"
-}
+# module "databricks" {
+#   source = "./databricks"
+#   name = "main"
+#   databricks_account_id = var.databricks_account_id
+#   region = "us-east-1"
+# }
