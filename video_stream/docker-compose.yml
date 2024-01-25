@@ -25,25 +25,25 @@ services:
       timeout: 5s
       retries: 30
 
-  # # Init cluster metadata
-  # pulsar-init:
-  #   container_name: pulsar-init
-  #   hostname: pulsar-init
-  #   image: apachepulsar/pulsar:latest
-  #   networks:
-  #     - pulsar
-  #   environment:
-  #     - PULSAR_MEM=-Xms128m -Xmx128m -XX:MaxDirectMemorySize=128m
-  #   command: >
-  #     bin/pulsar initialize-cluster-metadata \
-  #              --cluster cluster-a \
-  #              --zookeeper zookeeper:2181 \
-  #              --configuration-store zookeeper:2181 \
-  #              --web-service-url http://broker:8080 \
-  #              --broker-service-url pulsar://broker:6650
-  #   depends_on:
-  #     zookeeper:
-  #       condition: service_healthy
+  # Init cluster metadata
+  pulsar-init:
+    container_name: pulsar-init
+    hostname: pulsar-init
+    image: apachepulsar/pulsar:latest
+    networks:
+      - pulsar
+    environment:
+      - PULSAR_MEM=-Xms128m -Xmx128m -XX:MaxDirectMemorySize=128m
+    command: >
+      bin/pulsar initialize-cluster-metadata \
+               --cluster cluster-a \
+               --zookeeper zookeeper:2181 \
+               --configuration-store zookeeper:2181 \
+               --web-service-url http://broker:8080 \
+               --broker-service-url pulsar://broker:6650
+    depends_on:
+      zookeeper:
+        condition: service_healthy
 
   # # Start bookie
   # bookie:
