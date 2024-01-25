@@ -37,7 +37,6 @@ resource "snowflake_warehouse" "dbt_testgen" {
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
-
   privileges      = ["USAGE"]
 
   role_name = snowflake_role.dbt_testgen.name
@@ -58,11 +57,8 @@ resource "snowflake_database" "dbt_testgen" {
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_database" {
-
   privileges      = ["MODIFY", "USAGE", "CREATE SCHEMA", "MONITOR"]
-
   role_name = snowflake_role.dbt_testgen.name
-
   with_grant_option = false
 
   on_account_object {
@@ -82,11 +78,8 @@ resource "snowflake_schema" "dbt_testgen" {
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
-
   privileges      = ["USAGE", "CREATE TABLE", "MODIFY"]
-
   role_name = snowflake_role.dbt_testgen.name
-
   with_grant_option = false
 
   on_schema {
@@ -95,11 +88,8 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_accountadmin_schema" {
-
   privileges      = ["ALL PRIVILEGES"]
-
   role_name = "ACCOUNTADMIN"
-
   with_grant_option = true
 
   on_schema {

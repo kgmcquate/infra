@@ -2,11 +2,14 @@ data "databricks_aws_bucket_policy" "this" {
   bucket = aws_s3_bucket.root_storage_bucket.bucket
 }
 
+data aws_caller_identity current {}
+data aws_region current {}
+
 resource "aws_s3_bucket" "root_storage_bucket" {
   bucket        = "${var.name}-rootbucket"
   force_destroy = true
   tags = merge(var.tags, {
-    Name = "${var.name}-rootbucket"
+    Name = "${var.name}-databricks-root-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
   })
 }
 
