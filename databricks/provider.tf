@@ -12,7 +12,6 @@ terraform {
 }
 
 provider "databricks" {
-  alias ="mws"
 }
 
 provider "databricks" {

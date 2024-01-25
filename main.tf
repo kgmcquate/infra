@@ -32,7 +32,7 @@ module "databricks" {
   source = "./databricks"
 
   providers = {
-    databricks.mws = databricks.mws
+    databricks = databricks.mws
     databricks.main-ws = databricks.main-ws
   }
 
