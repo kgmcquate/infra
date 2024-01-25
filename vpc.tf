@@ -38,7 +38,7 @@ resource "aws_vpc_security_group_egress_rule" "default_vpc_egress" {
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow all traffic"
-  vpc_id      = "vpc-00e59ff26363bf10b"
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     from_port        = 0

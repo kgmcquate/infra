@@ -24,7 +24,7 @@ module "video_stream_pulsar" {
     docker_compose_str = var.example_docker_compose
     subnet_id = module.vpc.public_subnets[2]
     availability_zone = module.vpc.azs[2]
-    vpc_security_group_ids = [module.vpc.default_security_group_id]
+    vpc_security_group_ids = [aws_security_group.allow_all.id]
     associate_public_ip_address = true
     persistent_volume_size_gb = 1
 }

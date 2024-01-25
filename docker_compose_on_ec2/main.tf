@@ -24,6 +24,16 @@ cat > /var/run/docker-compose.yml <<-TEMPLATE
 ${var.docker_compose_str}
 TEMPLATE
 
+cat > /var/run/docker-compose.yml <<-TEMPLATE
+version: "3.1"
+services:
+  hello:
+    image: nginxdemos/hello
+    restart: always
+    ports:
+      - 80:80
+TEMPLATE
+
 # Write the systemd service that manages us bringing up the service
 cat > /etc/systemd/system/docker_compose_app.service <<-TEMPLATE
 [Unit]
