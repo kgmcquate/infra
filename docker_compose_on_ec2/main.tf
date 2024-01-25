@@ -20,16 +20,6 @@ curl -sL https://github.com/docker/compose/releases/latest/download/docker-compo
 chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
-cat > /var/run/docker-compose.yml <<-TEMPLATE
-version: "3.1"
-services:
-  hello:
-    image: nginxdemos/hello
-    restart: always
-    ports:
-      - 80:80
-TEMPLATE
-
 # Write the systemd service that manages us bringing up the service
 cat > /etc/systemd/system/docker_compose_app.service <<-TEMPLATE
 [Unit]
@@ -38,10 +28,21 @@ After=${var.systemd_after_stage}
 [Service]
 Type=simple
 User=${var.user}
-ExecStart=/usr/local/bin/docker-compose -f /var/run/docker-compose.yml up
+ExecStart=/usr/local/bin/docker-compose -f /root/docker-compose.yml up
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
+TEMPLATE
+
+
+cat > /root/docker-compose.yml <<-TEMPLATE
+version: "3.1"
+services:
+  hello:
+    image: nginxdemos/hello
+    restart: always
+    ports:
+      - 80:80
 TEMPLATE
 
 # Start the service.
@@ -81,6 +82,7 @@ resource "aws_instance" "this" {
     subnet_id = var.subnet_id
     iam_instance_profile = var.iam_instance_profile
     user_data = local.user_data
+    user_data_replace_on_change = true
     tags = merge (
         {
             Name = var.name
