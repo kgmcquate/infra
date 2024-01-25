@@ -12,7 +12,7 @@ yum update -y
 yum install -y docker
 systemctl start docker.service
 usermod -a -G docker ec2-user
-chkconfig docker on
+#chkconfig docker on
 docker --version
 
 sudo curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-aarch64 -o /usr/local/bin/docker-compose
