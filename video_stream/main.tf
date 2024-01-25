@@ -16,3 +16,5 @@ module "video_stream_pulsar" {
     associate_public_ip_address = true
     persistent_volume_size_gb = 1
 }
+
+

@@ -79,14 +79,16 @@ services:
     networks:
       - pulsar
     environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-      - zookeeperServers=zookeeper:2181
-      - clusterName=cluster-a
-      - managedLedgerDefaultEnsembleSize=1
-      - managedLedgerDefaultWriteQuorum=1
-      - managedLedgerDefaultAckQuorum=1
-      - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - PULSAR_CONF_authorizationEnabled=true
+      - PULSAR_CONF_superUserRoles=superuser
+      - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
+      - PULSAR_CONF_zookeeperServers=zookeeper:2181
+      - PULSAR_CONF_clusterName=cluster-a
+      - PULSAR_CONF_managedLedgerDefaultEnsembleSize=1
+      - PULSAR_CONF_managedLedgerDefaultWriteQuorum=1
+      - PULSAR_CONF_managedLedgerDefaultAckQuorum=1
+      - PULSAR_CONF_advertisedAddress=broker
+      - PULSAR_CONF_advertisedListeners=external:pulsar://127.0.0.1:6650
       - PULSAR_MEM=-Xms128m -Xmx128m -XX:MaxDirectMemorySize=128m
     depends_on:
       zookeeper:
@@ -96,4 +98,6 @@ services:
     ports:
       - "6650:6650"
       - "8080:8080"
-    command: bash -c "bin/apply-config-from-env.py conf/broker.conf && exec bin/pulsar broker"
+    command: >
+      bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf 
+      && exec bin/pulsar broker"

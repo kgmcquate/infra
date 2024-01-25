@@ -11,13 +11,13 @@ resource "databricks_user" "me2" {
   workspace_access = true
 }
 
-resource "databricks_entitlements" "me" {
-  provider = databricks.main-ws
-  user_id                    = data.databricks_user.me.id
-  allow_cluster_create       = true
-  allow_instance_pool_create = true
-  workspace_access = true
-}
+# resource "databricks_entitlements" "me" {
+#   provider = databricks
+#   user_id                    = data.databricks_user.me.id
+#   allow_cluster_create       = true
+#   allow_instance_pool_create = true
+#   workspace_access = true
+# }
 
 # resource "databricks_mws_permission_assignment" "add_user" {
 #   provider = databricks.main-ws
