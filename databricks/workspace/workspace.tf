@@ -14,18 +14,12 @@ resource "databricks_mws_storage_configurations" "this" {
 
 resource "databricks_mws_credentials" "this" {
   # account_id       = var.databricks_account_id # needed?
-  role_arn         = aws_iam_role.cross_account_role.arn
+  role_arn         = var.cross_account_role_arn
   credentials_name = "${var.name}-creds"
   depends_on       = [time_sleep.wait]
 }
 
-## Adding 20 second timer to avoid Failed credential validation check
-resource "time_sleep" "wait" {
-  create_duration = "20s"
-  depends_on = [
-    aws_iam_role_policy.this
-  ]
-}
+
 
 resource "databricks_mws_workspaces" "this" {
   account_id     = var.databricks_account_id

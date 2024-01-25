@@ -1,3 +1,7 @@
+data "databricks_aws_bucket_policy" "this" {
+  bucket = aws_s3_bucket.root_storage_bucket
+}
+
 resource "aws_s3_bucket" "root_storage_bucket" {
   bucket        = "${var.name}-rootbucket"
   force_destroy = true

@@ -1,3 +1,8 @@
+variable "databricks_account_id" {
+  type        = string
+  description = "Databricks Account ID"
+}
+
 variable "tags" {
   default     = {}
   type        = map(string)
