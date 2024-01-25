@@ -34,3 +34,7 @@ module "redshift_serverless" {
 #   databricks_account_id = var.databricks_account_id
 #   region = "us-east-1"
 # }
+
+module video_stream {
+  source = "./video_stream"
+}

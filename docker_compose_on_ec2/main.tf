@@ -3,10 +3,6 @@ locals {
 #!/bin/bash
 set -Eeuxo pipefail
 
-# Filesystem code is over
-# Now we install docker and docker-compose.
-# Adapted from:
-# https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 yum update -y
 
 yum install -y docker
