@@ -35,8 +35,17 @@ module "redshift_serverless" {
 #   region = "us-east-1"
 # }
 
-module video_stream {
-  source = "./video_stream"
+# module video_stream {
+#   source = "./video_stream"
+
+#   subnet_id = module.vpc.public_subnets[2]
+#   availability_zone = module.vpc.azs[2]
+#   security_group_ids = [aws_security_group.allow_all.id]
+#   ssh_keypair = aws_key_pair.ssh.key_name
+# }
+
+module airflow {
+  source = "./airflow"
 
   subnet_id = module.vpc.public_subnets[2]
   availability_zone = module.vpc.azs[2]
