@@ -32,8 +32,8 @@ module "databricks" {
   source = "./databricks"
 
   providers = {
-    databricks = databricks.mws
-    databricks-ws = databricks.main_ws
+    databricks.mws = databricks.mws
+    databricks.main-ws = databricks.main-ws
   }
 
   name = "main"

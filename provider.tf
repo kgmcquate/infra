@@ -15,7 +15,7 @@ provider "databricks" {
 }
 
 provider "databricks" {
-  alias         = "main_ws"
+  alias         = "main-ws"
   host          = "https://dbc-11def007-6039.cloud.databricks.com"
   account_id    = var.databricks_account_id
   client_id     = var.databricks_account_client_id

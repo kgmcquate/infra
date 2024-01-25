@@ -3,9 +3,13 @@ data "databricks_user" "me" {
   user_name = "kgmcquate@gmail.com"
 }
 
-# resource "databricks_user" "me2" {
-#   user_name = "fuzzh3d@gmail.com"
-# }
+resource "databricks_user" "me2" {
+  provider = databricks.main-ws
+  user_name = "fuzzh3d@gmail.com"
+  allow_cluster_create       = true
+  allow_instance_pool_create = true
+  workspace_access = true
+}
 
 # resource "databricks_entitlements" "me" {
 #   provider = databricks_ws
@@ -22,8 +26,8 @@ data "databricks_user" "me" {
 #   permissions  = ["USER"] # ["ADMIN"]#
 # }
 
-resource "databricks_permission_assignment" "add_user" {
-  provider = databricks-ws
-  principal_id = data.databricks_user.me.id
-  permissions  = ["USER"]
-}
+# resource "databricks_permission_assignment" "add_user" {
+#   provider = databricks-ws
+#   principal_id = data.databricks_user.me.id
+#   permissions  = ["USER"]
+# }
