@@ -30,6 +30,11 @@ module "redshift_serverless" {
 
 module "databricks" {
   source = "./databricks"
+
+  providers = {
+    "databricks" = databricks.mws
+  }
+
   name = "main"
   databricks_account_id = var.databricks_account_id
   region = "us-east-1"
