@@ -28,21 +28,14 @@ After=${var.systemd_after_stage}
 [Service]
 Type=simple
 User=${var.user}
-ExecStart=/usr/local/bin/docker-compose -f /root/docker-compose.yml up
+ExecStart=/usr/local/bin/docker-compose -f /var/run/docker-compose.yml up
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 TEMPLATE
 
-
-cat > /root/docker-compose.yml <<-TEMPLATE
-version: "3.1"
-services:
-  hello:
-    image: nginxdemos/hello
-    restart: always
-    ports:
-      - 80:80
+cat > /var/run/docker-compose.yml <<-TEMPLATE
+${var.docker_compose_str}
 TEMPLATE
 
 # Start the service.
