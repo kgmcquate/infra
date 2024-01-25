@@ -10,6 +10,7 @@ set -Eeuxo pipefail
 yum update -y
 
 yum install -y docker
+systemctl enable docker.service
 systemctl start docker.service
 usermod -a -G docker ec2-user
 #chkconfig docker on
@@ -19,27 +20,27 @@ sudo curl -sL https://github.com/docker/compose/releases/latest/download/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
-# Put the docker-compose.yml file at the root of our persistent volume
-cat > $DEST/docker-compose.yml <<-TEMPLATE
+cat > /var/run/docker-compose.yml <<-TEMPLATE
 ${var.docker_compose_str}
 TEMPLATE
 
 # Write the systemd service that manages us bringing up the service
-cat > /etc/systemd/system/my_custom_service.service <<-TEMPLATE
+cat > /etc/systemd/system/docker_compose_app.service <<-TEMPLATE
 [Unit]
 Description=${var.description}
 After=${var.systemd_after_stage}
 [Service]
 Type=simple
 User=${var.user}
-ExecStart=/usr/local/bin/docker-compose -f $DEST/docker-compose.yml up
+ExecStart=/usr/local/bin/docker-compose -f /var/run/docker-compose.yml up
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 TEMPLATE
 
 # Start the service.
-systemctl start my_custom_service
+systemctl enable docker_compose_app
+systemctl start docker_compose_app
 EOF
 }
 
