@@ -21,10 +21,6 @@ chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 cat > /var/run/docker-compose.yml <<-TEMPLATE
-${var.docker_compose_str}
-TEMPLATE
-
-cat > /var/run/docker-compose.yml <<-TEMPLATE
 version: "3.1"
 services:
   hello:
