@@ -33,7 +33,7 @@ module "databricks" {
 
   providers = {
     databricks = databricks.mws
-    databricks_ws = databricks.main_ws
+    databricks-ws = databricks.main_ws
   }
 
   name = "main"
