@@ -9,13 +9,13 @@ data "databricks_user" "me" {
 #   workspace_access = true
 # }
 
-# resource "databricks_mws_permission_assignment" "add_user" {
-#   workspace_id = databricks_mws_workspaces.this.workspace_id
-#   principal_id = data.databricks_user.me.id
-#   permissions  = ["ADMIN"]#["USER"]
-# }
-
-resource "databricks_permission_assignment" "add_user" {
+resource "databricks_mws_permission_assignment" "add_user" {
+  workspace_id = databricks_mws_workspaces.this.workspace_id
   principal_id = data.databricks_user.me.id
-  permissions  = ["USER"]
+  permissions  = ["USER"] # ["ADMIN"]#
 }
+
+# resource "databricks_permission_assignment" "add_user" {
+#   principal_id = data.databricks_user.me.id
+#   permissions  = ["USER"]
+# }
