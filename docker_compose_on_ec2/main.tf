@@ -3,6 +3,8 @@ locals {
 #!/bin/bash
 set -Eeuxo pipefail
 
+cd /root/
+
 yum update -y
 
 yum install -y docker
@@ -24,13 +26,13 @@ After=${var.systemd_after_stage}
 [Service]
 Type=simple
 User=${var.user}
-ExecStart=/usr/local/bin/docker-compose -f /var/run/docker-compose.yml up
+ExecStart=/usr/local/bin/docker-compose -f /root/docker-compose.yml up
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 TEMPLATE
 
-cat > /var/run/docker-compose.yml <<-TEMPLATE
+cat > docker-compose.yml <<-TEMPLATE
 ${var.docker_compose_str}
 TEMPLATE
 
