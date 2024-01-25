@@ -16,8 +16,8 @@ usermod -a -G docker ec2-user
 #chkconfig docker on
 docker --version
 
-sudo curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-aarch64 -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-aarch64 -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 cat > /var/run/docker-compose.yml <<-TEMPLATE
