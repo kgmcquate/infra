@@ -16,7 +16,7 @@ resource "databricks_mws_credentials" "this" {
   # account_id       = var.databricks_account_id # needed?
   role_arn         = var.cross_account_role_arn
   credentials_name = "${var.name}-creds"
-  depends_on       = [time_sleep.wait]
+  # depends_on       = [time_sleep.wait]
 }
 
 

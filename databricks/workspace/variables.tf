@@ -3,6 +3,8 @@ variable "databricks_account_id" {
   description = "Databricks Account ID"
 }
 
+variable cross_account_role_arn {}
+
 variable "tags" {
   default     = {}
   type        = map(string)
