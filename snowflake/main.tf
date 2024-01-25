@@ -33,7 +33,7 @@ resource "snowflake_warehouse" "dbt_testgen" {
   auto_resume = true
   auto_suspend = 60 # seconds
   initially_suspended = true
-  max_cluster_count = 1
+  max_cluster_count = 0 # 1
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
@@ -59,7 +59,7 @@ resource "snowflake_database" "dbt_testgen" {
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_database" {
 
-  privileges      = ["ALL PRIVILEGES"]
+  privileges      = ["MODIFY", "USAGE", "CREATE SCHEMA", "MONITOR"]
 
   role_name = snowflake_role.dbt_testgen.name
 
@@ -83,7 +83,7 @@ resource "snowflake_schema" "dbt_testgen" {
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_schema" {
 
-  privileges      = ["ALL PRIVILEGES"]
+  privileges      = ["USAGE", "CREATE TABLE", "MODIFY"]
 
   role_name = snowflake_role.dbt_testgen.name
 
