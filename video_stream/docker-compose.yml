@@ -79,6 +79,7 @@ services:
     networks:
       - pulsar
     environment:
+      - PULSAR_CONF_authenticationEnabledEnabled=true
       - PULSAR_CONF_authorizationEnabled=true
       - PULSAR_CONF_superUserRoles=superuser
       - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
