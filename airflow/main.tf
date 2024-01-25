@@ -9,7 +9,7 @@ module "airflow" {
     name = "airflow"
     key_name = var.ssh_keypair
     instance_type = "t4g.small"
-    before_docker_compose_script = "docker-compose up airflow-init"
+    before_docker_compose_script = "docker-compose -f /var/run/docker-compose.yml up airflow-init"
     docker_compose_str = file("${path.module}/docker-compose.yml")
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
