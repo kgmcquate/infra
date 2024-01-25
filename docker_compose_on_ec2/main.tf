@@ -61,12 +61,12 @@ data "aws_ami" "al_arm64" {
 #     instance_id = aws_instance.this.id
 # }
 
-resource "aws_eip" "nat" {
-  network_interface = aws_instance.this.primary_network_interface_id
-  tags = {
-    "Name" = "${var.name}-ip"
-  }
-}
+# resource "aws_eip" "this" {
+#   instance = aws_instance.this.id
+#   tags = {
+#     "Name" = "${var.name}-ip"
+#   }
+# }
 
 
 resource "aws_instance" "this" {
