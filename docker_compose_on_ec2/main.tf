@@ -34,6 +34,8 @@ cat > /var/run/docker-compose.yml <<-TEMPLATE
 ${var.docker_compose_str}
 TEMPLATE
 
+${var.before_docker_compose_script}
+
 # Start the service.
 systemctl enable docker_compose_app
 systemctl start docker_compose_app

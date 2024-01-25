@@ -3,6 +3,11 @@ variable "name" {
     type = string
 }
 
+variable before_docker_compose_script {
+    type = string
+    default = ""
+}
+
 variable "description" {
     description = "Description of the service for systemd"
     type = string
