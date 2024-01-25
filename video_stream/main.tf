@@ -28,7 +28,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.primary.zone_id
-  name    = "pulsar.${aws_route53_zone.primary.name}"
+  name    = "pulsar.${data.aws_route53_zone.primary.name}"
   type    = "A"
   ttl     = 300
   records = [module.video_stream_pulsar.public_ip]
