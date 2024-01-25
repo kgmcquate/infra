@@ -73,9 +73,3 @@ output "instance_state" {
     value = aws_instance.this.instance_state
 }
 
-# TODO: This is a list with the `aws_instance` resource and we are just
-# returning a string. I know there is an obvious solution for this...
-output "ebs_block_device_id" {
-    description = "The persistent block device that we are storing information on."
-    value = aws_ebs_volume.persistent.id
-}
