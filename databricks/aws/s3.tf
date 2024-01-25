@@ -1,5 +1,5 @@
 data "databricks_aws_bucket_policy" "this" {
-  bucket = aws_s3_bucket.root_storage_bucket
+  bucket = aws_s3_bucket.root_storage_bucket.bucket
 }
 
 resource "aws_s3_bucket" "root_storage_bucket" {
