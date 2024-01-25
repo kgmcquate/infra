@@ -90,6 +90,14 @@ services:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
+
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 256M
+        reservations:
+          memory: 128M
     # volumes:
     #   - postgres-db-volume:/var/lib/postgresql/data
     healthcheck:
