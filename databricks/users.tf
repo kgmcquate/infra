@@ -17,7 +17,7 @@ data "databricks_user" "me" {
 
 resource "databricks_mws_permission_assignment" "add_user" {
   provider = databricks-ws
-  workspace_id = databricks_mws_workspaces.this.workspace_id
+  workspace_id = module.workspace.workspace_id
   principal_id = data.databricks_user.me.id
   permissions  = ["USER"] # ["ADMIN"]#
 }
