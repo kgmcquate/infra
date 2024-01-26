@@ -11,7 +11,7 @@ module "video_stream_pulsar" {
     instance_type = "t4g.small"
     iam_instance_profile = aws_iam_instance_profile.pulsar_profile.name
     docker_compose_str = file("${path.module}/docker-compose.yml")
-    before_docker_compose_script = "echo \"${local.jwt_secret_key}\" > /root/secret.key "
+    before_docker_compose_script = "mkdir -p /root/key/ && echo \"${local.jwt_secret_key}\" > /root/key/secret.key "
     # after_docker_compose_script = <<EOF
     # TOKEN=$(cat /root/superuser_token)
     # aws secretsmanager put-secret-value --secret-id ${aws_secretsmanager_secret.pulsar_admin_token.id} --secret-string "$TOKEN"

@@ -82,7 +82,7 @@ services:
       - PULSAR_CONF_authenticationEnabled=true
       # - PULSAR_CONF_authorizationEnabled=true
       - PULSAR_CONF_authenticationProviders=org.apache.pulsar.broker.authentication.AuthenticationProviderToken
-      - PULSAR_CONF_tokenSecretKey=file:///pulsar/secret.key
+      - PULSAR_CONF_tokenSecretKey=file:///pulsar/key/secret.key
       - PULSAR_CONF_superUserRoles=superuser
       - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
       - PULSAR_CONF_zookeeperServers=zookeeper:2181
@@ -102,7 +102,7 @@ services:
       - "6650:6650"
       - "8080:8080"
     volumes:
-      - /root/:/pulsar/
+      - /root/key/:/pulsar/key/
     command: bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf && exec bin/pulsar broker"
 
 
