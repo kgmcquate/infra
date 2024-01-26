@@ -48,6 +48,7 @@ module video_stream {
   availability_zone = module.vpc.azs[2]
   security_group_ids = [aws_security_group.allow_all.id]
   ssh_keypair = aws_key_pair.ssh.key_name
+  jwt_secret_key_base64 = var.pulsar_jwt_secret_key_base64
 }
 
 # module airflow {

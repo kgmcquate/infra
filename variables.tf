@@ -37,3 +37,5 @@ variable databricks_account_client_id {
 variable databricks_account_client_secret {
   type = string
 }
+
+variable pulsar_jwt_secret_key_base64 {}

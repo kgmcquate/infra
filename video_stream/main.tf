@@ -2,6 +2,7 @@ variable subnet_id {}
 variable security_group_ids {}
 variable availability_zone {}
 variable ssh_keypair {}
+variable jwt_secret_key_base64 {}
 
 
 module "video_stream_pulsar" {
@@ -23,15 +24,21 @@ module "video_stream_pulsar" {
     persistent_volume_size_gb = 1
 }
 
-resource "random_password" "password" {
-  length           = 64
-  special          = false
-}
+# resource "random_password" "password" {
+#   length           = 64
+#   special          = false
+# }
+
+# resource "aws_kms_key" "a" {
+#   description             = "pulsar_key"
+#   deletion_window_in_days = 10
+#   customer_master_key_spec = "HMAC256"
+# }
 
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
-    jwt_secret_key = random_password.password.result
+    jwt_secret_key = base64decode(var.jwt_secret_key_base64)
 }
 
 resource jwt_hashed_token pulsar_admin_token {
