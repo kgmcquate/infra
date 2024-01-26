@@ -34,7 +34,7 @@ locals {
     jwt_secret_key = random_password.password.result
 }
 
-resource jwt_signed_token pulsar_admin_token {
+resource jwt_hashed_token pulsar_admin_token {
     algorithm = "HS256"
     key = local.jwt_secret_key
     claims_json = "{\"sub\": \"superuser\"}"
@@ -47,7 +47,7 @@ resource "aws_secretsmanager_secret" "pulsar_admin_token" {
 
 resource "aws_secretsmanager_secret_version" "example" {
   secret_id     = aws_secretsmanager_secret.pulsar_admin_token.id
-  secret_string = jwt_signed_token.pulsar_admin_token.token
+  secret_string = jwt_hashed_token.pulsar_admin_token.token
 }
 
 
