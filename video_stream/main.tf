@@ -11,7 +11,10 @@ module "video_stream_pulsar" {
     instance_type = "t4g.small"
     iam_instance_profile = aws_iam_instance_profile.pulsar_profile.name
     docker_compose_str = file("${path.module}/docker-compose.yml")
-    after_docker_compose_script = "aws secretsmanager "
+    after_docker_compose_script = <<EOF
+    TOKEN=$(cat /root/superuser_token)
+    aws secretsmanager put-secret-value --secret-id ${aws_secretsmanager_secret.pulsar_admin_token.id} --secret-string "$TOKEN"
+    EOF
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
     vpc_security_group_ids = var.security_group_ids
@@ -23,6 +26,10 @@ module "video_stream_pulsar" {
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
+}
+
+resource "aws_secretsmanager_secret" "pulsar_admin_token" {
+  name = local.pulsar_superuser_secret_name
 }
 
 data "aws_route53_zone" "primary" {

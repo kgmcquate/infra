@@ -102,7 +102,7 @@ services:
       - "6650:6650"
       - "8080:8080"
     volumes:
-      - /home/ec2-user/:/pulsar/
+      - /root/:/pulsar/
     command: >
       bash -c "
       bin/pulsar tokens create-secret-key -o secret.key
