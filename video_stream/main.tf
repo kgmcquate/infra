@@ -37,6 +37,7 @@ locals {
 resource jwt_signed_token pulsar_admin_token {
     algorithm = "HS256"
     key = local.jwt_secret_key
+    claims_json = "{\"sub\": \"superuser\"}"
 }
 
 
