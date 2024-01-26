@@ -15,4 +15,5 @@ resource pulsar_topic raw_frames {
     namespace = "video_stream"
     topic_name = "raw-livestream-frames"
     topic_type = "persistent"
+    partitions = 4
 }
