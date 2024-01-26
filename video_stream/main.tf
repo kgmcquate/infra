@@ -9,7 +9,7 @@ variable jwt_token {}
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
-    broker_port = 80
+    broker_port = 8080
     cluster_name = "cluster-a"
     superuser_name = "superuser"
 }
