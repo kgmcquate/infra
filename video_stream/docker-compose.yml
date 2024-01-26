@@ -80,7 +80,9 @@ services:
       - pulsar
     environment:
       - PULSAR_CONF_authenticationEnabled=true
-      - PULSAR_CONF_authorizationEnabled=true
+      # - PULSAR_CONF_authorizationEnabled=true
+      - PULSAR_CONF_authenticationProviders=org.apache.pulsar.broker.authentication.AuthenticationProviderToken
+      - PULSAR_CONF_tokenSecretKey=file:///pulsar/secret.key
       - PULSAR_CONF_superUserRoles=superuser
       - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
       - PULSAR_CONF_zookeeperServers=zookeeper:2181
@@ -100,5 +102,15 @@ services:
       - "6650:6650"
       - "8080:8080"
     command: >
-      bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf 
+      bash -c "
+      bin/pulsar tokens create-secret-key -o secret.key
+      && bin/pulsar tokens create -s superuser -sk file:secret.key > token
+      && bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf 
       && exec bin/pulsar broker"
+
+  # eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcnVzZXIifQ.Mgn4Xc4LutUsyNb0EpVA1aNFHEa4elPa6zCU2D7QnCo
+
+  # curl -X GET http://pulsar.kevin-mcquate.net:8080/admin/v2/bookies/all \
+  #   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcnVzZXIifQ.Mgn4Xc4LutUsyNb0EpVA1aNFHEa4elPa6zCU2D7QnCo' \
+  #   --header 'Accept: application/json' \
+  #   --header 'Content-Type: application/json'
