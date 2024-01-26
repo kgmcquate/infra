@@ -8,6 +8,15 @@ variable before_docker_compose_script {
     default = ""
 }
 
+variable after_docker_compose_script {
+    type = string
+    default = ""
+}
+
+# variable instance_profile_arn {
+#     type = optional(string)
+# }
+
 variable "description" {
     description = "Description of the service for systemd"
     type = string

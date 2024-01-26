@@ -41,6 +41,8 @@ ${var.before_docker_compose_script}
 # Start the service.
 systemctl enable docker_compose_app
 systemctl start docker_compose_app
+
+${var.after_docker_compose_script}
 EOF
 }
 
@@ -79,6 +81,7 @@ resource "aws_instance" "this" {
     instance_type = var.instance_type
     key_name = var.key_name
     associate_public_ip_address = var.associate_public_ip_address
+    # iam_instance_profile = var.instance_profile_arn
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id = var.subnet_id
     iam_instance_profile = var.iam_instance_profile
