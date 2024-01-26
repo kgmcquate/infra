@@ -1,4 +1,5 @@
 variable subnet_id {}
+variable vpc_id {}
 variable security_group_ids {}
 variable availability_zone {}
 variable ssh_keypair {}
