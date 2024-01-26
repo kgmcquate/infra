@@ -11,6 +11,7 @@ module "video_stream_pulsar" {
     instance_type = "t4g.small"
     iam_instance_profile = aws_iam_instance_profile.pulsar_profile.name
     docker_compose_str = file("${path.module}/docker-compose.yml")
+    before_docker_compose_script = "echo \"${local.jwt_secret_key}\" > /root/secret.key "
     after_docker_compose_script = <<EOF
     TOKEN=$(cat /root/superuser_token)
     aws secretsmanager put-secret-value --secret-id ${aws_secretsmanager_secret.pulsar_admin_token.id} --secret-string "$TOKEN"
@@ -22,14 +23,25 @@ module "video_stream_pulsar" {
     persistent_volume_size_gb = 1
 }
 
+resource "random_password" "password" {
+  length           = 64
+  special          = false
+}
 
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
+    jwt_secret_key = random_password.password.result
 }
 
 resource "aws_secretsmanager_secret" "pulsar_admin_token" {
   name = local.pulsar_superuser_secret_name
+}
+
+
+resource jwt_signed_token pulsar_admin_token {
+    algorithm = "HS256"
+    key = local.jwt_secret_key
 }
 
 data "aws_route53_zone" "primary" {

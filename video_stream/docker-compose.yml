@@ -103,10 +103,8 @@ services:
       - "8080:8080"
     volumes:
       - /root/:/pulsar/
-    command: >
-      bash -c "
-      bin/pulsar tokens create-secret-key -o secret.key
-      && bin/pulsar tokens create -s superuser -sk file:secret.key > superuser_token
-      && bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf 
-      && exec bin/pulsar broker"
+    command: bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf && exec bin/pulsar broker"
 
+
+      # bin/pulsar tokens create-secret-key -o secret.key
+      # && bin/pulsar tokens create -s superuser -sk file:secret.key > superuser_token
