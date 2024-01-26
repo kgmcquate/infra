@@ -2,16 +2,20 @@ data "aws_route53_zone" "primary" {
   name = local.domain
 }
 
+locals {
+    pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
+}
+
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.primary.zone_id
-  name    = "pulsar.${data.aws_route53_zone.primary.name}"
+  name    = local.pulsar_domain
   type    = "A"
   ttl     = 300
   records = [module.video_stream_pulsar.public_ip]
 }
 
 data "aws_acm_certificate" "tls_cert" {
-  domain      = local.domain
+  domain      = local.pulsar_domain
   types       = ["AMAZON_ISSUED"]
   most_recent = true
 }
