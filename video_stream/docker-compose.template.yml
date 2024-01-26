@@ -53,7 +53,7 @@ services:
     networks:
       - pulsar
     environment:
-      - clusterName=cluster-a
+      - clusterName=${cluster_name}
       - zkServers=zookeeper:2181
       - metadataServiceUri=metadata-store:zk:zookeeper:2181
       # otherwise every time we run docker compose uo or down we fail to start due to Cookie
@@ -83,7 +83,7 @@ services:
       # - PULSAR_CONF_authorizationEnabled=true
       - PULSAR_CONF_authenticationProviders=org.apache.pulsar.broker.authentication.AuthenticationProviderToken
       - PULSAR_CONF_tokenSecretKey=file:///pulsar/key/secret.key
-      - PULSAR_CONF_superUserRoles=[superuser]
+      - PULSAR_CONF_superUserRoles=[${superuser_name}]
       - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
       - PULSAR_CONF_zookeeperServers=zookeeper:2181
       - PULSAR_CONF_clusterName=cluster-a
@@ -100,11 +100,8 @@ services:
         condition: service_started
     ports:
       - "6650:6650"
-      - "8080:8080"
+      - "8080:${broker_port}"
     volumes:
       - /root/key/:/pulsar/key/
     command: bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf && exec bin/pulsar broker"
-
-
-      # bin/pulsar tokens create-secret-key -o secret.key
-      # && bin/pulsar tokens create -s superuser -sk file:secret.key > superuser_token
+  
