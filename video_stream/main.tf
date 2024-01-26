@@ -38,7 +38,7 @@ module "video_stream_pulsar" {
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
-    jwt_secret_key = base64decode(var.jwt_secret_key_base64)
+    jwt_secret_key = var.jwt_secret_key_base64 #base64decode()
 }
 
 resource jwt_hashed_token pulsar_admin_token {
