@@ -17,7 +17,7 @@ terraform {
 }
 
 provider pulsar {
-    web_service_url = "http://${local.pulsar_domain}" #"http://localhost:8080"
+    web_service_url = "http://${local.pulsar_domain}:8080" #"http://localhost:8080"
     token           = var.jwt_token
 }
 
