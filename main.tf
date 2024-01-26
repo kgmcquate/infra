@@ -44,8 +44,8 @@ module "databricks" {
 module video_stream {
   source = "./video_stream"
 
-  subnet_id = module.vpc.public_subnets[2]
-  availability_zone = module.vpc.azs[2]
+  subnet_ids = module.vpc.public_subnets
+  availability_zones = module.vpc.azs
   security_group_ids = [aws_security_group.allow_all.id]
   vpc_id = module.vpc.vpc_id
   ssh_keypair = aws_key_pair.ssh.key_name
