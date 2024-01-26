@@ -4,7 +4,7 @@ data "databricks_user" "me" {
 }
 
 resource "databricks_user" "me2" {
-  provider = databricks.main-ws
+  provider = databricks #.main-ws
   user_name = "fuzzh3d@gmail.com"
   allow_cluster_create       = true
   allow_instance_pool_create = true
