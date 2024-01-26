@@ -2,6 +2,8 @@ resource pulsar_tenant tenant {
     tenant = "video_stream"
     admin_roles = [local.superuser_name]
     allowed_clusters = [local.cluster_name]
+
+    depends_on = [ module.video_stream_pulsar ]
 }
 
 resource pulsar_namespace namespace {
