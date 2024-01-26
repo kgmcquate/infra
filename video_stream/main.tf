@@ -3,6 +3,7 @@ variable security_group_ids {}
 variable availability_zone {}
 variable ssh_keypair {}
 variable jwt_secret_key_base64 {}
+variable jwt_token {}
 
 
 module "video_stream_pulsar" {
@@ -12,7 +13,7 @@ module "video_stream_pulsar" {
     instance_type = "t4g.small"
     iam_instance_profile = aws_iam_instance_profile.pulsar_profile.name
     docker_compose_str = file("${path.module}/docker-compose.yml")
-    before_docker_compose_script = "mkdir -p /root/key/ && echo \"${local.jwt_secret_key}\" > /root/key/secret.key "
+    before_docker_compose_script = "mkdir -p /root/key/ && echo \"${var.jwt_secret_key_base64}\" | base64 -d > /root/key/secret.key "
     # after_docker_compose_script = <<EOF
     # TOKEN=$(cat /root/superuser_token)
     # aws secretsmanager put-secret-value --secret-id ${aws_secretsmanager_secret.pulsar_admin_token.id} --secret-string "$TOKEN"
@@ -24,40 +25,19 @@ module "video_stream_pulsar" {
     persistent_volume_size_gb = 1
 }
 
-# resource "random_password" "password" {
-#   length           = 64
-#   special          = false
-# }
-
-# resource "aws_kms_key" "a" {
-#   description             = "pulsar_key"
-#   deletion_window_in_days = 10
-#   customer_master_key_spec = "HMAC256"
-# }
-
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "video_stream_pulsar_superuser_token"
-    jwt_secret_key = var.jwt_secret_key_base64 #base64decode()
 }
-
-resource jwt_hashed_token pulsar_admin_token {
-    algorithm = "HS256"
-    secret = local.jwt_secret_key
-    claims_json = "{\"sub\": \"superuser\"}"
-}
-
 
 resource "aws_secretsmanager_secret" "pulsar_admin_token" {
   name = local.pulsar_superuser_secret_name
 }
 
-resource "aws_secretsmanager_secret_version" "example" {
+resource "aws_secretsmanager_secret_version" "pulsar_admin_token" {
   secret_id     = aws_secretsmanager_secret.pulsar_admin_token.id
-  secret_string = jwt_hashed_token.pulsar_admin_token.token
+  secret_string = var.jwt_token
 }
-
-
 
 data "aws_route53_zone" "primary" {
   name = local.domain

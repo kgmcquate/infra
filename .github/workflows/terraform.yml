@@ -21,6 +21,7 @@ env:
   DATABRICKS_ACCOUNT_CLIENT_ID: ${{ vars.DATABRICKS_ACCOUNT_CLIENT_ID }}
   DATABRICKS_ACCOUNT_CLIENT_SECRET: ${{ secrets.DATABRICKS_ACCOUNT_CLIENT_SECRET }}
   PULSAR_JWT_SECRET_KEY_BASE64: ${{ secrets.PULSAR_JWT_SECRET_KEY_BASE64 }}
+  PULSAR_JWT_TOKEN: ${{ secrets.PULSAR_JWT_TOKEN }}
   
 jobs:
   terraform:
@@ -68,6 +69,7 @@ jobs:
           echo "databricks_account_client_id=\"${DATABRICKS_ACCOUNT_CLIENT_ID}\"" >> aws.auto.tfvars
           echo "databricks_account_client_secret=\"${DATABRICKS_ACCOUNT_CLIENT_SECRET}\"" >> aws.auto.tfvars
           echo "pulsar_jwt_secret_key_base64=\"${PULSAR_JWT_SECRET_KEY_BASE64}\"" >> aws.auto.tfvars
+          echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
           
 
       # - run: terraform state rm module.snowflake

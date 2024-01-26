@@ -39,3 +39,5 @@ variable databricks_account_client_secret {
 }
 
 variable pulsar_jwt_secret_key_base64 {}
+
+variable pulsar_jwt_token {}
