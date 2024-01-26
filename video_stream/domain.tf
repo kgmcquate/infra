@@ -30,7 +30,7 @@ resource "aws_lb" "linux-alb" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = var.security_group_ids
-  subnets            = [var.subnet_id]
+  subnets            = var.subnet_ids
   enable_deletion_protection = false
   enable_http2               = false
 }
