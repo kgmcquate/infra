@@ -20,7 +20,7 @@ data "aws_acm_certificate" "tls_cert" {
 
 # aws_acm_certificate.tls_cert.certificate_chain
 
-# Create an Application Load Balancer
+# Create an Application Load Balancer to allow ACM TLS cert use
 resource "aws_lb" "linux-alb" {
   name               = "linux-alb"
   internal           = true
@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "linux-alb-target-group-http" {
   name     = "linux-alb-tg-http"
   port     = 8080
   protocol = "HTTP"
-  vpc_id   = module.video_stream_pulsar.v
+  vpc_id   = var.vpc_id
   
   deregistration_delay = 60
   stickiness {
