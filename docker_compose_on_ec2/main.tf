@@ -93,4 +93,6 @@ resource "aws_instance" "this" {
         },
         var.tags
     )
+
+    provisioner "local-exec" { command = "aws ec2 wait instance-status-ok --instance-ids ${self.id}" }
 }
