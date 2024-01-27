@@ -89,6 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs: terraform
+    # container: apachepulsar/pulsar:latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -97,7 +98,12 @@ jobs:
         working-directory: pulsar/
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
+      # - name: create topic
+      #   run: |
+      #     bin/pulsar-admin tenant create video_stream
+      #     bin/pulsar-admin namespaces create video_stream 
+      #     bin/pulsar-admin namespace create video_stream
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -121,13 +127,13 @@ jobs:
       - name: refresh
         run: terraform apply -refresh-only -auto-approve
           
-      # # Generates an execution plan for Terraform
-      # - name: Terraform Plan
-      #   run: terraform plan
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        run: terraform plan
 
-      #   # On push to "main", build or change infrastructure according to Terraform configuration files
-      #   # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-      # - name: Terraform Apply
-      #   # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      #   run: terraform apply -auto-approve -input=false
+        # On push to "main", build or change infrastructure according to Terraform configuration files
+        # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
 
