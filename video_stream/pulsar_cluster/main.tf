@@ -24,7 +24,7 @@ data "template_file" "docker-compose" {
 }
 
 module "video_stream_pulsar" {
-    source =  "../docker_compose_on_ec2"
+    source =  "../../docker_compose_on_ec2"
     name = "video_stream_pulsar"
     key_name = var.ssh_keypair
     instance_type = "t4g.small"

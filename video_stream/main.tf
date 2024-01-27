@@ -24,5 +24,5 @@ module pulsar {
     superuser_name = module.pulsar_cluster.superuser_name
     cluster_name = module.pulsar_cluster.cluster_name
 
-    depends_on = [ module.pulsar_cluster ]
+    # depends_on = [ module.pulsar_cluster ]
 }
