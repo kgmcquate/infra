@@ -17,12 +17,12 @@ module pulsar_cluster {
     jwt_token = var.jwt_token
 }
 
-module pulsar {
-    source = "./pulsar"
-    broker_host = module.pulsar_cluster.broker_host
-    broker_port = module.pulsar_cluster.broker_api_port
-    superuser_name = module.pulsar_cluster.superuser_name
-    cluster_name = module.pulsar_cluster.cluster_name
-    jwt_token = var.jwt_token
-    # depends_on = [ module.pulsar_cluster ]
-}
+# module pulsar {
+#     source = "./pulsar"
+#     broker_host = module.pulsar_cluster.broker_host
+#     broker_port = module.pulsar_cluster.broker_api_port
+#     superuser_name = module.pulsar_cluster.superuser_name
+#     cluster_name = module.pulsar_cluster.cluster_name
+#     jwt_token = var.jwt_token
+#     # depends_on = [ module.pulsar_cluster ]
+# }
