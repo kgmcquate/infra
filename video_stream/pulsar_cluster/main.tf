@@ -4,6 +4,7 @@ variable security_group_ids {}
 variable availability_zones {}
 variable ssh_keypair {}
 variable jwt_secret_key_base64 {}
+variable jwt_token {}
 
 locals {
     domain = "kevin-mcquate.net"
