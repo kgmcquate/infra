@@ -72,7 +72,7 @@ jobs:
           echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
           
 
-      #- run: terraform state rm module.video_stream.pulsar_tenant.tenant  && terraform state rm module.video_stream.pulsar_namespace.namespace
+      - run: terraform state rm module.video_stream.module.pulsar.pulsar_namespace.namespace  && terraform state rm module.video_stream.module.pulsar.pulsar_tenant.tenant
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
