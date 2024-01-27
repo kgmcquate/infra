@@ -99,7 +99,7 @@ services:
       bookie:
         condition: service_started
     ports:
-      - "6650:6650"
+      # - "6650:6650"
       - "8080:${broker_port}"
     volumes:
       - /root/key/:/pulsar/key/
