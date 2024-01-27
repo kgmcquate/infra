@@ -91,7 +91,7 @@ services:
       - PULSAR_CONF_managedLedgerDefaultWriteQuorum=1
       - PULSAR_CONF_managedLedgerDefaultAckQuorum=1
       # - PULSAR_CONF_advertisedAddress=broker
-      # - PULSAR_CONF_advertisedListeners=external:pulsar://127.0.0.1:6650
+      # - PULSAR_CONF_advertisedListeners=external:pulsar://${broker_domain}:${broker_pulsar_port}
       - PULSAR_MEM=-Xms128m -Xmx128m -XX:MaxDirectMemorySize=128m
     depends_on:
       zookeeper:

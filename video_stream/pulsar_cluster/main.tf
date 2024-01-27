@@ -19,6 +19,7 @@ locals {
 data "template_file" "docker-compose" {
   template = "${file("${path.module}/docker-compose.template.yml")}"
   vars = {
+    broker_domain = local.pulsar_domain
     broker_api_port = "${local.broker_api_port}"
     broker_pulsar_port =  "${local.broker_pulsar_port}"
     cluster_name = local.cluster_name

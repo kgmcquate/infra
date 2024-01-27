@@ -17,7 +17,7 @@ resource pulsar_tenant tenant {
 resource pulsar_namespace namespace {
     tenant = "video_stream"
     namespace = "video_stream"
-    permission_grant = {
+    permission_grant {
         actions = ["create"]
         role = "superuser"
     }
