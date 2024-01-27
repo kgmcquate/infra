@@ -2,6 +2,7 @@ variable broker_host {}
 variable broker_port {}
 variable superuser_name {}
 variable cluster_name {}
+variable jwt_token {}
 
 resource pulsar_tenant tenant {
     tenant = "video_stream"

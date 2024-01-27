@@ -14,7 +14,6 @@ module pulsar_cluster {
     vpc_id = var.vpc_id
     ssh_keypair = var.ssh_keypair
     jwt_secret_key_base64 = var.jwt_secret_key_base64
-    jwt_token = var.jwt_token
 }
 
 module pulsar {
@@ -23,6 +22,6 @@ module pulsar {
     broker_port = module.pulsar_cluster.broker_port
     superuser_name = module.pulsar_cluster.superuser_name
     cluster_name = module.pulsar_cluster.cluster_name
-
+    jwt_token = var.jwt_token
     # depends_on = [ module.pulsar_cluster ]
 }
