@@ -25,11 +25,11 @@ resource pulsar_namespace namespace {
     
 }
 
-# resource pulsar_topic raw_frames {
-#     tenant = "video_stream"
-#     namespace = "video_stream"
-#     topic_name = "raw-livestream-frames"
-#     topic_type = "persistent"
-#     partitions = 4
-#     depends_on = [ pulsar_tenant.tenant, pulsar_namespace.namespace ]
-# }
+resource pulsar_topic raw_frames {
+    tenant = "video_stream"
+    namespace = "video_stream"
+    topic_name = "raw-livestream-frames"
+    topic_type = "persistent"
+    partitions = 4
+    depends_on = [ pulsar_tenant.tenant, pulsar_namespace.namespace ]
+}

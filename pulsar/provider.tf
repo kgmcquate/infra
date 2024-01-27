@@ -9,6 +9,6 @@ terraform {
 }
 
 provider pulsar {
-    web_service_url = "http://pulsar.kevin-mcquate.net:8080" # Use IP from the Ec2 module to create EC2 before running provider # ${local.pulsar_domain}
+    web_service_url = "http://pulsar.kevin-mcquate.net:8080"
     token           = var.pulsar_jwt_token
 }
