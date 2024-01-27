@@ -19,7 +19,7 @@ resource pulsar_namespace namespace {
     #     actions = ["create"]
     #     role = "superuser"
     # }
-    # depends_on = [ pulsar_tenant.tenant ]
+    depends_on = [ pulsar_tenant.tenant ]
     
 }
 
