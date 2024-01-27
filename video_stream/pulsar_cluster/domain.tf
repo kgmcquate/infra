@@ -2,10 +2,6 @@ data "aws_route53_zone" "primary" {
   name = local.domain
 }
 
-locals {
-    pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
-}
-
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.primary.zone_id
   name    = local.pulsar_domain

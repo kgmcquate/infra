@@ -12,6 +12,7 @@ locals {
     broker_port = 8080
     cluster_name = "cluster-a"
     superuser_name = "superuser"
+    pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
 }
 
 data "template_file" "docker-compose" {

@@ -4,6 +4,12 @@ resource "aws_secretsmanager_secret" "pulsar_admin_token" {
 
 resource "aws_secretsmanager_secret_version" "pulsar_admin_token" {
   secret_id     = aws_secretsmanager_secret.pulsar_admin_token.id
-  secret_string = var.jwt_token
+  secret_string = jsonencode(
+    {
+      token = var.jwt_token
+      user = local.superuser_name
+      broker_host = local.pulsar_domain
+    }
+  )
 }
 
