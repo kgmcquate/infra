@@ -17,7 +17,7 @@ terraform {
 }
 
 provider pulsar {
-    web_service_url = "http://${local.pulsar_domain}:${local.broker_port}" #"http://localhost:8080"
+    web_service_url = "http://${module.video_stream_pulsar.public_ip}:${local.broker_port}" #"http://localhost:8080" ${local.pulsar_domain}
     token           = var.jwt_token
 }
 
