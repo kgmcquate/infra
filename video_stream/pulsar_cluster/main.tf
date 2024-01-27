@@ -9,7 +9,8 @@ variable jwt_token {}
 locals {
     domain = "kevin-mcquate.net"
     pulsar_superuser_secret_name = "pulsar_video_stream_superuser_token"
-    broker_port = 8080
+    broker_api_port = 8080
+    broker_pulsar_port = 6650
     cluster_name = "cluster-a"
     superuser_name = "superuser"
     pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
@@ -18,7 +19,8 @@ locals {
 data "template_file" "docker-compose" {
   template = "${file("${path.module}/docker-compose.template.yml")}"
   vars = {
-    broker_port = "${local.broker_port}"
+    broker_api_port = "${local.broker_api_port}"
+    broker_pulsar_port =  "${local.broker_pulsar_port}"
     cluster_name = local.cluster_name
     superuser_name = local.superuser_name
   }

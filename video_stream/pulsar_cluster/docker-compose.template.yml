@@ -99,8 +99,8 @@ services:
       bookie:
         condition: service_started
     ports:
-      # - "6650:6650"
-      - "8080:${broker_port}"
+      - "6650:${broker_pulsar_port}"
+      - "8080:${broker_api_port}"
     volumes:
       - /root/key/:/pulsar/key/
     command: bash -c "bin/apply-config-from-env-with-prefix.py PULSAR_CONF_ conf/broker.conf && exec bin/pulsar broker"
