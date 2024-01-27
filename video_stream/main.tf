@@ -8,11 +8,11 @@ variable jwt_token {}
 
 module pulsar_cluster {
     source = "./pulsar_cluster"
-    subnet_ids = module.vpc.public_subnets
-    availability_zones = module.vpc.azs
-    security_group_ids = [aws_security_group.allow_all.id]
-    vpc_id = module.vpc.vpc_id
-    ssh_keypair = aws_key_pair.ssh.key_name
+    subnet_ids = var.subnet_ids
+    availability_zones = var.availability_zones
+    security_group_ids = var.security_group_ids
+    vpc_id = var.vpc_id
+    ssh_keypair = var.ssh_keypair
     jwt_secret_key_base64 = var.jwt_secret_key_base64
     jwt_token = var.jwt_token
 }
