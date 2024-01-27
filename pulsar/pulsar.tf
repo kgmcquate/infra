@@ -1,9 +1,14 @@
 variable pulsar_jwt_token {}
-
+variable superuser_role {
+    default = "superuser"
+}
+variable cluster_name {
+    default = "cluster-a"
+}
 
 resource pulsar_tenant tenant {
     tenant = "video_stream"
-    admin_roles = [var.superuser_name]
+    admin_roles = [var.superuser_role]
     allowed_clusters = [var.cluster_name]
 
 #     depends_on = [ var.broker_host ]
