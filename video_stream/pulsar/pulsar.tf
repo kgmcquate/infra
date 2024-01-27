@@ -9,7 +9,7 @@ resource pulsar_tenant tenant {
     admin_roles = [var.superuser_name]
     allowed_clusters = [var.cluster_name]
 
-    # depends_on = [ module.video_stream_pulsar ]
+    depends_on = [ var.broker_host ]
 }
 
 resource pulsar_namespace namespace {
@@ -19,7 +19,7 @@ resource pulsar_namespace namespace {
     #     actions = ["create"]
     #     role = "superuser"
     # }
-    depends_on = [ pulsar_tenant.tenant ]
+    depends_on = [ pulsar_tenant.tenant, var.broker_host ]
     
 }
 
