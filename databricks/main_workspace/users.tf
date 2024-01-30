@@ -29,10 +29,12 @@ resource "databricks_user" "me2" {
 # }
 
 data "databricks_group" "admins" {
+  provider = databricks.main-ws
   display_name = "admins"
 }
 
 resource "databricks_group_member" "i-am-admin" {
+  provider = databricks.main-ws
   group_id  = data.databricks_group.admins.id
   member_id = databricks_user.me2.id
 }
