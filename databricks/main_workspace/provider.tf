@@ -10,4 +10,4 @@ terraform {
 provider "databricks" {
   alias ="main-ws"
 }
-provider datbricks {}
+provider databricks {}
