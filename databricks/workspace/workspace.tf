@@ -35,13 +35,13 @@ resource "databricks_mws_workspaces" "this" {
   }
 }
 
-data "databricks_user" "me" {
-  provider = databricks
-  user_name = "kgmcquate@gmail.com"
-}
+# data "databricks_user" "me" {
+#   provider = databricks
+#   user_name = "kgmcquate@gmail.com"
+# }
 
-resource "databricks_mws_permission_assignment" "add_user" {
-  workspace_id = databricks_mws_workspaces.this.workspace_id
-  principal_id = data.databricks_user.me.id
-  permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
-}
+# resource "databricks_mws_permission_assignment" "add_user" {
+#   workspace_id = databricks_mws_workspaces.this.workspace_id
+#   principal_id = data.databricks_user.me.id
+#   permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
+# }
