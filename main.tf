@@ -36,7 +36,7 @@ module "databricks" {
     databricks.main-ws = databricks.main-ws
   }
 
-  name = "main"
+  name = "dataricks-main"
   databricks_account_id = var.databricks_account_id
   region = "us-east-1"
 }
