@@ -6,7 +6,7 @@ module aws {
   databricks_account_id = var.databricks_account_id
 }
 
-module workspace {
+module main_workspace {
   source                = "./workspace"
   name = var.name
   region = var.region
@@ -20,8 +20,8 @@ module workspace {
 
 
 
-module main_workspace {
-  source                = "./main_workspace"
+module main_workspace_objects {
+  source                = "./main_workspace_objects"
 
   # admin_user = data.databricks_user.me
 
