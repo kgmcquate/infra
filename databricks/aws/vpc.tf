@@ -9,7 +9,7 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_nat_gateway   = false # using EC2 for NAT gateway
-  # map_public_ip_on_launch = true
+  map_public_ip_on_launch = true
   # single_nat_gateway   = true
   # create_igw           = true
 
