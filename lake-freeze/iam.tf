@@ -123,7 +123,7 @@ resource "aws_iam_role" "backend_role" {
             Action   = ["iam:PassRole"]
             Effect   = "Allow"
             Resource = [
-                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/ops.emr-serverless.amazonaws.com/AWSServiceRoleForAmazonEMRServerless"
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
             ]
             }
         ]
