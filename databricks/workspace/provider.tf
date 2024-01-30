@@ -6,3 +6,7 @@ terraform {
         }
     }
 }
+
+provider "databricks" {
+  alias ="main-ws"
+}
