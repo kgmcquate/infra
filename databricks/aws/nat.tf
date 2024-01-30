@@ -1,8 +1,14 @@
+resource "aws_key_pair" "ssh" {
+  key_name = "nat_ssh_key"
+  public_key = tls_private_key.ssh.public_key_openssh
+}
+
+
 module "nat" {
   source = "int128/nat-instance/aws"
 
   name                        = "nat"
-  key_name                    = module.vpc.ssh_keypair
+  key_name                    = aws_key_pair.ssh
   vpc_id                      = module.vpc.vpc_id
   public_subnet               = module.vpc.public_subnets[0]
   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
