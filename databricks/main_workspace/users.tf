@@ -22,8 +22,8 @@ resource "databricks_user" "me2" {
 
 
 
-# resource "databricks_permission_assignment" "add_user" {
-#   provider = databricks.main-ws
-#   principal_id = databricks_user.me2.id
-#   permissions  = ["USER", "ADMIN"]
-# }
+resource "databricks_permission_assignment" "add_user" {
+  provider = databricks.main-ws
+  principal_id = databricks_user.me2.id
+  permissions  = ["USER", "ADMIN"]
+}
