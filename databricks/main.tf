@@ -20,13 +20,13 @@ module workspace {
 
 
 
-# module main_workspace {
-#   source                = "./main_workspace"
+module main_workspace {
+  source                = "./main_workspace"
 
-#   # admin_user = data.databricks_user.me
+  # admin_user = data.databricks_user.me
 
-#   providers = {
-#     databricks.main-ws = databricks.main-ws
-#   }
-#   depends_on = [module.workspace]
-# }
+  providers = {
+    databricks.main-ws = databricks.main-ws
+  }
+  depends_on = [module.workspace]
+}
