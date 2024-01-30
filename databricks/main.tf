@@ -29,4 +29,5 @@ module main_workspace {
   providers = {
     databricks.main-ws = databricks.main-ws
   }
+  depends_on = [module.workspace]
 }
