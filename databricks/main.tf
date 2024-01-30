@@ -23,7 +23,7 @@ data "databricks_user" "me" {
   user_name = "kgmcquate@gmail.com"
 }
 
-module workspace {
+module main_workspace {
   source                = "./main_workspace"
 
   providers = {
