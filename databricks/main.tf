@@ -18,15 +18,12 @@ module workspace {
   vpc_id = module.aws.vpc_id
 }
 
-data "databricks_user" "me" {
-  provider = databricks
-  user_name = "kgmcquate@gmail.com"
-}
+
 
 module main_workspace {
   source                = "./main_workspace"
 
-  admin_user = data.databricks_user.me
+  # admin_user = data.databricks_user.me
 
   providers = {
     databricks.main-ws = databricks.main-ws

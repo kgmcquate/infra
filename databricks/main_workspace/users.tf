@@ -16,16 +16,11 @@
 #   workspace_access = true
 # }
 
-variable "admin_user" {
+# variable "admin_user" {
   
-}
+# }
 
-resource "databricks_mws_permission_assignment" "add_user" {
-  provider = databricks.main-ws
-  workspace_id = module.workspace.workspace_id
-  principal_id = var.admin_user.id
-  permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
-}
+
 
 # resource "databricks_permission_assignment" "add_user" {
 #   provider = databricks.main-ws

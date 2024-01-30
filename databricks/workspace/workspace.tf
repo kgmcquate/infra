@@ -35,9 +35,13 @@ resource "databricks_mws_workspaces" "this" {
   }
 }
 
-# resource "databricks_mws_permission_assignment" "add_user" {
-#   provider = databricks.main-ws
-#   workspace_id = module.workspace.workspace_id
-#   principal_id = databricks_user.me2.id
-#   permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
-# }
+data "databricks_user" "me" {
+  provider = databricks
+  user_name = "kgmcquate@gmail.com"
+}
+
+resource "databricks_mws_permission_assignment" "add_user" {
+  workspace_id = databricks_mws_workspaces.this.workspace_id
+  principal_id = data.databricks_user.me.id
+  permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
+}
