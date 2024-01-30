@@ -124,6 +124,7 @@ resource "aws_iam_role" "backend_role" {
             Effect   = "Allow"
             Resource = [
                 "*"
+                # "arn:aws:iam::1234567890:role/JobRuntimeRoleForEMRServerless"
                 # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*" #,
                 # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/*"
             ]
