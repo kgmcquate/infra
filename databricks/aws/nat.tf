@@ -12,7 +12,7 @@ module "nat" {
   source = "int128/nat-instance/aws"
 
   name                        = "nat"
-  key_name                    = aws_key_pair.ssh
+  key_name                    = aws_key_pair.ssh.key_name
   vpc_id                      = module.vpc.vpc_id
   public_subnet               = module.vpc.public_subnets[0]
   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
