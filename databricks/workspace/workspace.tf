@@ -34,3 +34,10 @@ resource "databricks_mws_workspaces" "this" {
     comment = "Terraform"
   }
 }
+
+resource "databricks_mws_permission_assignment" "add_user" {
+  provider = databricks.main-ws
+  workspace_id = module.workspace.workspace_id
+  principal_id = databricks_user.me2.id
+  permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
+}

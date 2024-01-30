@@ -26,6 +26,8 @@ data "databricks_user" "me" {
 module main_workspace {
   source                = "./main_workspace"
 
+  admin_user = data.databricks_user.me
+
   providers = {
     databricks.main-ws = databricks.main-ws
   }

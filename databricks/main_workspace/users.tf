@@ -1,12 +1,12 @@
 
 
-resource "databricks_user" "me2" {
-  provider = databricks.main-ws
-  user_name = "fuzzh3d@gmail.com"
-  allow_cluster_create       = true
-  allow_instance_pool_create = true
-  workspace_access = true
-}
+# resource "databricks_user" "me2" {
+#   provider = databricks.main-ws
+#   user_name = "fuzzh3d@gmail.com"
+#   allow_cluster_create       = true
+#   allow_instance_pool_create = true
+#   workspace_access = true
+# }
 
 # resource "databricks_entitlements" "me" {
 #   provider = databricks
@@ -16,12 +16,16 @@ resource "databricks_user" "me2" {
 #   workspace_access = true
 # }
 
-# resource "databricks_mws_permission_assignment" "add_user" {
-#   provider = databricks.main-ws
-#   workspace_id = module.workspace.workspace_id
-#   principal_id = databricks_user.me2.id
-#   permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
-# }
+variable "admin_user" {
+  
+}
+
+resource "databricks_mws_permission_assignment" "add_user" {
+  provider = databricks.main-ws
+  workspace_id = module.workspace.workspace_id
+  principal_id = var.admin_user.id
+  permissions  = ["USER", "ADMIN"] # ["ADMIN"]#
+}
 
 # resource "databricks_permission_assignment" "add_user" {
 #   provider = databricks.main-ws
