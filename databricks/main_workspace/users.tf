@@ -1,7 +1,4 @@
-data "databricks_user" "me" {
-  provider = databricks
-  user_name = "kgmcquate@gmail.com"
-}
+
 
 resource "databricks_user" "me2" {
   provider = databricks.main-ws

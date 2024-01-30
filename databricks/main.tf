@@ -17,3 +17,16 @@ module workspace {
   subnet_ids = module.aws.public_subnets
   vpc_id = module.aws.vpc_id
 }
+
+data "databricks_user" "me" {
+  provider = databricks
+  user_name = "kgmcquate@gmail.com"
+}
+
+module workspace {
+  source                = "./main_workspace"
+
+  providers = {
+    databricks.main-ws = databricks.main-ws
+  }
+}
