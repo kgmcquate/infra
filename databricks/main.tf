@@ -14,7 +14,7 @@ module workspace {
   cross_account_role_arn = module.aws.cross_account_role_arn
   root_storage_bucket = module.aws.root_storage_bucket
   security_group_id = module.aws.default_security_group_id
-  subnet_ids = module.aws.public_subnets
+  subnet_ids = module.aws.private_subnets
   vpc_id = module.aws.vpc_id
 }
 
