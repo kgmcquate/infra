@@ -1,3 +1,23 @@
+# resource "aws_iam_role" "emr_interactive_role" {
+
+#   name = "service-role"
+
+#   # Terraform's "jsonencode" function converts a
+#   # Terraform expression result to valid JSON syntax.
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Action = "sts:AssumeRole"
+#         Effect = "Allow"
+#         Sid    = "AllowEc2AssumeRole"
+#         Principal = {
+#           Service = "ec2.amazonaws.com"
+#         }
+#       },
+#     ]
+#   })
+# }
 
 resource "aws_iam_role" "backend_role" {
   name = "lake-freeze-lambda-role"
@@ -91,6 +111,25 @@ resource "aws_iam_role" "backend_role" {
         ]
         })
     }
+
+    
+    inline_policy {
+        name = "PassRoleEMRServerless"
+
+        policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+            Action   = ["iam:PassRole"]
+            Effect   = "Allow"
+            Resource = [
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/ops.emr-serverless.amazonaws.com/AWSServiceRoleForAmazonEMRServerless"
+            ]
+            }
+        ]
+        })
+    }
+
 
     inline_policy {
         name = "StepFunctionsAccess"
