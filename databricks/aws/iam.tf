@@ -17,6 +17,7 @@ resource "aws_iam_role_policy" "this" {
   policy = data.databricks_aws_crossaccount_policy.this.json
 }
 
+
 resource "aws_iam_role_policy" "instance_profile_passrole_policy" {
   name   = "${var.name}-instance-profile-passrole-policy"
   role   = aws_iam_role.cross_account_role.id
