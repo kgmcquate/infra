@@ -3,36 +3,20 @@ data "databricks_aws_assume_role_policy" "this" {
 }
 
 data "databricks_aws_crossaccount_policy" "this" {
+  pass_roles = [aws_iam_role.instance_profile.arn]
 }
 
 resource "aws_iam_role" "cross_account_role" {
   name               = "${var.name}-crossaccount"
   assume_role_policy = data.databricks_aws_assume_role_policy.this.json
   tags               = var.tags
+  
 }
 
 resource "aws_iam_role_policy" "this" {
   name   = "${var.name}-policy"
   role   = aws_iam_role.cross_account_role.id
   policy = data.databricks_aws_crossaccount_policy.this.json
-}
-
-
-resource "aws_iam_role_policy" "instance_profile_passrole_policy" {
-  name   = "${var.name}-instance-profile-passrole-policy"
-  role   = aws_iam_role.cross_account_role.id
-  policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-            {
-            Action   = ["iam:PassRole"]
-            Effect   = "Allow"
-            Resource = [
-                aws_iam_role.instance_profile.arn
-            ]
-            }
-        ]
-      })
 }
 
 ## Adding 20 second timer to avoid Failed credential validation check
