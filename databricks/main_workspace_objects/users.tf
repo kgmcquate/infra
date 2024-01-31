@@ -6,6 +6,7 @@ resource "databricks_user" "me2" {
   allow_cluster_create       = true
   allow_instance_pool_create = true
   workspace_access = true
+  databricks_sql_access      = false
 }
 
 # resource "databricks_entitlements" "me" {
