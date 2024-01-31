@@ -34,6 +34,8 @@ resource "snowflake_warehouse" "dbt_testgen" {
   auto_suspend = 60 # seconds
   initially_suspended = true
   max_cluster_count = 1
+
+  # ignore_changes = ["max_cluster_count"]
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
