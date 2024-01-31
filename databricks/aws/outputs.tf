@@ -18,6 +18,10 @@ output public_subnets {
   value = module.vpc.public_subnets
 }
 
+output instance_profile_arn {
+  value = aws_iam_instance_profile.instance_profile.arn
+}
+
 
 output vpc_id {
   value = module.vpc.vpc_id

@@ -21,6 +21,7 @@ module main_workspace {
 
 module main_workspace_objects {
   source                = "./main_workspace_objects"
+  instance_profile_arn = module.aws.instance_profile_arn
 
   # admin_user = data.databricks_user.me
 

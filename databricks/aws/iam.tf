@@ -24,3 +24,50 @@ resource "time_sleep" "wait" {
     aws_iam_role_policy.this
   ]
 }
+
+
+## Instance profile
+resource "aws_iam_instance_profile" "instance_profile" {
+  name = "${var.name}_profile"
+  role = aws_iam_role.instance_profile.name
+}
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "instance_profile" {
+  name               = "${var.name}_profile"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+
+  inline_policy {
+    name = "ReadSecretsManager"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      
+    #   secretsmanager:Name
+      Statement = [
+        {
+          Action   = [
+                "secretsmanager:CreateSecret", 
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:PutSecretValue"
+            ]
+          Effect   = "Allow"
+          Resource = "*"
+        }
+      ]
+    })
+  }
+}
