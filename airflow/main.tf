@@ -33,7 +33,7 @@ module "airflow" {
     key_name = var.ssh_keypair
     instance_type = "t4g.medium"
     before_docker_compose_script = local.startup_script
-    docker_compose_str = template_file.docker-compose.rendered
+    docker_compose_str = data.template_file.docker-compose.rendered
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
     vpc_security_group_ids = var.security_group_ids
