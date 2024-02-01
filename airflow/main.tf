@@ -27,7 +27,7 @@ module "airflow" {
     source =  "../docker_compose_on_ec2"
     name = "airflow"
     key_name = var.ssh_keypair
-    instance_type = "t4g.small"
+    instance_type = "t4g.medium"
     before_docker_compose_script = local.startup_script
     docker_compose_str = file("${path.module}/docker-compose.yml")
     subnet_id = var.subnet_id

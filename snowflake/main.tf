@@ -35,7 +35,11 @@ resource "snowflake_warehouse" "dbt_testgen" {
   initially_suspended = true
   max_cluster_count = 1
 
-  # ignore_changes = ["max_cluster_count"]
+  lifecycle {
+    ignore_changes = [
+      max_cluster_count
+    ]
+  }
 }
 
 resource "snowflake_grant_privileges_to_role" "dbt_testgen_warehouse" {
@@ -96,5 +100,11 @@ resource "snowflake_grant_privileges_to_role" "dbt_testgen_accountadmin_schema" 
 
   on_schema {
     future_schemas_in_database = snowflake_database.dbt_testgen.name
+  }
+
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
   }
 }
