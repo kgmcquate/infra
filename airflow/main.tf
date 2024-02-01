@@ -10,14 +10,13 @@ variable airflow_s3_prefix {
 
 locals {
     startup_script = <<-EOF
-#!/bin/bash
-set -Eeuxo pipefail
+export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
 
 systemd-run --on-boot=1 --on-unit-active=300 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_s3_prefix} /opt/airflow/
 
-export AIRFLOW_PROJ_DIR=/opt/airflow/
+
 export _AIRFLOW_WWW_USER_PASSWORD='${random_password.password.result}'
 docker-compose up airflow-init
 

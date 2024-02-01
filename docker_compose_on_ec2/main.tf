@@ -16,7 +16,7 @@ docker --version
 
 curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-aarch64 -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-docker-compose --version
+
 
 # Write the systemd service that manages us bringing up the service
 cat > /etc/systemd/system/docker_compose_app.service <<-TEMPLATE
