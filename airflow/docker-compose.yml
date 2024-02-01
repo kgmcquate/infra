@@ -70,11 +70,11 @@ x-airflow-common:
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
-    # volumes:
-    # - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    # - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-    # - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-    # - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins 
+  volumes:
+    - ${AIRFLOW_PROJ_DIR}/dags:/opt/airflow/dags
+    - ${AIRFLOW_PROJ_DIR}/logs:/opt/airflow/logs
+    - ${AIRFLOW_PROJ_DIR}/config:/opt/airflow/config
+    - ${AIRFLOW_PROJ_DIR}/plugins:/opt/airflow/plugins 
   user: "0:0"
   depends_on:
     &airflow-common-depends-on
@@ -94,7 +94,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.25
+          cpus: '0.25'
           memory: 256M
         reservations:
           memory: 128M
@@ -208,8 +208,8 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
-    # volumes:
-    #   - ${AIRFLOW_PROJ_DIR:-.}:/sources
+    volumes:
+      - ${AIRFLOW_PROJ_DIR}:/sources
 
   airflow-cli:
     <<: *airflow-common
@@ -227,24 +227,24 @@ services:
   # You can enable flower by adding "--profile flower" option e.g. docker-compose --profile flower up
   # or by explicitly targeted on the command line e.g. docker-compose up flower.
   # See: https://docs.docker.com/compose/profiles/
-  flower:
-    <<: *airflow-common
-    command: celery flower
-    profiles:
-      - flower
-    ports:
-      - "5555:5555"
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    restart: always
-    depends_on:
-      <<: *airflow-common-depends-on
-      airflow-init:
-        condition: service_completed_successfully
+  # flower:
+  #   <<: *airflow-common
+  #   command: celery flower
+  #   profiles:
+  #     - flower
+  #   ports:
+  #     - "5555:5555"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+  #     start_period: 30s
+  #   restart: always
+  #   depends_on:
+  #     <<: *airflow-common-depends-on
+  #     airflow-init:
+  #       condition: service_completed_successfully
 
 # volumes:
 #   postgres-db-volume:
