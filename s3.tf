@@ -47,3 +47,8 @@ resource "aws_s3_bucket_policy" "allow_public_read_access" {
   })
 }
 
+
+resource "aws_s3_bucket" "data_zone" {
+  bucket = "data-zone-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  force_destroy = true
+}
