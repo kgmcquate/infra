@@ -43,7 +43,7 @@ services:
     command:
       - -c
       - |
-        apt install 
+        apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
     # ports:
     #   - "8793:8793"
 

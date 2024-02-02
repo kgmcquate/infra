@@ -16,20 +16,20 @@ mkdir -p /opt/airflow/
 
 systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=120 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
-echo 'POSTGRES_USER=airflow' > /root/.env
-echo 'POSTGRES_PASSWORD=airflow' > /root/.env
-echo 'POSTGRES_DB=airflow' > /root/.env
-echo 'AIRFLOW__CORE__FERNET_KEY=' > /root/.env
-echo 'AIRFLOW__CORE__EXECUTOR=LocalExecutor' > /root/.env
-echo 'AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True' > /root/.env
-echo 'AIRFLOW__CORE__LOAD_EXAMPLES=False' > /root/.env
-echo 'AIRFLOW_UID=0' > /root/.env
-echo 'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow' > /root/.env
-echo 'AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS=False' > /root/.env
-echo '_AIRFLOW_DB_UPGRADE=True' > /root/.env
-echo '_AIRFLOW_WWW_USER_CREATE=True' > /root/.env
-echo '_AIRFLOW_WWW_USER_USERNAME=airflow' > /root/.env
-echo '_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}' > /root/.env
+echo 'POSTGRES_USER=airflow' >> /root/.env
+echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
+echo 'POSTGRES_DB=airflow'>> /root/.env
+echo 'AIRFLOW__CORE__FERNET_KEY=' >> /root/.env
+echo 'AIRFLOW__CORE__EXECUTOR=LocalExecutor' >> /root/.env
+echo 'AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True' >> /root/.env
+echo 'AIRFLOW__CORE__LOAD_EXAMPLES=False' >> /root/.env
+echo 'AIRFLOW_UID=0' >> /root/.env
+echo 'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow' >> /root/.env
+echo 'AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS=False' >> /root/.env
+echo '_AIRFLOW_DB_UPGRADE=True' >> /root/.env
+echo '_AIRFLOW_WWW_USER_CREATE=True' >> /root/.env
+echo '_AIRFLOW_WWW_USER_USERNAME=airflow' >> /root/.env
+echo '_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}' >> /root/.env
 
 docker-compose up airflow-init
 EOF
