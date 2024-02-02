@@ -20,12 +20,12 @@ docker-compose up airflow-init
 EOF
 }
 
-data "template_file" "docker-compose" {
-  template = "${file("${path.module}/docker-compose.template.yml")}"
-  vars = {
-    airflow_admin_password = random_password.password.result
-  }
-}
+# data "template_file" "docker-compose" {
+#   template = "${file("${path.module}/docker-compose.template.yml")}"
+#   vars = {
+#     airflow_admin_password = random_password.password.result
+#   }
+# }
 
 module "airflow" {
     source =  "../docker_compose_on_ec2"
@@ -33,7 +33,7 @@ module "airflow" {
     key_name = var.ssh_keypair
     instance_type = "t4g.medium"
     before_docker_compose_script = local.startup_script
-    docker_compose_str = data.template_file.docker-compose.rendered
+    docker_compose_str = replace(file("${path.module}/docker-compose.template.yml"), "airflow_admin_password", random_password.password.result)
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
     vpc_security_group_ids = var.security_group_ids

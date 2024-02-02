@@ -205,7 +205,7 @@ services:
       _AIRFLOW_DB_MIGRATE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${airflow_admin_password}
+      _AIRFLOW_WWW_USER_PASSWORD: airflow_admin_password
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
     volumes:
