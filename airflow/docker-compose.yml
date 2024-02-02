@@ -37,13 +37,13 @@ services:
   scheduler:
     <<: [*common, *depends-on]
     container_name: airflow-scheduler
-    # command: scheduler
+    command: scheduler
     restart: on-failure
-    command:
-      - -c
-      - |
-        apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
-        scheduler
+    # command:
+    #   - -c
+    #   - |
+    #     apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+    #     scheduler
     # ports:
     #   - "8793:8793"
 
