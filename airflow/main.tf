@@ -23,7 +23,7 @@ EOF
 data "template_file" "docker-compose" {
   template = "${file("${path.module}/docker-compose.template.yml")}"
   vars = {
-    _AIRFLOW_WWW_USER_PASSWORD = random_password.password.result
+    airflow_admin_password = random_password.password.result
   }
 }
 
