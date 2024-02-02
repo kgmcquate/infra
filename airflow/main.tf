@@ -16,7 +16,7 @@ mkdir -p /opt/airflow/
 
 systemd-run --on-boot=1 --on-unit-active=300 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_s3_prefix} /opt/airflow/
 
-echo '_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}' > /root/.env
+echo '_AIRFLOW_WWW_USER_PASSWORD='${random_password.airflow_admin_password.result}'' > /root/.env
 docker-compose up airflow-init
 EOF
 }
@@ -28,6 +28,7 @@ module "airflow" {
     instance_type = "t4g.medium"
     before_docker_compose_script = local.startup_script
     docker_compose_str = file("${path.module}/docker-compose.template.yml") #replace(, "airflow_admin_password", random_password.password.result)
+    iam_instance_profile = aws_iam_instance_profile.airflow_profile.name
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
     vpc_security_group_ids = var.security_group_ids
