@@ -32,7 +32,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 TEMPLATE
 
-cat > docker-compose.yml <<-TEMPLATE
+cat > docker-compose.yml <<-"TEMPLATE"
 ${var.docker_compose_str}
 TEMPLATE
 

@@ -16,17 +16,10 @@ mkdir -p /opt/airflow/
 
 systemd-run --on-boot=1 --on-unit-active=300 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_s3_prefix} /opt/airflow/
 
-echo "_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}" > .env
+echo "_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}" > /root/.env
 docker-compose up airflow-init
 EOF
 }
-
-# data "template_file" "docker-compose" {
-#   template = "${file("${path.module}/docker-compose.template.yml")}"
-#   vars = {
-#     airflow_admin_password = random_password.password.result
-#   }
-# }
 
 module "airflow" {
     source =  "../docker_compose_on_ec2"
