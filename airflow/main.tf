@@ -4,8 +4,8 @@ variable availability_zone {}
 variable ssh_keypair {}
 variable domain {}
 variable airflow_s3_bucket {}
-variable airflow_s3_prefix {
-    default = "airflow/"
+variable airflow_dags_s3_prefix {
+    default = "airflow/dags/"
 }
 
 locals {
@@ -14,7 +14,7 @@ export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
 
-systemd-run --on-boot=1 --on-unit-active=300 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_s3_prefix} /opt/airflow/
+systemd-run --unit=sync_airflow_dags --on-boot=1 --on-unit-active=300 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
 echo '_AIRFLOW_WWW_USER_PASSWORD=${random_password.airflow_admin_password.result}' > /root/.env
 docker-compose up airflow-init
