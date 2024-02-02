@@ -1,0 +1,89 @@
+name: 'Terraform Destroy Temp objects'
+
+on:
+  schedule:
+    - cron: "0 21 * * *" #4pm cst
+
+
+permissions:
+  contents: read
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "117819748843"
+  POSTGRES_PWD: ${{ secrets.POSTGRES_PWD }}
+  SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+  DBT_TESTGEN_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_TESTGEN_SNOWFLAKE_PASSWORD }}
+  REDSHIFT_PASSWORD: ${{ secrets.REDSHIFT_PASSWORD }}
+  DATABRICKS_ACCOUNT_ID: ${{ vars.DATABRICKS_ACCOUNT_ID }}
+  DATABRICKS_ACCOUNT_CLIENT_ID: ${{ vars.DATABRICKS_ACCOUNT_CLIENT_ID }}
+  DATABRICKS_ACCOUNT_CLIENT_SECRET: ${{ secrets.DATABRICKS_ACCOUNT_CLIENT_SECRET }}
+  PULSAR_JWT_SECRET_KEY_BASE64: ${{ secrets.PULSAR_JWT_SECRET_KEY_BASE64 }}
+  PULSAR_JWT_TOKEN: ${{ secrets.PULSAR_JWT_TOKEN }}
+  
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Initialize
+        run: >
+          terraform init
+          -backend-config="bucket=terraform-state-${AWS_ACCOUNT_ID}-${AWS_REGION}"
+          -backend-config="key=infra"
+ 
+        # access_key = var.AWS_ACCESS_KEY_ID 
+        # secret_key = var.AWS_SECRET_ACCESS_KEY
+
+
+      - name: Write Terraform Vars
+        run: |
+          echo "AWS_REGION=\"${AWS_REGION}\"" >> aws.auto.tfvars
+          echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> aws.auto.tfvars
+          echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
+          echo "POSTGRES_PWD=\"${POSTGRES_PWD}\"" >> aws.auto.tfvars
+          echo "snowflake_password=\"${SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
+          echo "dbt_testgen_snowflake_password=\"${DBT_TESTGEN_SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
+          echo "dbt_testgen_redshift_password=\"${REDSHIFT_PASSWORD}\"" >> aws.auto.tfvars
+          echo "databricks_account_id=\"${DATABRICKS_ACCOUNT_ID}\"" >> aws.auto.tfvars
+          echo "databricks_account_client_id=\"${DATABRICKS_ACCOUNT_CLIENT_ID}\"" >> aws.auto.tfvars
+          echo "databricks_account_client_secret=\"${DATABRICKS_ACCOUNT_CLIENT_SECRET}\"" >> aws.auto.tfvars
+          echo "pulsar_jwt_secret_key_base64=\"${PULSAR_JWT_SECRET_KEY_BASE64}\"" >> aws.auto.tfvars
+          echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
+          
+
+      #- run: terraform state rm module.video_stream.module.pulsar.pulsar_namespace.namespace  && terraform state rm module.video_stream.module.pulsar.pulsar_tenant.tenant
+
+      # Generates an execution plan for Terraform
+      # - name: Terraform Plan
+      #   run: terraform plan 
+
+        # On push to "main", build or change infrastructure according to Terraform configuration files
+        # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      - name: Terraform Destroy
+        # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: >
+          terraform apply
+          -target=module.airflow.module.airflow.aws_instance.this
+          -target=module.video_stream.module.pulsar_cluster.module.video_stream_pulsar.aws_instance.this
+          -target=module.databricks.module.aws.module.nat.aws_autoscaling_group.this

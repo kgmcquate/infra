@@ -14,6 +14,20 @@ locals {
     cluster_name = "cluster-a"
     superuser_name = "superuser"
     pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
+
+
+    create_tenants_script = <<-EOF
+    bin/pulsar-admin tenants create video_stream
+    EOF
+
+    create_namespaces_script =  <<-EOF
+    bin/pulsar-admin namespaces create video_stream/video_stream"
+    EOF
+
+    create_topics_script = <<-EOF
+    bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/raw-livestream-frames -p 4
+    bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/processed-livestream-frames -p 4
+    EOF
 }
 
 data "template_file" "docker-compose" {
@@ -35,6 +49,7 @@ module "video_stream_pulsar" {
     iam_instance_profile = aws_iam_instance_profile.pulsar_profile.name
     docker_compose_str = data.template_file.docker-compose.rendered
     before_docker_compose_script = "mkdir -p /root/key/ && echo \"${var.jwt_secret_key_base64}\" | base64 -d > /root/key/secret.key "
+    after_docker_compose_script = local.create_tenants_script + local.create_namespaces_script + local.create_topics_script
     subnet_id = var.subnet_ids[2]
     availability_zone = var.availability_zones[2]
     vpc_security_group_ids = var.security_group_ids

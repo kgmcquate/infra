@@ -1,8 +1,8 @@
-name: 'Terraform'
+name: 'Terraform Destroy Temp objects'
 
 on:
   schedule:
-    - cron: "* 6 * * *"
+    - cron: "0 3 * * *" # 10pm cst
 
 
 permissions:
@@ -82,4 +82,8 @@ jobs:
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
       - name: Terraform Destroy
         # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: terraform destroy --target aws_instance.demo_vm_1
+        run: >
+          terraform apply -destroy
+          -target=module.airflow.module.airflow.aws_instance.this
+          -target=module.video_stream.module.pulsar_cluster.module.video_stream_pulsar.aws_instance.this
+          -target=module.databricks.module.aws.module.nat.aws_autoscaling_group.this

@@ -41,7 +41,7 @@ module "airflow" {
     key_name = var.ssh_keypair
     instance_type = "t4g.medium"
     before_docker_compose_script = local.startup_script
-    docker_compose_str = file("${path.module}/docker-compose.yml") #replace(, "airflow_admin_password", random_password.password.result)
+    docker_compose_str = file("${path.module}/docker-compose.yml")
     iam_instance_profile = aws_iam_instance_profile.airflow_profile.name
     subnet_id = var.subnet_id
     availability_zone = var.availability_zone
