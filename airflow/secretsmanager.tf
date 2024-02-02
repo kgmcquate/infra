@@ -1,7 +1,6 @@
 resource "random_password" "airflow_admin_password" {
-  length           = 20
-  special          = true
-  override_special = "!#%&*()-_=+[]<>:?"
+  length           = 32
+  special          = false
 }
 
 resource "aws_secretsmanager_secret" "airflow_admin_password" {
