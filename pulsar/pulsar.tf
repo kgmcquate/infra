@@ -40,5 +40,5 @@ resource pulsar_topic processed_frames {
     topic_name = "processed-livestream-frames"
     topic_type = "non-persistent"
     partitions = 4
-    # depends_on = [ pulsar_tenant.tenant, pulsar_namespace.namespace ]
+    depends_on = [ pulsar_tenant.tenant, pulsar_namespace.namespace ]
 }

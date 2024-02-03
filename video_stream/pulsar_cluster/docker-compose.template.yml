@@ -83,6 +83,8 @@ services:
       # - PULSAR_CONF_authorizationEnabled=true
       - PULSAR_CONF_authenticationProviders=org.apache.pulsar.broker.authentication.AuthenticationProviderToken
       - PULSAR_CONF_tokenSecretKey=file:///pulsar/key/secret.key
+      - PULSAR_CONF_brokerClientAuthenticationPlugin=org.apache.pulsar.client.impl.auth.AuthenticationToken
+      - PULSAR_CONF_brokerClientAuthenticationParameters={"token":"${auth_token}"}
       - PULSAR_CONF_superUserRoles=[${superuser_name}]
       - PULSAR_CONF_metadataStoreUrl=zk:zookeeper:2181
       - PULSAR_CONF_zookeeperServers=zookeeper:2181
