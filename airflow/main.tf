@@ -14,7 +14,7 @@ export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
 
-systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=120 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
+systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
 echo 'POSTGRES_USER=airflow' >> /root/.env
 echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
