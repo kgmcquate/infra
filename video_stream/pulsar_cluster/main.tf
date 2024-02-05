@@ -17,17 +17,17 @@ locals {
 
 
     create_tenants_script = <<-EOF
-    bin/pulsar-admin tenants create video_stream
+    docker exec -it broker bin/pulsar-admin tenants create video_stream
     EOF
 
     create_namespaces_script =  <<-EOF
-    bin/pulsar-admin namespaces create video_stream/video_stream
-    bin/pulsar-admin namespaces grant-permission video_stream/video_stream --role superuser --actions produce,consume
+    docker exec -it broker bin/pulsar-admin namespaces create video_stream/video_stream
+    docker exec -it broker bin/pulsar-admin namespaces grant-permission video_stream/video_stream --role superuser --actions produce,consume
     EOF
 
     create_topics_script = <<-EOF
-    bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/raw-livestream-frames -p 4
-    bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/processed-livestream-frames -p 4
+    docker exec -it broker bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/raw-livestream-frames -p 4
+    docker exec -it broker bin/pulsar-admin topics create-partitioned-topic video_stream/video_stream/processed-livestream-frames -p 4
     EOF
 }
 

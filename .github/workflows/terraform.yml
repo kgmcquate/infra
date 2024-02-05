@@ -100,6 +100,11 @@ jobs:
     steps:
       - name: create topic
         run: |
+          curl -X GET http://pulsar.kevin-mcquate.net:8080/admin/v2/non-persistent/video_stream/video_stream/0x00000000_0x40000000 \
+            --header 'Authorization: Bearer ${PULSAR_JWT_TOKEN}' \
+            --header 'Accept: application/json' \
+            --header 'Content-Type: application/json'
+
           bin/pulsar-admin \
             --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
             --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
