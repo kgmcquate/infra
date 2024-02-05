@@ -34,8 +34,6 @@ locals {
     EOF
 }
 
-# 
-
 data "template_file" "docker-compose" {
   template = "${file("${path.module}/docker-compose.template.yml")}"
   vars = {
