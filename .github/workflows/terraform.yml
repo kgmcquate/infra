@@ -84,41 +84,41 @@ jobs:
         # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
 
-  pulsar_terraform:
-    name: 'Pulsar Terraform'
-    runs-on: ubuntu-latest
-    environment: production
-    needs: terraform
-    # container: apachepulsar/pulsar:latest
+  # pulsar_terraform:
+  #   name: 'Pulsar Terraform'
+  #   runs-on: ubuntu-latest
+  #   environment: production
+  #   needs: terraform
+  #   # container: apachepulsar/pulsar:latest
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    # defaults:
-    #   run:
-    #     shell: bash
-    #     working-directory: pulsar/
+  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+  #   # defaults:
+  #   #   run:
+  #   #     shell: bash
+  #   #     working-directory: pulsar/
 
-    steps:
-      - name: create topic
-        run: |
-          curl -X GET http://pulsar.kevin-mcquate.net:8080/admin/v2/non-persistent/video_stream/video_stream/0x00000000_0x40000000 \
-            --header 'Authorization: Bearer ${PULSAR_JWT_TOKEN}' \
-            --header 'Accept: application/json' \
-            --header 'Content-Type: application/json'
+  #   steps:
+  #     - name: create topic
+  #       run: |
+  #         curl -X GET http://pulsar.kevin-mcquate.net:8080/admin/v2/non-persistent/video_stream/video_stream/0x00000000_0x40000000 \
+  #           --header 'Authorization: Bearer ${PULSAR_JWT_TOKEN}' \
+  #           --header 'Accept: application/json' \
+  #           --header 'Content-Type: application/json'
 
-          bin/pulsar-admin \
-            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
-            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
-            tenants create video_stream
+  #         bin/pulsar-admin \
+  #           --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+  #           --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+  #           tenants create video_stream
 
-          bin/pulsar-admin \
-            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
-            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
-            namespaces create video_stream/video_stream
+  #         bin/pulsar-admin \
+  #           --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+  #           --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+  #           namespaces create video_stream/video_stream
 
-          bin/pulsar-admin \
-            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
-            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
-            topics create video_stream/video_stream
+  #         bin/pulsar-admin \
+  #           --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+  #           --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+  #           topics create video_stream/video_stream
 
     #   - name: Checkout
     #     uses: actions/checkout@v3
