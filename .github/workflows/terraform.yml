@@ -98,32 +98,43 @@ jobs:
         working-directory: pulsar/
 
     steps:
-      # - name: create topic
-      #   run: |
-      #     bin/pulsar-admin tenant create video_stream
-      #     bin/pulsar-admin namespaces create video_stream 
-      #     bin/pulsar-admin namespace create video_stream
-
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Initialize
-        run: >
-          terraform init
-    # -backend-config="bucket=terraform-state-${AWS_ACCOUNT_ID}-${AWS_REGION}"
-    # -backend-config="key=infra-pulsar"
-
-      - name: Write Terraform Vars
+      - name: create topic
         run: |
-          echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
+          bin/pulsar-admin \
+            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+            tenants create video_stream
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+          bin/pulsar-admin \
+            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+            namespaces create video_stream/video_stream
+
+          bin/pulsar-admin \
+            --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+            --auth-params '{"token": "${PULSAR_JWT_TOKEN}"}' \
+            topics create video_stream/video_stream
+
+    #   - name: Checkout
+    #     uses: actions/checkout@v3
+
+    #   # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    #   - name: Setup Terraform
+    #     uses: hashicorp/setup-terraform@v1
+    #     with:
+    #       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    #   # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    #   - name: Terraform Initialize
+    #     run: >
+    #       terraform init
+    # # -backend-config="bucket=terraform-state-${AWS_ACCOUNT_ID}-${AWS_REGION}"
+    # # -backend-config="key=infra-pulsar"
+
+    #   - name: Write Terraform Vars
+    #     run: |
+    #       echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
+
+    #   - name: Terraform Apply
+    #     run: terraform apply -auto-approve -input=false
 

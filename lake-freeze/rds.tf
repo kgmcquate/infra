@@ -12,7 +12,7 @@ resource "aws_db_instance" "default" {
   max_allocated_storage = 100
   db_name              = "lake_freeze"
   engine               = "postgres"
-  engine_version       = "15.2"
+  engine_version       = "15.5"
   instance_class       = "db.t4g.micro"
   username             = local.db_username
   password             = local.db_password
