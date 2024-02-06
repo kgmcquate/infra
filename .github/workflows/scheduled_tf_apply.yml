@@ -1,4 +1,4 @@
-name: 'Terraform Destroy Temp objects'
+name: 'Terraform Create Temp objects'
 
 on:
   workflow_dispatch:
