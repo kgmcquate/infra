@@ -23,6 +23,7 @@ echo 'AIRFLOW__CORE__FERNET_KEY=' >> /root/.env
 echo 'AIRFLOW__CORE__EXECUTOR=LocalExecutor' >> /root/.env
 echo 'AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True' >> /root/.env
 echo 'AIRFLOW__CORE__LOAD_EXAMPLES=False' >> /root/.env
+echo 'AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=False' >> /root/.env
 echo 'AIRFLOW_UID=0' >> /root/.env
 echo 'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow' >> /root/.env
 echo 'AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS=False' >> /root/.env
