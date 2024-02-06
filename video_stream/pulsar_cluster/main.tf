@@ -18,19 +18,19 @@ locals {
     pulsar_auth_args = "--auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken --auth-params '{\"token\": \"${var.jwt_token}\"}' "
 
     create_tenants_script = <<-EOF
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} tenants create video_stream
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} tenants create video_stream
     EOF
 
     create_namespaces_script =  <<-EOF
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces create video_stream/video_stream
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces grant-permission video_stream/video_stream --role superuser --actions produce,consume
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces set-retention video_stream/video_stream --size 0 --time 0
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces set-message-ttl video_stream/video_stream --messageTTL 1440
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces create video_stream/video_stream
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces grant-permission video_stream/video_stream --role superuser --actions produce,consume
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces set-retention video_stream/video_stream --size 0 --time 0
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} namespaces set-message-ttl video_stream/video_stream --messageTTL 1440
     EOF
 
     create_topics_script = <<-EOF
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} topics create-partitioned-topic video_stream/video_stream/raw-livestream-frames -p 20
-    docker exec -it broker bin/pulsar-admin ${local.pulsar_auth_args} topics create-partitioned-topic video_stream/video_stream/processed-livestream-frames -p 20
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} topics create-partitioned-topic video_stream/video_stream/raw-livestream-frames -p 20
+    docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} topics create-partitioned-topic video_stream/video_stream/processed-livestream-frames -p 20
     EOF
 }
 
