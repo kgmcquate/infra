@@ -26,3 +26,9 @@ module pulsar_cluster {
 #     jwt_token = var.jwt_token
 #     # depends_on = [ module.pulsar_cluster ]
 # }
+
+
+resource "aws_secretsmanager_secret" "youtube_api_key" {
+   name = "youtube_api_key"
+}
+

@@ -55,7 +55,7 @@ module "video_stream_pulsar" {
     docker_compose_str = data.template_file.docker-compose.rendered
     before_docker_compose_script = "mkdir -p /root/key/ && echo \"${var.jwt_secret_key_base64}\" | base64 -d > /root/key/secret.key "
     after_docker_compose_script = <<-EOF
-    docker-compose up -d
+    sleep 60
     ${local.create_tenants_script} 
     ${local.create_namespaces_script}
     ${local.create_topics_script}
