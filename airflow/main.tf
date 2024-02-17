@@ -25,7 +25,15 @@ locals {
 cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
 USER root
-RUN pip install astronomer-cosmos dbt-core dbt-postgres
+RUN mkdir -p /opt/airflow/logs/ &&  \
+    mkdir -p /opt/airflow/dags/ &&  \
+    mkdir -p /opt/airflow/plugins/ &&  \
+    chmod 777 -R /opt/airflow/ &&  \
+    mkdir -p /sources/logs/ &&  \
+    mkdir -p /sources/dags/ &&  \
+    mkdir -p /sources/plugins/ &&  \
+    chmod 777 -R /sources/
+
 USER airflow
 RUN pip install astronomer-cosmos dbt-core dbt-postgres
 
@@ -41,6 +49,7 @@ chmod -R 777 /tmp/
 
 systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
+echo -e "AIRFLOW_UID=$(id -u)" >> .env
 echo 'AIRFLOW_CONN_POSTGRES=postgresql://${local.postgres_username}:${local.postgres_password}@${local.postgres_endpoint}/public' >> /root/.env
 echo 'POSTGRES_USER=airflow' >> /root/.env
 echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
