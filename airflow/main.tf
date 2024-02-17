@@ -25,7 +25,7 @@ locals {
 cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
 USER airflow
-RUN pip install astronomer-cosmos
+RUN pip install astronomer-cosmos dbt-core dbt-postgres
 
 FILE
 
