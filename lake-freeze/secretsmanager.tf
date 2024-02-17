@@ -12,7 +12,8 @@ resource "aws_secretsmanager_secret_version" "sversion" {
   secret_string = <<EOF
    {
     "username": "${local.db_username}",
-    "password": "${local.db_password}"
+    "password": "${local.db_password}",
+    "host": "${aws_db_instance.default.endpoint}"
    }
 EOF
 }
