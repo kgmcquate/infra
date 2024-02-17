@@ -10,6 +10,17 @@ variable airflow_dags_s3_prefix {
 
 locals {
     startup_script = <<-EOF
+
+cat > Dockerfile <<-"FILE"
+FROM apache/airflow:2.8.1-python3.11
+RUN pip install astronomer-cosmos
+
+FILE
+
+docker build . -t airflow_image
+
+Capache/airflow:2.8.1-python3.11
+
 export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
