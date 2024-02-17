@@ -4,7 +4,8 @@ version: '3.4'
 x-common:
   &common
   image: airflow_image
-  user: "${AIRFLOW_UID}:0"
+  # user: "${AIRFLOW_UID}:0"
+  user: "airflow"
   env_file: 
     - .env
   volumes:
