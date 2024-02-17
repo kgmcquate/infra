@@ -24,6 +24,8 @@ locals {
     startup_script = <<-EOF
 cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
+USER root
+RUN pip install astronomer-cosmos dbt-core dbt-postgres
 USER airflow
 RUN pip install astronomer-cosmos dbt-core dbt-postgres
 
@@ -35,6 +37,7 @@ export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
 chmod -R 777 /opt/airflow/
+chmod -R 777 /tmp/
 
 systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
