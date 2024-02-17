@@ -17,9 +17,9 @@ data "aws_secretsmanager_secret_version" "postgres_creds" {
 
 locals {
     postgres_secret = jsondecode(data.aws_secretsmanager_secret_version.postgres_creds.secret_string)
-    postgres_username = postgres_secret["username"]
-    postgres_password = postgres_secret["password"]
-    postgres_endpoint = postgres_secret["host"]
+    postgres_username = local.postgres_secret["username"]
+    postgres_password = local.postgres_secret["password"]
+    postgres_endpoint = local.postgres_secret["host"]
 
     startup_script = <<-EOF
 cat > Dockerfile <<-"FILE"
