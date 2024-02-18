@@ -85,5 +85,3 @@ module "airflow" {
     associate_public_ip_address = true
     persistent_volume_size_gb = 1
 }
-
-
