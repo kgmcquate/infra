@@ -24,6 +24,7 @@ locals {
     startup_script = <<-EOF
 cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
+
 USER root
 RUN mkdir -p /opt/airflow/logs/ &&  \
     mkdir -p /opt/airflow/logs/scheduler &&  \
