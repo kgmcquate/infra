@@ -36,8 +36,9 @@ RUN mkdir -p /opt/airflow/logs/ &&  \
     chmod 777 -R /sources/
 
 USER airflow
-RUN pip install astronomer-cosmos dbt-core \
-        pydantic==1.10.13 \
+RUN pip install astronomer-cosmos dbt-core dbt-postgres \
+        apache-airflow==2.8.1 \
+        pydantic>=2.3.0 \
         urllib3==1.26.18 \
         boto3==1.34.29 \
         opencv-python-headless==4.9.0.80 \
@@ -66,9 +67,8 @@ chmod -R 777 /tmp/
 
 systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync s3://${var.airflow_s3_bucket}/${var.airflow_dags_s3_prefix} /opt/airflow/dags/
 
-# echo -e "AIRFLOW_UID=50000" >> .env
-echo -e "AIRFLOW_UID=$(id -u)" >> .env
-
+# echo -e "AIRFLOW_UID=$(id -u)" >> .env
+echo -e "AIRFLOW_UID=50000" >> .env
 echo 'AIRFLOW_CONN_POSTGRES=postgresql://${local.postgres_username}:${local.postgres_password}@${local.postgres_endpoint}/postgres' >> /root/.env
 echo 'POSTGRES_USER=airflow' >> /root/.env
 echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
