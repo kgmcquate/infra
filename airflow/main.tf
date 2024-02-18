@@ -101,5 +101,5 @@ module "airflow" {
     availability_zone = var.availability_zone
     vpc_security_group_ids = var.security_group_ids
     associate_public_ip_address = true
-    persistent_volume_size_gb = 4
+    persistent_volume_size_gb = 1
 }
