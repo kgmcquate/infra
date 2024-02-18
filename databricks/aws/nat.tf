@@ -11,7 +11,7 @@ resource "aws_key_pair" "ssh" {
 module "nat" {
   source = "int128/nat-instance/aws"
 
-  name                        = "nat"
+  name                        = "${var.name}-nat"
   key_name                    = aws_key_pair.ssh.key_name
   vpc_id                      = module.vpc.vpc_id
   public_subnet               = module.vpc.public_subnets[0]
@@ -35,7 +35,7 @@ data "aws_ami" "al2_arm64" {
 resource "aws_eip" "nat" {
   network_interface = module.nat.eni_id
   tags = {
-    "Name" = "nat-instance-main"
+    "Name" = "${var.name}-nat"
   }
 }
 
