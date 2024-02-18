@@ -26,6 +26,7 @@ cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
 USER root
 RUN mkdir -p /opt/airflow/logs/ &&  \
+    mkdir -p /opt/airflow/logs/scheduler &&  \
     mkdir -p /opt/airflow/dags/ &&  \
     mkdir -p /opt/airflow/plugins/ &&  \
     chmod 777 -R /opt/airflow/ &&  \
@@ -44,6 +45,10 @@ docker build . -t airflow_image
 export AIRFLOW_PROJ_DIR=/opt/airflow/
 
 mkdir -p /opt/airflow/
+mkdir -p /opt/airflow/logs/
+mkdir -p /opt/airflow/logs/scheduler/
+mkdir -p /opt/airflow/dags/
+mkdir -p /opt/airflow/plugins/
 chmod -R 777 /opt/airflow/
 chmod -R 777 /tmp/
 

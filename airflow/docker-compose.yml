@@ -10,7 +10,7 @@ x-common:
     - .env
   volumes:
     - /opt/airflow/dags:/opt/airflow/dags
-    # - /opt/airflow/logs:/opt/airflow/logs
+    - /opt/airflow/logs:/opt/airflow/logs
     - /opt/airflow/plugins:/opt/airflow/plugins
     - /var/run/docker.sock:/var/run/docker.sock
 
