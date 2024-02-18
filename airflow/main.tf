@@ -36,7 +36,19 @@ RUN mkdir -p /opt/airflow/logs/ &&  \
     chmod 777 -R /sources/
 
 USER airflow
-RUN pip install astronomer-cosmos dbt-core dbt-postgres
+RUN pip install astronomer-cosmos dbt-core \
+        pydantic==1.10.13 \
+        urllib3==1.26.18 \
+        boto3==1.34.29 \
+        opencv-python-headless==4.9.0.80 \
+        av==11.0.0 \
+        streamlink==6.5.1 \
+        m3u8==4.0.0 \
+        fastavro \
+        numpy==1.26.3 \
+        pulsar-client==3.4.0 \
+        sqlalchemy==1.4.51 \
+        psycopg2-binary
 
 FILE
 
