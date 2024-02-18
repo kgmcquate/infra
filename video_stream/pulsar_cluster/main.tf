@@ -15,7 +15,7 @@ locals {
     superuser_name = "superuser"
     pulsar_domain = "pulsar.${data.aws_route53_zone.primary.name}"
 
-    pulsar_auth_args = "--auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken --auth-params '{\"token\": \"${var.jwt_token}\"}' "
+    pulsar_auth_args = " --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken --auth-params '{\"token\": \"${var.jwt_token}\"}' "
 
     create_tenants_script = <<-EOF
     docker exec broker bin/pulsar-admin ${local.pulsar_auth_args} tenants create video_stream
@@ -64,6 +64,5 @@ module "video_stream_pulsar" {
     availability_zone = var.availability_zones[2]
     vpc_security_group_ids = var.security_group_ids
     associate_public_ip_address = true
-    persistent_volume_size_gb = 1
-
+    persistent_volume_size_gb = 4
 }
