@@ -73,13 +73,13 @@ resource "aws_iam_role" "instance_profile" {
             "Sid" = "ListObjectsInBucket",
             "Effect" = "Allow",
             "Action" = ["s3:ListBucket"],
-            "Resource" = ["arn:aws:s3:::data-zone-*"]
+            "Resource" = ["arn:aws:s3:::data-zone-*", "arn:aws:s3:::deployment-zone-*"]
         },
         {
             "Sid" = "AllObjectActions",
             "Effect" = "Allow",
             "Action" = "s3:*Object",
-            "Resource" = ["arn:aws:s3:::data-zone-*/*"]
+            "Resource" = ["arn:aws:s3:::data-zone-*/*", "arn:aws:s3:::deployment-zone-*/*"]
         }
         
       ]
