@@ -12,6 +12,7 @@ module "nat" {
   # image_id = data.aws_ami.al2_arm64.id
 }
 
+
 data "aws_ami" "al2_arm64" {
   most_recent = true
 
