@@ -8,8 +8,8 @@ module "nat" {
   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
   private_route_table_ids     = module.vpc.private_route_table_ids
 
-  instance_types = ["t4g.nano"]
-  image_id = data.aws_ami.al2_arm64.id
+  # instance_types = ["t4g.nano"]
+  # image_id = data.aws_ami.al2_arm64.id
 }
 
 data "aws_ami" "al2_arm64" {
