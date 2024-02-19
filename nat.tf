@@ -1,16 +1,16 @@
-module "nat" {
-  source = "int128/nat-instance/aws"
+# module "nat" {
+#   source = "int128/nat-instance/aws"
 
-  name                        = "main-nat"
-  key_name                    = aws_key_pair.ssh.key_name
-  vpc_id                      = module.vpc.vpc_id
-  public_subnet               = module.vpc.public_subnets[0]
-  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  private_route_table_ids     = module.vpc.private_route_table_ids
+#   name                        = "main-nat"
+#   key_name                    = aws_key_pair.ssh.key_name
+#   vpc_id                      = module.vpc.vpc_id
+#   public_subnet               = module.vpc.public_subnets[0]
+#   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+#   private_route_table_ids     = module.vpc.private_route_table_ids
 
-  instance_types = ["t4g.nano"]
-  image_id = data.aws_ami.al2_arm64.id
-}
+#   instance_types = ["t4g.nano"]
+#   image_id = data.aws_ami.al2_arm64.id
+# }
 
 data "aws_ami" "al2_arm64" {
   most_recent = true
