@@ -8,51 +8,51 @@ resource "aws_key_pair" "ssh" {
   public_key = tls_private_key.ssh.public_key_openssh
 }
 
-# module "nat" {
-#   source = "int128/nat-instance/aws"
+module "nat" {
+  source = "int128/nat-instance/aws"
 
-#   name                        = "${var.name}-nat"
-#   key_name                    = aws_key_pair.ssh.key_name
-#   vpc_id                      = module.vpc.vpc_id
-#   public_subnet               = module.vpc.public_subnets[0]
-#   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-#   private_route_table_ids     = module.vpc.private_route_table_ids
+  name                        = "${var.name}-nat"
+  key_name                    = aws_key_pair.ssh.key_name
+  vpc_id                      = module.vpc.vpc_id
+  public_subnet               = module.vpc.public_subnets[0]
+  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  private_route_table_ids     = module.vpc.private_route_table_ids
 
-#   instance_types = ["t4g.nano"]
-#   image_id = data.aws_ami.al2_arm64.id
-# }
+  # instance_types = ["t4g.nano"]
+  # image_id = data.aws_ami.al2_arm64.id
+}
 
-# data "aws_ami" "al2_arm64" {
-#   most_recent = true
+data "aws_ami" "al2_arm64" {
+  most_recent = true
 
-#   filter {
-#     name = "name"
-#     values = ["amzn2-ami-kernel-*-hvm-*-arm64-gp2"]
-#   }
-#   owners = ["amazon"]
-# }
+  filter {
+    name = "name"
+    values = ["amzn2-ami-kernel-*-hvm-*-arm64-gp2"]
+  }
+  owners = ["amazon"]
+}
 
-# resource "aws_eip" "nat" {
-#   network_interface = module.nat.eni_id
-#   tags = {
-#     "Name" = "${var.name}-nat"
-#   }
-# }
+resource "aws_eip" "nat" {
+  network_interface = module.nat.eni_id
+  tags = {
+    "Name" = "${var.name}-nat"
+  }
+}
 
-# resource "aws_vpc_security_group_ingress_rule" "nat_ingress" {
-#   security_group_id = module.nat.sg_id
+resource "aws_vpc_security_group_ingress_rule" "nat_ingress" {
+  security_group_id = module.nat.sg_id
 
-#   cidr_ipv4       = "0.0.0.0/0"
-#   from_port         = 22
-#   to_port           = 22
-#   ip_protocol          = "tcp"
-# }
+  cidr_ipv4       = "0.0.0.0/0"
+  from_port         = 22
+  to_port           = 22
+  ip_protocol          = "tcp"
+}
 
-# resource "aws_vpc_security_group_egress_rule" "nat_egress" {
-#   security_group_id = module.nat.sg_id
+resource "aws_vpc_security_group_egress_rule" "nat_egress" {
+  security_group_id = module.nat.sg_id
 
-#   cidr_ipv4 = "0.0.0.0/0"
-# #   from_port         = 80
-# #   to_port           = 65535
-#   ip_protocol          = -1
-# }
+  cidr_ipv4 = "0.0.0.0/0"
+#   from_port         = 80
+#   to_port           = 65535
+  ip_protocol          = -1
+}

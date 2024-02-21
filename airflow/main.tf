@@ -94,7 +94,7 @@ module "airflow" {
     source =  "../docker_compose_on_ec2"
     name = "airflow"
     key_name = var.ssh_keypair
-    instance_type = "t4g.medium"
+    instance_type = "t4g.large"
     before_docker_compose_script = local.startup_script
     docker_compose_str = file("${path.module}/docker-compose.yml")
     iam_instance_profile = aws_iam_instance_profile.airflow_profile.name
