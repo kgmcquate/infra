@@ -37,6 +37,11 @@ resource "aws_iam_role" "airflow_profile" {
         },
         {
           "Effect": "Allow",
+          "Action": "redshift-data:*",
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
           "Action": "iam:PassRole",
           "Resource": "*"
         },
