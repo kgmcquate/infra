@@ -49,6 +49,17 @@ resource "aws_iam_role" "airflow_profile" {
             "Effect" = "Allow",
             "Action" = "s3:*Object",
             "Resource" = ["arn:aws:s3:::data-zone-*/*", "arn:aws:s3:::deployment-zone-*/*"]
+        },
+
+        {
+          Action   = ["ecr:*"]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+        {
+          Action   = ["emr-serverless:*"]
+          Effect   = "Allow"
+          Resource = "*"
         }
       ]
     })
