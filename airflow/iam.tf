@@ -36,6 +36,11 @@ resource "aws_iam_role" "airflow_profile" {
           "Resource": "*"
         },
         {
+          "Effect": "Allow",
+          "Action": "iam:PassRole",
+          "Resource": "*"
+        },
+        {
           
           Action   = [
                 "secretsmanager:DescribeSecret",

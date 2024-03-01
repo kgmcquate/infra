@@ -102,10 +102,11 @@ resource "aws_iam_role" "backend_role" {
         Version = "2012-10-17"
         Statement = [
             {
-            Action   = ["iam:PassRole"]
+            Action   = ["iam:PassRole", "iam:GetRole"]
             Effect   = "Allow"
             Resource = [
-                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/lake-freeze-lambda-role"
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/lake-freeze-lambda-role",
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
             ]
             }
         ]
