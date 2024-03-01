@@ -20,7 +20,7 @@ locals {
     postgres_username = local.postgres_secret["username"]
     postgres_password = local.postgres_secret["password"]
     postgres_endpoint = local.postgres_secret["host"]
-
+    # echo 'AIRFLOW_CONN_REDSHIFT=redshift://my-db:5439/db_client?user=airflow-user&password=XXXXXXXX'
     startup_script = <<-EOF
 cat > Dockerfile <<-"FILE"
 FROM apache/airflow:2.8.1-python3.11
@@ -72,8 +72,7 @@ systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync
 
 echo -e "AIRFLOW_UID=50000" >> .env
 echo 'AIRFLOW_CONN_POSTGRES=postgresql://${local.postgres_username}:${local.postgres_password}@${local.postgres_endpoint}/postgres' >> /root/.env
-echo 'AIRFLOW_CONN_POSTGRES=postgresql://${local.postgres_username}:${local.postgres_password}@${local.postgres_endpoint}/postgres' >> /root/.env
-echo 'AIRFLOW_CONN_REDSHIFT=redshift://my-db:5439/db_client?ssl=true&user=airflow-user&password=XXXXXXXX'
+
 echo 'AIRFLOW_CONN_AWS_DEFAULT=aws://' >> /root/.env
 echo 'POSTGRES_USER=airflow' >> /root/.env
 echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
