@@ -73,7 +73,6 @@ systemd-run --unit=sync-airflow-dags --on-boot=1 --on-unit-active=60 aws s3 sync
 echo -e "AIRFLOW_UID=50000" >> .env
 echo 'AIRFLOW_CONN_POSTGRES=postgresql://${local.postgres_username}:${local.postgres_password}@${local.postgres_endpoint}/postgres' >> /root/.env
 echo 'AIRFLOW_CONN_AWS_DEFAULT=aws://' >> /root/.env
-echo 'AIRFLOW_CONN_AWS_DEFAULT=aws://' >> /root/.env
 echo 'POSTGRES_USER=airflow' >> /root/.env
 echo 'POSTGRES_PASSWORD=airflow' >> /root/.env
 echo 'POSTGRES_DB=airflow'>> /root/.env

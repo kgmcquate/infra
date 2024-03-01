@@ -31,6 +31,12 @@ resource "aws_iam_role" "airflow_profile" {
     #   secretsmanager:Name
       Statement = [
         {
+          "Effect": "Allow",
+          "Action": "sts:AssumeRole",
+          "Resource": "*"
+        },
+        {
+          
           Action   = [
                 "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue"
