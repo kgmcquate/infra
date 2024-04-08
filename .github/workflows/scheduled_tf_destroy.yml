@@ -2,8 +2,8 @@ name: 'Terraform Destroy Temp objects'
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "5 22 * * *" # 10pm cst
+  # schedule:
+  #   - cron: "5 22 * * *" # 10pm cst
 
 
 permissions:
