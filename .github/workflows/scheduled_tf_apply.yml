@@ -2,8 +2,8 @@ name: 'Terraform Create Temp objects'
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 21 * * *" #4pm cst
+  # schedule:
+  #   - cron: "0 21 * * *" #4pm cst
 
 
 permissions:
