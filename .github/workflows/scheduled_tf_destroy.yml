@@ -85,7 +85,7 @@ jobs:
         # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
         run: >
           terraform apply -destroy -auto-approve -input=false
-          -target=module.airflow.module.airflow.aws_instance.this
-          -target=module.databricks.module.aws.module.nat.aws_autoscaling_group.this
-          -target=module.video_stream.module.pulsar_cluster.module.video_stream_pulsar.aws_instance.this
+      # -target=module.airflow.module.airflow.aws_instance.this
+      # -target=module.databricks.module.aws.module.nat.aws_autoscaling_group.this
+      # -target=module.video_stream.module.pulsar_cluster.module.video_stream_pulsar.aws_instance.this
           
