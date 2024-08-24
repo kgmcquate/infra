@@ -52,25 +52,9 @@ jobs:
           -backend-config="key=infra"
           -backend-config="region=${AWS_REGION}"
 
-# - name: Write Terraform Vars
-#   run: |
-#     echo "AWS_REGION=\"${AWS_REGION}\"" >> aws.auto.tfvars
-#     echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> aws.auto.tfvars
-#     echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> aws.auto.tfvars
-#     echo "POSTGRES_PWD=\"${POSTGRES_PWD}\"" >> aws.auto.tfvars
-#     echo "snowflake_password=\"${SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
-#     echo "dbt_testgen_snowflake_password=\"${DBT_TESTGEN_SNOWFLAKE_PASSWORD}\"" >> aws.auto.tfvars
-#     echo "dbt_testgen_redshift_password=\"${REDSHIFT_PASSWORD}\"" >> aws.auto.tfvars
-#     echo "databricks_account_id=\"${DATABRICKS_ACCOUNT_ID}\"" >> aws.auto.tfvars
-#     echo "databricks_account_client_id=\"${DATABRICKS_ACCOUNT_CLIENT_ID}\"" >> aws.auto.tfvars
-#     echo "databricks_account_client_secret=\"${DATABRICKS_ACCOUNT_CLIENT_SECRET}\"" >> aws.auto.tfvars
-#     echo "pulsar_jwt_secret_key_base64=\"${PULSAR_JWT_SECRET_KEY_BASE64}\"" >> aws.auto.tfvars
-#     echo "pulsar_jwt_token=\"${PULSAR_JWT_TOKEN}\"" >> aws.auto.tfvars
-#     echo "confluent_cloud_api_key=\"${{ secrets.CONFLUENT_CLOUD_API_KEY }}\"" >> aws.auto.tfvars
-
       # Generates an execution plan for Terraform
-      - name: Terraform Plan
-        run: terraform plan
+#      - name: Terraform Plan
+#        run: terraform plan
 
-#      - name: Terraform Apply
-#        run: terraform apply -auto-approve -input=false
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
