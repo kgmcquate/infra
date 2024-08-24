@@ -47,6 +47,7 @@ jobs:
           terraform init
           -backend-config="bucket=terraform-state-${AWS_ACCOUNT_ID}-${AWS_REGION}"
           -backend-config="key=infra"
+          -backend-config="region=${TF_VAR_AWS_REGION}"
 
 # - name: Write Terraform Vars
 #   run: |
