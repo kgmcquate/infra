@@ -1,3 +1,7 @@
+variable "aws_account_id" {
+  type = string
+}
+
 variable "AWS_REGION" {
     type    = string
 }
@@ -10,20 +14,16 @@ variable "AWS_SECRET_ACCESS_KEY" {
     type    = string
 }
 
-variable POSTGRES_PWD {
-  type = string
+variable "snowflake_account" {
+    type    = string
 }
 
-variable snowflake_password {
-  type = string
+variable "snowflake_password" {
+  type    = string
 }
 
-variable dbt_testgen_snowflake_password {
-  type = string
-}
-
-variable dbt_testgen_redshift_password {
-  type = string
+variable "dbt_testgen_snowflake_password" {
+  type    = string
 }
 
 variable databricks_account_id {
@@ -38,10 +38,10 @@ variable databricks_account_client_secret {
   type = string
 }
 
-variable pulsar_jwt_secret_key_base64 {}
+variable "confluent_cloud_api_key" {
+  description = "The Confluent Cloud API Key"
+}
 
-variable pulsar_jwt_token {}
-
-variable main_domain {
-  default = "kevin-mcquate.net"
+variable "confluent_cloud_api_secret" {
+  description = "The Confluent Cloud API Secret"
 }

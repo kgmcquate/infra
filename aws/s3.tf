@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "deployment_zone" {
-  bucket = "deployment-zone-${data.aws_caller_identity.current.account_id}"
+  bucket = "deployment-zone-${var.account_id}-${var.region}"
   force_destroy = true
 }
 
@@ -13,7 +13,7 @@ resource "aws_s3_bucket_public_access_block" "deployment-zone-block-public" {
 }
 
 resource "aws_s3_bucket" "public_zone" {
-  bucket = "public-zone-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  bucket = "public-zone-${var.account_id}-${var.region}"
   force_destroy = true
 }
   
@@ -49,6 +49,10 @@ resource "aws_s3_bucket_policy" "allow_public_read_access" {
 
 
 resource "aws_s3_bucket" "data_zone" {
-  bucket = "data-zone-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  bucket = "data-zone-${var.account_id}-${var.region}"
   force_destroy = true
+}
+
+resource "aws_s3_bucket" "log_zone" {
+  bucket = "log-zone-${var.account_id}-${var.region}"
 }

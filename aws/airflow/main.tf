@@ -7,9 +7,10 @@ variable airflow_s3_bucket {}
 variable airflow_dags_s3_prefix {
     default = "airflow/dags/"
 }
+variable posgtres_db_secret_name {}
 
 data "aws_secretsmanager_secret" "postgres_creds" {
-  name = "lake-freeze-db-creds"
+  name = var.posgtres_db_secret_name
 }
 data "aws_secretsmanager_secret_version" "postgres_creds" {
   secret_id = data.aws_secretsmanager_secret.postgres_creds.id
@@ -94,7 +95,7 @@ EOF
 }
 
 module "airflow" {
-    source =  "../docker_compose_on_ec2"
+    source =  "./../../docker_compose_on_ec2"
     name = "airflow"
     key_name = var.ssh_keypair
     instance_type = "t4g.large"

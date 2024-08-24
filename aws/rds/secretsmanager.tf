@@ -1,10 +1,16 @@
+resource "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 locals {
   db_username = "postgres"
-  db_password = var.POSTGRES_PWD
+  db_password = random_password.db_password.result
 }
  
 resource "aws_secretsmanager_secret" "db_creds" {
-   name = "lake-freeze-db-creds"
+   name = "main-rds-db-creds"
 }
 
 resource "aws_secretsmanager_secret_version" "sversion" {

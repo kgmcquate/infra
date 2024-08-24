@@ -1,66 +1,48 @@
-data "aws_caller_identity" "current" {}
 
-data "aws_region" "current" {}
-
-module "lake-freeze" {
-    source = "./lake-freeze"
-    POSTGRES_PWD = var.POSTGRES_PWD
-    vpc_id = module.vpc.vpc_id
-    public_subnet_ids = module.vpc.public_subnets
-    private_subnet_ids = module.vpc.private_subnets
-
-    depends_on = [ module.vpc ]
+module "aws" {
+  source = "./aws"
+  region = var.AWS_REGION
+  account_id = var.aws_account_id
 }
+
 
 module "snowflake" {
     source = "./snowflake"
-    provider_account = "ircmtcn-ekb34223"
+    provider_account = var.snowflake_account
     provider_username = "CICD_INFRA"
     provider_password = var.snowflake_password
     dbt_testgen_password = var.dbt_testgen_snowflake_password
 }
 
-module "redshift_serverless" {
-  source = "./redshift_serverless"
-  admin_user_password = var.dbt_testgen_redshift_password
-  security_group_ids = [aws_security_group.allow_all.id]
-  subnet_ids = module.vpc.public_subnets
-}
+# module "databricks" {
+#   source = "./databricks"
+#
+#   providers = {
+#     databricks = databricks.mws
+#     databricks.main-ws = databricks.main-ws
+#   }
+#
+#   name = "dataricks-main"
+#   databricks_account_id = var.databricks_account_id
+#   region = var.AWS_REGION
+# }
 
+# module video_stream {
+#   source = "./video_stream"
 
-module "databricks" {
-  source = "./databricks"
+#   subnet_ids = module.vpc.public_subnets
+#   availability_zones = module.vpc.azs
+#   security_group_ids = [aws_security_group.allow_all.id]
+#   vpc_id = module.vpc.vpc_id
+#   ssh_keypair = aws_key_pair.ssh.key_name
+#   jwt_secret_key_base64 = var.pulsar_jwt_secret_key_base64
+#   jwt_token = var.pulsar_jwt_token
+# }
 
-  providers = {
-    databricks = databricks.mws
-    databricks.main-ws = databricks.main-ws
-  }
+module "confluent" {
+    source = "./confluent"
 
-  name = "dataricks-main"
-  databricks_account_id = var.databricks_account_id
-  region = "us-east-1"
-}
-
-module video_stream {
-  source = "./video_stream"
-
-  subnet_ids = module.vpc.public_subnets
-  availability_zones = module.vpc.azs
-  security_group_ids = [aws_security_group.allow_all.id]
-  vpc_id = module.vpc.vpc_id
-  ssh_keypair = aws_key_pair.ssh.key_name
-  jwt_secret_key_base64 = var.pulsar_jwt_secret_key_base64
-  jwt_token = var.pulsar_jwt_token
-}
-
-module airflow {
-  source = "./airflow"
-
-  subnet_id = module.vpc.public_subnets[2]
-  availability_zone = module.vpc.azs[2]
-  security_group_ids = [aws_security_group.allow_all.id]
-  ssh_keypair = aws_key_pair.ssh.key_name
-  airflow_s3_bucket = aws_s3_bucket.deployment_zone.bucket
-
-  domain = var.main_domain
+    confluent_cloud_api_key = var.confluent_cloud_api_key
+    confluent_cloud_api_secret = var.confluent_cloud_api_secret
+    aws_region = var.AWS_REGION
 }

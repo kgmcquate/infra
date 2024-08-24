@@ -1,7 +1,17 @@
+resource "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+locals {
+  admin_user_password = random_password.db_password.result
+}
+
 resource "aws_redshiftserverless_namespace" "dbt_testgen" {
   namespace_name = "dbt-testgen"
   admin_username = "dbt_testgen"
-  admin_user_password = var.admin_user_password
+  admin_user_password = local.admin_user_password
   db_name = "dbt_testgen"
 }
 
@@ -22,7 +32,7 @@ resource "aws_secretsmanager_secret_version" "sversion" {
   secret_id = aws_secretsmanager_secret.db_creds.id
   secret_string = <<EOF
    {
-    "password": "${var.admin_user_password}"
+    "password": "${local.admin_user_password}"
    }
 EOF
 }
