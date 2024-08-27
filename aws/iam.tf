@@ -18,6 +18,22 @@ resource "aws_iam_role" "service_role" {
           Service = "ec2.amazonaws.com"
         }
       },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowEventsAssumeRole"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowEMRServerlessAssumeRole"
+        Principal = {
+          Service = "ops.emr-serverless.amazonaws.com"
+        }
+      },
     ]
   })
 }
@@ -26,8 +42,6 @@ resource "aws_iam_role_policy" "service_role_policy" {
   name = "general-access-policy"
   role = aws_iam_role.service_role.id
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -35,6 +49,7 @@ resource "aws_iam_role_policy" "service_role_policy" {
         Action = [
           "ec2:*",
           "secretsmanager:*",
+          "s3:*",
           "cloudtrail:*"
         ]
         Effect   = "Allow"
