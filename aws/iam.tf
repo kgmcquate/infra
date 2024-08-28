@@ -37,6 +37,14 @@ resource "aws_iam_role" "service_role" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
+        Sid    = "AllowEMRServerlessAssumeRole"
+        Principal = {
+          Service = "emr-serverless.amazonaws.com"
+        }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
         Sid    = "AllowLambdaAssumeRole"
         Principal = {
           Service = "lambda.amazonaws.com"
