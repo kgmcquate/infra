@@ -66,7 +66,10 @@ resource "aws_iam_role_policy" "service_role_policy" {
           "ec2:*",
           "secretsmanager:*",
           "s3:*",
-          "cloudtrail:*"
+          "cloudtrail:*",
+          "emr-serverless:*",
+          "lambda:*",
+          "rds:*"
         ]
         Effect   = "Allow"
         Resource = "*"
