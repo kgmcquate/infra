@@ -74,6 +74,11 @@ resource "aws_iam_role_policy" "service_role_policy" {
         Effect   = "Allow"
         Resource = "*"
       },
+      {
+        Action = ["iam:PassRole"]
+        Effect   = "Allow"
+        Resource = "*"
+      }
     ]
   })
 }
