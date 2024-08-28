@@ -29,7 +29,7 @@ resource "aws_iam_role" "service_role" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid    = "AllowEMRServerlessAssumeRole"
+        Sid    = "AllowOpsEMRServerlessAssumeRole"
         Principal = {
           Service = "ops.emr-serverless.amazonaws.com"
         }
