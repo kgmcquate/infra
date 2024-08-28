@@ -41,6 +41,14 @@ resource "aws_iam_role" "service_role" {
         Principal = {
           Service = "lambda.amazonaws.com"
         }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowStepFunctionsAssumeRole"
+        Principal = {
+          Service = "states.amazonaws.com"
+        }
       }
     ]
   })
