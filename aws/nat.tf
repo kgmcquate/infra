@@ -11,7 +11,7 @@ module "nat" {
   user_data_write_files = [
     {
       path : "/opt/nat/run_openvpn_client.sh",
-      content : file("./run_openvpn_client.sh"),
+      content : file("${path.module}/run_openvpn_client.sh"),
       permissions : "0755",
     },
   ]
