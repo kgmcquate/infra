@@ -51,7 +51,8 @@ RUN pip install astronomer-cosmos dbt-core dbt-postgres \
         numpy==1.26.3 \
         pulsar-client==3.4.0 \
         sqlalchemy==1.4.51 \
-        psycopg2-binary
+        psycopg2-binary \
+        confluent-kafka==2.5.3
 
 FILE
 
