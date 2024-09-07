@@ -10,13 +10,13 @@ module "nat" {
 
   user_data_write_files = [
     {
-      path : "/opt/nat/run_opencpv_client.sh",
-      content : file("./run_opencpv_client.sh"),
+      path : "/opt/nat/run_openvpn_client.sh",
+      content : file("./run_openvpn_client.sh"),
       permissions : "0755",
     },
   ]
   user_data_runcmd = [
-    ["/opt/nat/run_opencpv_client.sh"],
+    ["/opt/nat/run_openvpn_client.sh"],
   ]
 
   # instance_types = ["t4g.nano"]
