@@ -15,9 +15,9 @@ module "nat" {
       permissions : "0755",
     },
   ]
-  user_data_runcmd = [
-    ["/opt/nat/run_openvpn_client.sh"],
-  ]
+#   user_data_runcmd = [
+#     ["/opt/nat/run_openvpn_client.sh"],
+#   ]
 
   # instance_types = ["t4g.nano"]
   # image_id = data.aws_ami.al2_arm64.id

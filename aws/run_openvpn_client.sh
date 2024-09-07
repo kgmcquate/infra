@@ -1,7 +1,7 @@
 yum -y install https://as-repository.openvpn.net/as-repo-amzn2.rpm
 yum -y install openvpn-as
 
-aws secretsmanager get-secret-value --secret-id openvpn-config --query SecretString --output text | jq -r .openvpn > client.ovpn
+aws secretsmanager get-secret-value --region us-east-1 --secret-id openvpn-config --query SecretString --output text > client.ovpn
 cp client.ovpn /etc/openvpn/client.conf
 #openvpn --config client.ovpn
 systemctl enable openvpn@client.service
