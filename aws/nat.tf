@@ -57,3 +57,26 @@ resource "aws_vpc_security_group_egress_rule" "nat_egress" {
 #   to_port           = 65535
   ip_protocol          = -1
 }
+
+resource "aws_iam_policy" "nat_access_sm" {
+    name = "nat_access_sm"
+    policy = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+        {
+            Effect = "Allow",
+            Action = [
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:GetSecretValue",
+            ],
+            Resource = "*",
+        },
+        ],
+    })
+}
+
+resource "aws_iam_policy_attachment" "nat_access_sm" {
+    name = "nat_access_sm"
+    roles = [module.nat.iam_role_name]
+    policy_arn = aws_iam_policy.nat_access_sm.arn
+}
