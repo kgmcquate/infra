@@ -8,6 +8,17 @@ module "nat" {
   private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
   private_route_table_ids     = module.vpc.private_route_table_ids
 
+  user_data_write_files = [
+    {
+      path : "/opt/nat/run_opencpv_client.sh",
+      content : file("./run_opencpv_client.sh"),
+      permissions : "0755",
+    },
+  ]
+  user_data_runcmd = [
+    ["/opt/nat/run_opencpv_client.sh"],
+  ]
+
   # instance_types = ["t4g.nano"]
   # image_id = data.aws_ami.al2_arm64.id
 }
