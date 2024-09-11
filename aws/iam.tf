@@ -71,6 +71,7 @@ resource "aws_iam_role_policy" "service_role_policy" {
     Statement = [
       {
         Action = [
+          "logs:*",
           "ec2:*",
           "secretsmanager:*",
           "s3:*",
