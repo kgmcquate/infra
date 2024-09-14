@@ -57,6 +57,14 @@ resource "aws_iam_role" "service_role" {
         Principal = {
           Service = "states.amazonaws.com"
         }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowEventsAssumeRole"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
       }
     ]
   })
@@ -78,7 +86,9 @@ resource "aws_iam_role_policy" "service_role_policy" {
           "cloudtrail:*",
           "emr-serverless:*",
           "lambda:*",
-          "rds:*"
+          "rds:*",
+          "states:*",
+          "events:*"
         ]
         Effect   = "Allow"
         Resource = "*"
