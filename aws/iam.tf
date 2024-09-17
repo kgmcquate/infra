@@ -57,14 +57,6 @@ resource "aws_iam_role" "service_role" {
         Principal = {
           Service = "states.amazonaws.com"
         }
-      },
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = "AllowEventsAssumeRole"
-        Principal = {
-          Service = "events.amazonaws.com"
-        }
       }
     ]
   })
