@@ -93,75 +93,59 @@ resource "confluent_environment" "main" {
   }
 }
 
-resource "confluent_kafka_cluster" "main" {
-  display_name = "main_kafka_cluster"
-  availability = "SINGLE_ZONE"
-  cloud        = "AWS"
-  region       = var.aws_region
-  basic {}
-
-  environment {
-    id = confluent_environment.main.id
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "confluent_kafka_topic" "raw_video_frames" {
-  topic_name = "raw-video-frames"
-  partitions_count = 4
-
-  rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
-  kafka_cluster {
-    id = confluent_kafka_cluster.main.id
-  }
-
-  credentials {
-    key    = confluent_api_key.kafka_api_key.id
-    secret = confluent_api_key.kafka_api_key.secret
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "confluent_kafka_topic" "processed_video_frames" {
-  topic_name = "processed-video-frames"
-  partitions_count = 4
-
-  rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
-  kafka_cluster {
-    id = confluent_kafka_cluster.main.id
-  }
-
-  credentials {
-    key    = confluent_api_key.kafka_api_key.id
-    secret = confluent_api_key.kafka_api_key.secret
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "confluent_kafka_topic" "processed_video_frames_counts" {
-  topic_name = "processed-video-frames-counts"
-  partitions_count = 4
-
-  rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
-  kafka_cluster {
-    id = confluent_kafka_cluster.main.id
-  }
-
-  credentials {
-    key    = confluent_api_key.kafka_api_key.id
-    secret = confluent_api_key.kafka_api_key.secret
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
+# resource "confluent_kafka_cluster" "main" {
+#   display_name = "main_kafka_cluster"
+#   availability = "SINGLE_ZONE"
+#   cloud        = "AWS"
+#   region       = var.aws_region
+#   basic {}
+#
+#   environment {
+#     id = confluent_environment.main.id
+#   }
+# }
+#
+# resource "confluent_kafka_topic" "raw_video_frames" {
+#   topic_name = "raw-video-frames"
+#   partitions_count = 1
+#
+#   rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
+#   kafka_cluster {
+#     id = confluent_kafka_cluster.main.id
+#   }
+#
+#   credentials {
+#     key    = confluent_api_key.kafka_api_key.id
+#     secret = confluent_api_key.kafka_api_key.secret
+#   }
+# }
+#
+# resource "confluent_kafka_topic" "processed_video_frames" {
+#   topic_name = "processed-video-frames"
+#   partitions_count = 1
+#
+#   rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
+#   kafka_cluster {
+#     id = confluent_kafka_cluster.main.id
+#   }
+#
+#   credentials {
+#     key    = confluent_api_key.kafka_api_key.id
+#     secret = confluent_api_key.kafka_api_key.secret
+#   }
+# }
+#
+# resource "confluent_kafka_topic" "processed_video_frames_counts" {
+#   topic_name = "processed-video-frames-counts"
+#   partitions_count = 1
+#
+#   rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
+#   kafka_cluster {
+#     id = confluent_kafka_cluster.main.id
+#   }
+#
+#   credentials {
+#     key    = confluent_api_key.kafka_api_key.id
+#     secret = confluent_api_key.kafka_api_key.secret
+#   }
+# }
