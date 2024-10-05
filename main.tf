@@ -39,10 +39,10 @@ module "snowflake" {
 #   jwt_token = var.pulsar_jwt_token
 # }
 
-module "confluent" {
-    source = "./confluent"
-
-    confluent_cloud_api_key = var.confluent_cloud_api_key
-    confluent_cloud_api_secret = var.confluent_cloud_api_secret
-    aws_region = var.AWS_REGION
-}
+# module "confluent" {
+#     source = "./confluent"
+#
+#     confluent_cloud_api_key = var.confluent_cloud_api_key
+#     confluent_cloud_api_secret = var.confluent_cloud_api_secret
+#     aws_region = var.AWS_REGION
+# }
