@@ -61,46 +61,46 @@ resource "confluent_service_account" "kafka" {
 #   }
 # }
 #
-# resource "confluent_api_key" "kafka_api_key" {
-#   display_name = "kafka_api_key"
-#
-#   owner {
-#     id          = confluent_service_account.kafka.id
-#     api_version = confluent_service_account.kafka.api_version
-#     kind        = confluent_service_account.kafka.kind
-#   }
-#
-#   managed_resource {
-#     id          = confluent_kafka_cluster.main.id
-#     api_version = confluent_kafka_cluster.main.api_version
-#     kind        = confluent_kafka_cluster.main.kind
-#
-#     environment {
-#       id = confluent_environment.main.id
-#     }
-#   }
-# }
-#
-# resource "confluent_environment" "main" {
-#   display_name = "main"
-#
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-# }
-#
-# resource "confluent_kafka_cluster" "main" {
-#   display_name = "main_kafka_cluster"
-#   availability = "SINGLE_ZONE"
-#   cloud        = "AWS"
-#   region       = var.aws_region
-#   basic {}
-#
-#   environment {
-#     id = confluent_environment.main.id
-#   }
-# }
-#
+resource "confluent_api_key" "kafka_api_key" {
+  display_name = "kafka_api_key"
+
+  owner {
+    id          = confluent_service_account.kafka.id
+    api_version = confluent_service_account.kafka.api_version
+    kind        = confluent_service_account.kafka.kind
+  }
+
+  managed_resource {
+    id          = confluent_kafka_cluster.main.id
+    api_version = confluent_kafka_cluster.main.api_version
+    kind        = confluent_kafka_cluster.main.kind
+
+    environment {
+      id = confluent_environment.main.id
+    }
+  }
+}
+
+resource "confluent_environment" "main" {
+  display_name = "main"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "confluent_kafka_cluster" "main" {
+  display_name = "main_kafka_cluster"
+  availability = "SINGLE_ZONE"
+  cloud        = "AWS"
+  region       = var.aws_region
+  basic {}
+
+  environment {
+    id = confluent_environment.main.id
+  }
+}
+
 # resource "confluent_kafka_topic" "raw_video_frames" {
 #   topic_name = "raw-video-frames"
 #   partitions_count = 1

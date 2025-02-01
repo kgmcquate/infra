@@ -45,3 +45,7 @@ variable "confluent_cloud_api_key" {
 variable "confluent_cloud_api_secret" {
   description = "The Confluent Cloud API Secret"
 }
+
+variable "vultr_api_key" {
+  type = string
+}

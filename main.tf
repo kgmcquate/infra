@@ -46,3 +46,9 @@ module "confluent" {
     confluent_cloud_api_secret = var.confluent_cloud_api_secret
     aws_region = var.AWS_REGION
 }
+
+module "vultr" {
+  source = "./vultr"
+
+  api_key = var.vultr_api_key
+}
