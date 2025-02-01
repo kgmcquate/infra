@@ -32,3 +32,13 @@ resource "vultr_kubernetes" "main" {
     max_nodes     = 1
   }
 }
+
+# resource "local_file" "foo" {
+#   content_base64 = vultr_kubernetes.main.kube_config
+#   filename = "kubernetes/kubectl.conf"
+# }
+
+# output "kubectl_config" {
+#   value = vultr_kubernetes.main.kube_config
+#   sensitive = true
+# }

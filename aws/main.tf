@@ -22,3 +22,9 @@ module "rds" {
 #
 #   depends_on = [module.rds]
 # }
+
+module "dagster" {
+  source = "./dagster"
+
+  base_domain = var.main_domain
+}
