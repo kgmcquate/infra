@@ -11,7 +11,7 @@ data "aws_route53_zone" "primary" {
 }
 
 locals {
-  dagster_webserver_ip = "108.61.191.96"
+  dagster_webserver_ip = "66.135.16.69"
   dagster_domain = "dagster.${var.base_domain}"
 }
 

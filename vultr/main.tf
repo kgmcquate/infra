@@ -1,21 +1,5 @@
-terraform {
-  required_providers {
-    vultr = {
-      source = "vultr/vultr"
-      version = "2.23.1"
-    }
-  }
-}
-
 variable "api_key" {
   type = string
-}
-
-# Configure the Vultr Provider
-provider "vultr" {
-  api_key = var.api_key
-  rate_limit = 100
-  retry_limit = 3
 }
 
 resource "vultr_kubernetes" "main" {
@@ -25,7 +9,7 @@ resource "vultr_kubernetes" "main" {
 
   node_pools {
     node_quantity = 1
-    plan          = "vc2-1c-2gb"
+    plan          = "vc2-2c-4gb"
     label         = "main-nodepool"
     auto_scaler   = false
     min_nodes     = 1
@@ -33,10 +17,22 @@ resource "vultr_kubernetes" "main" {
   }
 }
 
-# resource "local_file" "foo" {
-#   content_base64 = vultr_kubernetes.main.kube_config
-#   filename = "kubernetes/kubectl.conf"
+resource "local_file" "foo" {
+  content_base64 = vultr_kubernetes.main.kube_config
+  filename = "kubernetes/kubectl.conf"
+}
+
+
+# resource "helm_release" "nginx_ingress" {
+#   name       = "nginx-ingress"
+#   repository = "https://helm.nginx.com/stable"
+#   chart      = "nginx-ingress"
+#   namespace  = "nginx-ingress"
+#   create_namespace = true
+#   # version = ""
 # }
+#
+
 
 # output "kubectl_config" {
 #   value = vultr_kubernetes.main.kube_config
