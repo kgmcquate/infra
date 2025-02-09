@@ -28,6 +28,7 @@ env:
   TF_VAR_confluent_cloud_api_key: ${{ secrets.CONFLUENT_CLOUD_API_KEY }}
   TF_VAR_confluent_cloud_api_secret: ${{ secrets.CONFLUENT_CLOUD_API_SECRET }}
   TF_VAR_vultr_api_key: ${{ secrets.VULTR_API_KEY }}
+  TF_VAR_digital_ocean_token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
 jobs:
   terraform:

@@ -49,3 +49,7 @@ variable "confluent_cloud_api_secret" {
 variable "vultr_api_key" {
   type = string
 }
+
+variable "digital_ocean_token" {
+  type = string
+}

@@ -52,3 +52,9 @@ module "confluent" {
 
 #   api_key = var.vultr_api_key
 # }
+
+module "digital_ocean" {
+  source = "./digital_ocean"
+
+  do_token = var.digital_ocean_token
+}
