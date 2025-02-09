@@ -4,7 +4,7 @@ metadata:
   labels:
     k8s-app: oauth2-proxy
   name: oauth2-proxy
-  namespace: kube-system
+  namespace: dagster
 spec:
   replicas: 1
   selector:
@@ -21,6 +21,8 @@ spec:
             - --email-domain=*
             - --upstream=file:///dev/null
             - --http-address=0.0.0.0:4180
+            - --pass-access-token=true
+            - --whitelist-domain=dagster.kevin-mcquate.net
           # Register a new application
           # https://github.com/settings/applications/new
           env:
@@ -49,7 +51,7 @@ metadata:
   labels:
     k8s-app: oauth2-proxy
   name: oauth2-proxy
-  namespace: kube-system
+  namespace: dagster
 spec:
   ports:
     - name: http
@@ -59,51 +61,51 @@ spec:
   selector:
     k8s-app: oauth2-proxy
 
----
+# ---
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: oauth2-proxy
-  namespace: kube-system
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: dagster.kevin-mcquate.net
-      http:
-        paths:
-          - path: /oauth2
-            pathType: Prefix
-            backend:
-              service:
-                name: oauth2-proxy
-                port:
-                  number: 4180
-  # tls:
-  #   - hosts:
-  #       - dagster.kevin-mcquate.net
-  #     secretName: __INGRESS_SECRET__
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: oauth2-proxy
+#   namespace: dagster
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: dagster.kevin-mcquate.net
+#       http:
+#         paths:
+#           - path: /oauth2
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: oauth2-proxy
+#                 port:
+#                   number: 4180
+#   tls:
+#     - hosts:
+#         - dagster.kevin-mcquate.net
+#       secretName: "tls-secret"
 
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
-  name: external-auth-oauth2
-  namespace: kube-system
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: dagster.kevin-mcquate.net
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: kubernetes-dashboard
-                port:
-                  number: 80
+# ---
+# # Covered by dagster chart?
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     nginx.ingress.kubernetes.io/auth-url: "http://$host/oauth2/auth"
+#     nginx.ingress.kubernetes.io/auth-signin: "http://$host/oauth2/start?rd=$escaped_request_uri"
+#   name: external-auth-oauth2
+#   namespace: kube-system
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: dagster.kevin-mcquate.net
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: kubernetes-dashboard
+#                 port:
+#                   number: 80

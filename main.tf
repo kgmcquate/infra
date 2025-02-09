@@ -47,8 +47,8 @@ module "confluent" {
     aws_region = var.AWS_REGION
 }
 
-module "vultr" {
-  source = "./vultr"
+# module "vultr" {
+#   source = "./vultr"
 
-  api_key = var.vultr_api_key
-}
+#   api_key = var.vultr_api_key
+# }

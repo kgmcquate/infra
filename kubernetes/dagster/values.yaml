@@ -41,7 +41,7 @@ dagsterWebserver:
   nameOverride: "dagster-webserver"
 
   # Support path prefix (i.e. /dagster)
-  pathPrefix: "/"
+  pathPrefix: ~
 
   service:
     type: ClusterIP #NodePort
@@ -74,7 +74,7 @@ dagsterWebserver:
     externalConfigmap: ~
 
   # Deploy a separate instance of the webserver in --read-only mode (can't launch runs, disable schedules, etc.)
-  enableReadOnly: false
+  enableReadOnly: true
 
   # The timeout in milliseconds to set on database statements sent to the Dagster instance.
   dbStatementTimeout: ~
@@ -964,10 +964,11 @@ flower:
 ingress:
   enabled: true
 
-  annotations: {}
-    # nginx.ingress.kubernetes.io/auth-signin: http://$host/oauth2/start?rd=$escaped_request_uri
-    # nginx.ingress.kubernetes.io/auth-url: http://$host/oauth2/auth
-    # nginx.ingress.kubernetes.io/proxy-buffer-size: 512k
+  annotations:
+    nginx.ingress.kubernetes.io/auth-signin: https://dagster.kevin-mcquate.net/oauth2/start?rd=$escaped_request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://dagster.kevin-mcquate.net/oauth2/auth
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 512k
+    # nginx.ingress.kubernetes.io/rewrite-target: /
 
 #  labels: {}
 
@@ -982,15 +983,15 @@ ingress:
     # ingress controllers may only support "/", whereas some may need "/*".
 
 
-    path: "/"
-    pathType: ImplementationSpecific
+    path: ""
+    pathType: Prefix  #ImplementationSpecific # 
     # NOTE: do NOT keep trailing slash. For root configuration, set as empty string
     # See: https://github.com/dagster-io/dagster/issues/2073
-    host: "dagster.kevin-mcquate.net" #"dagster.kevin-mcquate.net"
+    host: "test.local"
 
     tls:
-      enabled: false
-      secretName: ""
+      enabled: true
+      secretName: "tls-secret"
 
     # Different http paths to add to the ingress before the default webserver path
     # Example:
@@ -1010,21 +1011,28 @@ ingress:
     #     pathType: ImplementationSpecific
     #     serviceName: "ssl-redirect"
     #     servicePort: "use-annotation"
-    succeedingPaths: []
+    # succeedingPaths:
+    #   - {
+    #     path: "/oauth",
+    #     pathType: ImplementationSpecific,
+    #     serviceName: "oauth2-proxy",
+    #     servicePort: 4180
+    #   }
+    
 
   readOnlyDagsterWebserver:
     # Ingress hostname for read only webserver e.g. viewer.dagster.mycompany.com
     # This variable allows customizing the route pattern in the ingress. Some
     # ingress controllers may only support "/", whereas some may need "/*".
-    path: "/*"
+    path: "/"
     pathType: ImplementationSpecific
     # NOTE: do NOT keep trailing slash. For root configuration, set as empty string
     # See: https://github.com/dagster-io/dagster/issues/2073
-    host: ""
+    host: "dagster.kevin-mcquate.net"
 
     tls:
-      enabled: false
-      secretName: ""
+      enabled: true
+      secretName: "tls-secret"
 
     # Different http paths to add to the ingress before the default webserver path
     # Example:
@@ -1460,4 +1468,3 @@ pipelineRun:
   #   ENV_ONE: one
   #   ENV_TWO: two
   env: {}
-
