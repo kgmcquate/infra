@@ -10,6 +10,7 @@ resource "snowflake_user" "dbt_testgen" {
 
 #   default_warehouse       = snowflake_warehouse.dbt_testgen.name
   default_role            = snowflake_role.dbt_testgen.name
+  default_secondary_roles = ["ALL"]
 }
 
 resource "snowflake_role" "dbt_testgen" {
