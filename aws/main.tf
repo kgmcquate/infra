@@ -4,11 +4,11 @@ module "redshift_serverless" {
   subnet_ids = module.vpc.public_subnets
 }
 
-module "rds" {
-  source = "./rds"
-  subnet_ids = module.vpc.public_subnets
-  security_group_ids = [aws_security_group.allow_all.id]
-}
+# module "rds" {
+#   source = "./rds"
+#   subnet_ids = module.vpc.public_subnets
+#   security_group_ids = [aws_security_group.allow_all.id]
+# }
 
 # module "airflow" {
 #   source = "./airflow"
