@@ -1,7 +1,7 @@
 resource "digitalocean_kubernetes_cluster" "dagster" {
   name   = "dagster-k8s-cluster"
   region = "nyc2"
-  version = "1.32.1-do.0"
+  version = "1.33.1-do.3"
 
   node_pool {
     name       = "worker-pool"
