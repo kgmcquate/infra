@@ -57,6 +57,14 @@ resource "aws_iam_role" "service_role" {
         Principal = {
           Service = "states.amazonaws.com"
         }
+      },
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Sid       = "AllowRDSExportAssumeRole"
+        Principal = {
+          Service = "export.rds.amazonaws.com"
+        }
       }
     ]
   })
