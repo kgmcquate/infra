@@ -2,7 +2,7 @@ cp kubernetes/kubectl.conf ~/.kube/config
 
 # ingress
 helm repo add nginx-stable https://helm.nginx.com/stable 
-helm install nginx-ingress nginx-stable/nginx-ingress -n nginx-ingress --create-namespace
+helm install nginx-ingress nginx-stable/nginx-ingress -n dagster --create-namespace
 kubectl get pods -n nginx-ingress
 kubectl get services -n nginx-ingress
 kubectl get ingress --all-namespaces
