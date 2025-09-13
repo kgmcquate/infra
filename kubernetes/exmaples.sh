@@ -28,6 +28,9 @@ kubectl logs dagster-dagster-webserver-5968dd5c9c-pgfhm  -n dagster
 # debug
 kubectl describe service dagster-dagster-webserver -n dagster
 
+# local chart
+helm upgrade --install dagster ./Chart.yaml -n dagster  --create-namespace -f values.yaml
+
 
 # oauth proxy
 kubectl create -f dagster/templates/oauth2-proxy.yaml -n dagster

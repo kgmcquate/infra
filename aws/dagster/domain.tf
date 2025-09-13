@@ -12,7 +12,7 @@ data "aws_route53_zone" "primary" {
 
 locals {
   dagster_webserver_ip = "45.55.116.117"
-  dagster_domain = "dagster.${var.base_domain}"
+  dagster_domain = "k8s-dashboard.${var.base_domain}"
 }
 
 resource "aws_route53_record" "www" {

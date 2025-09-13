@@ -5,7 +5,10 @@ type: application
 dependencies:
   - name: dagster
     repository: https://dagster-io.github.io/helm
-    version: 1.9.11
+    version: 1.11.10
+  - name: kubernetes-dashboard
+    repository: https://kubernetes.github.io/dashboard/
+    version: 7.13.0
 
 version: 0.1.0
 

@@ -1,6 +1,9 @@
 dependencies:
 - name: dagster
   repository: https://dagster-io.github.io/helm
-  version: 1.9.11
-digest: sha256:a26a2eaea87ce9db75079ba20e81cdfb87248de6c3d37991637df2cf9c2d2956
-generated: "2025-02-01T22:09:32.687164-05:00"
+  version: 1.11.10
+- name: kubernetes-dashboard
+  repository: https://kubernetes.github.io/dashboard/
+  version: 7.13.0
+digest: sha256:6470464dca42053ed643f23e1be2e2dacb7519fcdc88639a51940ce3be789f42
+generated: "2025-09-13T00:01:21.637021-04:00"
