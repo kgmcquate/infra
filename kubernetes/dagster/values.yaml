@@ -963,7 +963,7 @@ dagster:
   # Ingress: (Optional) Create ingresses for the Dagster webserver and Flower
   ####################################################################################################
   ingress:
-    enabled: true
+    enabled: false
 
     annotations:
       # https://kubernetes.github.io/ingress-nginx/examples/auth/oauth-external-auth/?source=post_page-----9924a3b2d34a---------------------------------------

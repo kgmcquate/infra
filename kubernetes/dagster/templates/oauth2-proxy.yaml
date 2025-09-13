@@ -19,7 +19,7 @@ spec:
         - args:
             - --provider=github
             - --email-domain=*
-            - --upstream=file:///dev/null
+            - --upstream=http://dagster-dagster-webserver.dagster.svc.cluster.local:80
             - --http-address=0.0.0.0:4180
             - --pass-access-token=true
             # - --whitelist-domain=kevin-mcquate.net
@@ -76,6 +76,13 @@ spec:
       http:
         paths:
           - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
+                port:
+                  number: 4180
+          - path: /
             pathType: Prefix
             backend:
               service:
