@@ -19,9 +19,13 @@ spec:
         - args:
             - --provider=github
             - --email-domain=*
-            - --upstream=http://dagster-dagster-webserver.dagster.svc.cluster.local:80
+            - --upstream=http://dagster-api-gateway:5000
             - --http-address=0.0.0.0:4180
             - --pass-access-token=true
+            - --pass-user-headers=true
+            - --set-xauthrequest=true
+            - --pass-authorization-header=true
+            - --scope=user:email,read:org
             # - --whitelist-domain=kevin-mcquate.net
           # Register a new application
           # https://github.com/settings/applications/new

@@ -324,8 +324,8 @@ dagster:
       - name: "k8s-example-user-code-1"
         image:
           # When a tag is not supplied, it will default as the Helm chart version.
-          repository: "docker.io/dagster/user-code-example"
-          tag: ~
+          repository: "kgmcquate/dagster"
+          tag: user-code-example
 
           # Change with caution! If you're using a fixed tag for pipeline run images, changing the
           # image pull policy to anything other than "Always" will use a cached/stale image, which is
@@ -347,7 +347,7 @@ dagster:
         # deployment pod.
         dagsterApiGrpcArgs:
           - "--python-file"
-          - "/example_project/example_repo/repo.py"
+          - "/iris_analysis/definitions.py"
         port: 3030
 
         # Whether or not to include configuration specified for this user code deployment in the pods
