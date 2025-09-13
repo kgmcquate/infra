@@ -9,10 +9,15 @@ kubectl get ingress --all-namespaces
 
 kubectl -n nginx-ingress get services -o wide -w nginx-ingress-controller
 
-helm uninstall nginx-ingress -n nginx-ingress
+helm uninstall nginx-ingress -n dagster
 
 kubectl exec -n nginx-ingress --stdin --tty nginx-ingress-controller-7c6db9f77d-p67qh -- /bin/bash
 kubectl logs -f nginx-ingress-controller-7c6db9f77d-p67qh -n nginx-ingress 
+
+# Another ingress
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
+
 
 # dashboard
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/               
