@@ -4,222 +4,59 @@ metadata:
   name: dagster-api-gateway-config
   namespace: dagster
 data:
-  app.py: |
-    import json
-    import os
-    import re
-    import requests
-    from flask import Flask, request, jsonify, Response
-    import logging
+  # Authorization configuration in YAML format
+  users-config.yaml: |
+    users:
+    - email: "kgmcquate@gmail.com"
+      username: "kgmcquate"
+      groups:
+        - "admin"
+        - "data-engineers"
 
-    app = Flask(__name__)
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
+    - email: "kevin.mcquate@synapsehealth.com"
+      username: "kevinmcquate"
+      groups:
+        - "viewers"
 
-    # Configuration
-    DAGSTER_WEBSERVER_URL = os.getenv('DAGSTER_WEBSERVER_URL', 'http://dagster-dagster-webserver:80')
-    ALLOWED_MUTATION_GROUPS = os.getenv('ALLOWED_MUTATION_GROUPS', 'admin,dagster-admin').split(',')
-    
-    def extract_user_from_headers(headers):
-        """Extract user information from OAuth2 proxy headers"""
-        user_email = headers.get('X-Forwarded-Email', '')
-        user_preferred_username = headers.get('X-Forwarded-Preferred-Username', '')
-        access_token = headers.get('X-Forwarded-Access-Token', '')
-        
-        # Debug: log all forwarded headers
-        forwarded_headers = {k: v for k, v in headers.items() if k.startswith('X-Forwarded')}
-        logger.info(f"Forwarded headers: {forwarded_headers}")
-        
-        # Get GitHub teams/organizations for the user
-        user_groups = []
-        if access_token:
-            try:
-                # Get user's organizations
-                github_api_headers = {
-                    'Authorization': f'token {access_token}',
-                    'Accept': 'application/vnd.github.v3+json',
-                    'User-Agent': 'dagster-api-gateway'
-                }
-                
-                # Get user info first
-                user_response = requests.get(
-                    'https://api.github.com/user',
-                    headers=github_api_headers,
-                    timeout=10
-                )
-                
-                if user_response.status_code == 200:
-                    user_info = user_response.json()
-                    logger.info(f"GitHub user info: {user_info.get('login', 'unknown')}")
-                else:
-                    logger.warning(f"Failed to get user info: {user_response.status_code}")
-                
-                # Get organizations
-                orgs_response = requests.get(
-                    'https://api.github.com/user/orgs',
-                    headers=github_api_headers,
-                    timeout=10
-                )
-                
-                if orgs_response.status_code == 200:
-                    orgs = orgs_response.json()
-                    user_groups.extend([org['login'] for org in orgs])
-                    logger.info(f"GitHub organizations: {[org['login'] for org in orgs]}")
-                else:
-                    logger.warning(f"Failed to get organizations: {orgs_response.status_code}")
-                
-                # For now, add a default group for testing based on username
-                if user_info and user_info.get('login') == 'kgmcquate':
-                    user_groups.append('admin')  # Add admin group for testing
-                
-                logger.info(f"Final GitHub groups for {user_email}: {user_groups}")
-                
-            except Exception as e:
-                logger.warning(f"Failed to get GitHub groups for {user_email}: {str(e)}")
-        
-        return user_email, user_groups
+    - email: "johnathan.mavroudis@synapsehealth.com"
+      username: "JohnMav"
+      groups:
+        - "viewers"
 
-    def is_mutation_request(query):
-        """Check if the GraphQL query contains mutations"""
-        if not query:
-            return False
-        
-        # Remove comments and normalize whitespace
-        cleaned_query = re.sub(r'#.*?\n', '', query)
-        cleaned_query = re.sub(r'\s+', ' ', cleaned_query).strip()
-        
-        # Check for mutation keyword
-        mutation_pattern = r'\bmutation\b'
-        return bool(re.search(mutation_pattern, cleaned_query, re.IGNORECASE))
+  groups-config.yaml: |
+    groups:
+    - name: "admin"
+      description: "Full administrative access"
+      permissions:
+        mutations:
+          - operation_name: "*"  # Allow all mutations
+        queries:
+          - operation_name: "*"  # Allow all queries
 
-    def has_mutation_permission(user_groups):
-        """Check if user has permission to execute mutations"""
-        return any(group.strip() in ALLOWED_MUTATION_GROUPS for group in user_groups)
+    - name: "data-engineers"
+      description: "Data engineering team with limited mutation access"
+      permissions:
+        mutations:
+          - operation_name: "launchPipelineExecution"
+            parameter_restrictions:
+              - jsonpath: "executionParams.selector.repositoryLocationName"
+                allowed_values:
+                  - "k8s-example-user-code-1"
+                  - "k8s-example-user-code-2"
+                  - "production-data-pipelines"
+          - operation_name: "launchRun"
+          - operation_name: "launchPipelineReexecution"
+          - operation_name: "logTelemetry"
+        queries:
+          - operation_name: "*"  # Allow all queries
 
-    @app.route('/graphql', methods=['POST'])
-    def proxy_graphql():
-        try:
-            # Extract user information
-            user_email, user_groups = extract_user_from_headers(request.headers)
-            logger.info(f"Request from user: {user_email}, groups: {user_groups}")
-            
-            # Get the GraphQL query
-            if request.is_json:
-                data = request.get_json()
-                query = data.get('query', '') if data else ''
-            else:
-                query = request.form.get('query', '')
-            
-            # Check if this is a mutation request
-            if is_mutation_request(query):
-                logger.info(f"Mutation request detected from {user_email}")
-                
-                # Check user permissions
-                if not has_mutation_permission(user_groups):
-                    logger.warning(f"Mutation denied for user {user_email} with groups {user_groups}")
-                    return jsonify({
-                        'errors': [{
-                            'message': 'Access denied: You do not have permission to execute mutations',
-                            'extensions': {
-                                'code': 'FORBIDDEN',
-                                'user': user_email,
-                                'required_groups': ALLOWED_MUTATION_GROUPS
-                            }
-                        }]
-                    }), 403
-                
-                logger.info(f"Mutation allowed for user {user_email}")
-            
-            # Forward the request to Dagster webserver
-            headers = dict(request.headers)
-            # Remove hop-by-hop headers
-            headers.pop('Host', None)
-            headers.pop('Content-Length', None)
-            
-            response = requests.post(
-                f'{DAGSTER_WEBSERVER_URL}/graphql',
-                data=request.get_data(),
-                headers=headers,
-                timeout=30
-            )
-            
-            # Return the response
-            return Response(
-                response.content,
-                status=response.status_code,
-                headers=dict(response.headers)
-            )
-            
-        except Exception as e:
-            logger.error(f"Error processing request: {str(e)}")
-            return jsonify({
-                'errors': [{
-                    'message': 'Internal server error',
-                    'extensions': {'code': 'INTERNAL_ERROR'}
-                }]
-            }), 500
-
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def proxy_all(path):
-        """Proxy all other requests to Dagster webserver"""
-        try:
-            # Forward the request to Dagster webserver
-            headers = dict(request.headers)
-            headers.pop('Host', None)
-            headers.pop('Content-Length', None)
-            
-            url = f'{DAGSTER_WEBSERVER_URL}/{path}'
-            if request.query_string:
-                url += f'?{request.query_string.decode()}'
-            
-            response = requests.request(
-                method=request.method,
-                url=url,
-                data=request.get_data(),
-                headers=headers,
-                timeout=30
-            )
-            
-            return Response(
-                response.content,
-                status=response.status_code,
-                headers=dict(response.headers)
-            )
-            
-        except Exception as e:
-            logger.error(f"Error proxying request: {str(e)}")
-            return jsonify({
-                'errors': [{
-                    'message': 'Proxy error',
-                    'extensions': {'code': 'PROXY_ERROR'}
-                }]
-            }), 502
-
-    @app.route('/health', methods=['GET'])
-    def health_check():
-        return jsonify({'status': 'healthy', 'service': 'dagster-api-gateway'})
-
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000, debug=False)
-
-  requirements.txt: |
-    Flask==2.3.3
-    requests==2.31.0
-
-  Dockerfile: |
-    FROM python:3.11-slim
-
-    WORKDIR /app
-
-    COPY requirements.txt .
-    RUN pip install --no-cache-dir -r requirements.txt
-
-    COPY app.py .
-
-    EXPOSE 5000
-
-    CMD ["python", "app.py"]
+    - name: "viewers"
+      description: "Read-only access"
+      permissions:
+        mutations:
+          - operation_name: "IntrospectionQuery"
+        queries:
+          - operation_name: "*"  # Allow all queries
 
 ---
 
@@ -240,44 +77,25 @@ spec:
       labels:
         app: dagster-api-gateway
     spec:
-      initContainers:
-      - name: build-image
-        image: docker:20.10-dind
-        command: ["/bin/sh"]
-        args:
-        - -c
-        - |
-          # Copy files from ConfigMap
-          cp /config/Dockerfile /build/
-          cp /config/app.py /build/
-          cp /config/requirements.txt /build/
-          
-          # Build image (this is a simplified approach - in production you'd want to use a proper CI/CD pipeline)
-          cd /build
-          echo "Files prepared for building API Gateway image"
-        volumeMounts:
-        - name: config
-          mountPath: /config
-        - name: build-dir
-          mountPath: /build
-        securityContext:
-          privileged: true
+      
       containers:
       - name: api-gateway
-        image: python:3.11-slim
+        image: kgmcquate/graphql-authz-proxy:latest
         ports:
         - containerPort: 5000
-        env:
-        - name: DAGSTER_WEBSERVER_URL
-          value: "http://dagster-dagster-webserver:80"
-        - name: ALLOWED_MUTATION_GROUPS
-          value: "admin,kevin-s-club"
-        command: ["/bin/sh"]
+        command: ["/usr/bin/uv", "run", "gqlproxy"]
         args:
-        - -c
-        - |
-          pip install flask requests
-          python /config/app.py
+          - "--upstream-url"
+          - "http://dagster-dagster-webserver:80"
+          - "--users-config-file"
+          - "/config/users-config.yaml"
+          - "--groups-config-file"
+          - "/config/groups-config.yaml"
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "5000"
+          - "--debug"
         volumeMounts:
         - name: config
           mountPath: /config
@@ -297,8 +115,6 @@ spec:
       - name: config
         configMap:
           name: dagster-api-gateway-config
-      - name: build-dir
-        emptyDir: {}
 
 ---
 
