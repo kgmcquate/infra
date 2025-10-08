@@ -22,3 +22,11 @@ resource "aws_route53_record" "www" {
   ttl     = 300
   records = [local.dagster_webserver_ip]
 }
+
+resource "aws_route53_record" "monitoring" {
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name    = "dagster-monitoring.${var.base_domain}"
+  type    = "A"
+  ttl     = 300
+  records = [local.dagster_webserver_ip]
+}
