@@ -43,7 +43,7 @@ resource "azuread_service_principal_password" "pass" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "main" {
-  name                        = "main-vault-${data.azurerm_client_config.current.subscription_id}"
+  name                        = "main-vault-4rf5tgwer2"
   location                    = azurerm_resource_group.main.location
   resource_group_name         = azurerm_resource_group.main.name
   tenant_id                   = data.azurerm_client_config.current.tenant_id
