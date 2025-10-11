@@ -82,7 +82,7 @@ resource "azurerm_key_vault" "main" {
 resource "azurerm_key_vault_secret" "dagster_oauth_client_id" {
   name         = "dagster-oauth-client-id"
   value        = jsonencode({
-    client_id     = "${azuread_application.auth.application_id}",
+    client_id     = "${azuread_application.auth.client_id}",
     tenant_id     = "${data.azurerm_client_config.current.tenant_id}",
     subscription_id = "${data.azurerm_client_config.current.subscription_id}",
     client_secret = "${azuread_service_principal_password.pass.value}"
