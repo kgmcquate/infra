@@ -25,7 +25,7 @@ resource "azuread_application" "auth" {
 
     web {
         redirect_uris = [
-            "https://dagster.kevin-mcquate.net/",
+            "https://dagster.kevin-mcquate.net/oauth2/callback",
         ]
     }
     // We don't specify any required API permissions - we allow user consent only
