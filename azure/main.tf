@@ -67,6 +67,22 @@ resource "azurerm_key_vault" "main" {
     ]
   }
 
+  access_policy {
+    tenant_id = "57bdd46e-339b-4e9e-9183-1c1ba8f7a809"
+    object_id = "b74eccdf-2af3-43b0-94cb-78125aa08dcf"
+
+    secret_permissions = [
+      "Get",
+      "List",
+      "Set",
+      "Delete",
+      "Recover",
+      "Backup",
+      "Restore",
+      "Purge"
+    ]
+  }
+
 #   access_policy {
 #     tenant_id = data.azurerm_client_config.current.tenant_id
 #     object_id = azuread_service_principal.sp.object_id
