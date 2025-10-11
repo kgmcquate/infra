@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-monitoring-ui
+  labels:
+    app: dagster-monitoring-ui
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dagster-monitoring-ui
+  template:
+    metadata:
+      labels:
+        app: dagster-monitoring-ui
+    spec:
+      containers:
+      - name: dagster-monitoring-ui
+        image: kgmcquate/dagster-monitoring:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+        - name: DAGSTER_GRAPHQL_URL
+          value: https://dagster.kevin-mcquate.net/graphql
+        - name: DAGSTER_BASE_URL
+          value: https://dagster.kevin-mcquate.net
+        - name: BASE_PATH
+          value: /monitoring
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dagster-monitoring-ui-service
+  labels:
+    app: dagster-monitoring-ui
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: dagster-monitoring-ui
+# Ingress is now handled by the main OAuth2 proxy ingress

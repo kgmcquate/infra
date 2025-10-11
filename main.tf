@@ -58,3 +58,7 @@ module "digital_ocean" {
 
   do_token = var.digital_ocean_token
 }
+
+module "azure" {
+  source = "./azure"
+}

@@ -11,17 +11,26 @@ data:
       username: "kgmcquate"
       groups:
         - "admin"
-        - "data-engineers"
-
     - email: "kevin.mcquate@synapsehealth.com"
       username: "kevinmcquate"
       groups:
         - "viewers"
-
     - email: "johnathan.mavroudis@synapsehealth.com"
       username: "JohnMav"
       groups:
         - "viewers"
+
+  # - "data-engineers"
+
+  # - email: "kevin.mcquate@synapsehealth.com"
+  #   username: "kevinmcquate"
+  #   groups:
+  #     - "viewers"
+
+  # - email: "johnathan.mavroudis@synapsehealth.com"
+  #   username: "JohnMav"
+  #   groups:
+  #     - "viewers"
 
   groups-config.yaml: |
     groups:
@@ -29,34 +38,48 @@ data:
       description: "Full administrative access"
       permissions:
         mutations:
-          - operation_name: "*"  # Allow all mutations
+          effect: "allow"
+          fields:
+            - field_name: "*"  # Allow all mutations
         queries:
-          - operation_name: "*"  # Allow all queries
-
-    - name: "data-engineers"
-      description: "Data engineering team with limited mutation access"
-      permissions:
-        mutations:
-          - operation_name: "launchPipelineExecution"
-            parameter_restrictions:
-              - jsonpath: "executionParams.selector.repositoryLocationName"
-                allowed_values:
-                  - "k8s-example-user-code-1"
-                  - "k8s-example-user-code-2"
-                  - "production-data-pipelines"
-          - operation_name: "launchRun"
-          - operation_name: "launchPipelineReexecution"
-          - operation_name: "logTelemetry"
-        queries:
-          - operation_name: "*"  # Allow all queries
+          effect: "allow"
+          fields:
+            - field_name: "*"  # Allow all mutations
 
     - name: "viewers"
-      description: "Read-only access"
+      description: "View-only access"
       permissions:
         mutations:
-          - operation_name: "IntrospectionQuery"
+          effect: "deny"
+          fields:
+            - field_name: "*"  # deny all mutations
         queries:
-          - operation_name: "*"  # Allow all queries
+          effect: "allow"
+          fields:
+            - field_name: "*"  # Allow all mutations
+
+    - name: "other_team"
+      description: "Access for other engineering team"
+      permissions:
+        mutations:
+          effect: "allow"
+          fields:
+            - field_name: "launchPipelineExecution"
+              arguments:
+                - argument_name: "executionParams"
+                  values: 
+                  - {
+                    "selector": {
+                      "repositoryLocationName": "dagster_repo",
+                      "repositoryName": "dagster_repo",
+                      "pipelineName": "*"
+                    }
+                  }
+        queries:
+          effect: "allow"
+          fields:
+            - field_name: "*"  # Allow all mutations
+
 
 ---
 
@@ -87,6 +110,8 @@ spec:
         args:
           - "--upstream-url"
           - "http://dagster-dagster-webserver:80"
+          - "--upstream-graphql-path"
+          - "/graphql"
           - "--users-config-file"
           - "/config/users-config.yaml"
           - "--groups-config-file"

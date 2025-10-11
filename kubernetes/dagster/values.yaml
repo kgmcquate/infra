@@ -68,6 +68,14 @@ dagster:
         - host: "k8s-example-user-code-1"
           port: 3030
           name: "user-code-example"
+        - host: "fake-sales-data-code-location"
+          port: 3031
+          name: "fake-sales-data"
+        - host: "load-test-code-location"
+          port: 3032
+          name: "load-test"
+
+          
 
       # Defines the name of a configmap provisioned outside of the
       # Helm release to use as workspace file. When set, `servers`
@@ -86,7 +94,7 @@ dagster:
     dbPoolRecycle: ~
 
     # The log level of the uvicorn web server, defaults to warning if not set
-    logLevel: ~
+    logLevel: info
 
     # Additional environment variables to set.
     # These will be directly applied to the daemon container. See
@@ -462,12 +470,39 @@ dagster:
         startupProbe:
           enabled: false
 
-        # Strategy to follow when replacing old pods with new pods. See:
-        # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
         deploymentStrategy: {}
 
         service:
           annotations: {}
+
+      - name: "fake-sales-data-code-location"
+        image:
+          repository: "kgmcquate/dagster-fake-sales-data"
+          tag: latest-fake-sales-data
+          pullPolicy: Always
+
+        dagsterApiGrpcArgs:
+          - "-f"
+          - "fake_sales_data/definitions.py"
+        port: 3031
+
+        includeConfigInLaunchedRuns:
+          enabled: true
+
+      
+      - name: "load-test-code-location"
+        image:
+          repository: "kgmcquate/dagster-load-test"
+          tag: latest-load-test
+          pullPolicy: Always
+
+        dagsterApiGrpcArgs:
+          - "-f"
+          - "load_test_data/definitions.py"
+        port: 3032
+
+        includeConfigInLaunchedRuns:
+          enabled: true
 
   ####################################################################################################
   # Scheduler: Configuration for the scheduler
@@ -1446,7 +1481,10 @@ dagster:
   #   auto_materialize: # See: https://docs.dagster.io/deployment/dagster-instance#auto-materialize
   #     run_tags:
   #       key: value
-  additionalInstanceConfig: {}
+  additionalInstanceConfig:
+    freshness:
+      enabled: True
+
 
   ####################################################################################################
   # [DEPRECATED] Pipeline Run
